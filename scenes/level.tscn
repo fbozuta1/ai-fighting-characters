@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://gg22pj150ks4"]
+[gd_scene load_steps=6 format=3 uid="uid://gg22pj150ks4"]
 
 [ext_resource type="Texture2D" uid="uid://ctucemrisnpra" path="res://assets/map/tileset.png" id="1_2q6dc"]
 [ext_resource type="PackedScene" uid="uid://cxd0ij0mqlgar" path="res://scenes/player_1.tscn" id="2_w7c3h"]
+[ext_resource type="Script" uid="uid://cca6e262i72t" path="res://scenes/prompt.gd" id="3_w8frs"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_w7c3h"]
 texture = ExtResource("1_2q6dc")
@@ -549,6 +550,7 @@ sources/0 = SubResource("TileSetAtlasSource_w7c3h")
 [node name="Level" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource("2_w7c3h")]
+position = Vector2(3, 5)
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_w8frs")
@@ -564,4 +566,107 @@ layer_3/name = "Backdrop"
 layer_3/z_index = -2
 
 [node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(2, -8)
 zoom = Vector2(3, 3)
+limit_enabled = false
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Prompt" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchor_left = -0.072000004
+anchor_top = 0.002
+anchor_right = -0.072000004
+anchor_bottom = 0.002
+offset_left = -128.056
+offset_top = -118.296
+offset_right = 309.944
+offset_bottom = 103.704
+script = ExtResource("3_w8frs")
+
+[node name="Blocker" type="ColorRect" parent="CanvasLayer/Prompt"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.071
+anchor_top = 1.983
+anchor_right = -0.071
+anchor_bottom = 1.983
+offset_left = 237.098
+offset_top = -327.226
+offset_right = 1394.098
+offset_bottom = 327.774
+
+[node name="Panel" type="Panel" parent="CanvasLayer/Prompt"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -1.5760001
+anchor_top = -0.22200002
+anchor_right = -1.5760001
+anchor_bottom = -0.22200002
+offset_left = 1281.2881
+offset_top = 277.284
+offset_right = 1677.2881
+offset_bottom = 763.284
+
+[node name="Label" type="Label" parent="CanvasLayer/Prompt/Panel"]
+layout_mode = 0
+offset_left = 123.99994
+offset_top = 9.0
+offset_right = 303.99994
+offset_bottom = 49.0
+text = "Generate AI Character
+"
+
+[node name="CharacterDescription" type="LineEdit" parent="CanvasLayer/Prompt/Panel"]
+layout_mode = 0
+offset_left = 60.99994
+offset_top = 104.0
+offset_right = 337.99994
+offset_bottom = 298.0
+
+[node name="Button" type="Button" parent="CanvasLayer/Prompt/Panel"]
+layout_mode = 0
+offset_left = 57.99994
+offset_top = 398.0
+offset_right = 347.99994
+offset_bottom = 483.0
+action_mode = 0
+text = "Generate"
+
+[node name="Title" type="LineEdit" parent="CanvasLayer/Prompt/Panel"]
+layout_mode = 0
+offset_left = 72.99994
+offset_top = 50.0
+offset_right = 328.99994
+offset_bottom = 96.0
+
+[node name="ReferenceImageButton" type="Button" parent="CanvasLayer/Prompt/Panel"]
+layout_mode = 0
+offset_left = 57.99994
+offset_top = 312.0
+offset_right = 185.99994
+offset_bottom = 352.0
+text = "Reference Image"
+
+[node name="ReferenceImagePath" type="LineEdit" parent="CanvasLayer/Prompt/Panel"]
+layout_mode = 0
+offset_left = 195.99994
+offset_top = 312.0
+offset_right = 347.99994
+offset_bottom = 352.0
+editable = false
+placeholder_text = "No image selected"
+
+[node name="ReferenceImageDialog" type="FileDialog" parent="CanvasLayer/Prompt/Panel"]
+title = "Select Reference Image"
+initial_position = 2
+size = Vector2i(900, 600)
+ok_button_text = "Select"
+file_mode = 0
+access = 2
+filters = PackedStringArray("*.png ; PNG Images", "*.jpg, *.jpeg ; JPEG Images", "*.webp ; WebP Images")
+use_native_dialog = true
+
+[connection signal="pressed" from="CanvasLayer/Prompt/Panel/Button" to="CanvasLayer/Prompt" method="_on_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Prompt/Panel/ReferenceImageButton" to="CanvasLayer/Prompt" method="_on_reference_image_button_pressed"]
+[connection signal="file_selected" from="CanvasLayer/Prompt/Panel/ReferenceImageDialog" to="CanvasLayer/Prompt" method="_on_reference_image_dialog_file_selected"]

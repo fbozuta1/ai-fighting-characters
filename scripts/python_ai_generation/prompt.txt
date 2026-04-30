@@ -1,0 +1,40 @@
+Create a png which reprsents a right facing idling state for a 2D pixel art game character designed to be EASY TO ANIMATE.
+
+STYLE & CAMERA
+- High-detail pixel art, modern retro style (16-bit inspired but detailed)
+- Orthographic camera, straight-on or slight 3/4 view
+- Full body visible
+- Centered in frame
+- Game-ready sprite (idle pose)
+
+RESOLUTION & SCALE
+- Working resolution: 1024×1024 pixels
+- Intended to be downscaled to 64×64 or 96×96
+- Character occupies ~70–85% of the canvas height
+- Small pixel size, high pixel density
+
+PIXEL ART CONSTRAINTS
+- Pixel-perfect rendering
+- No blur, no smooth gradients
+- No anti-aliasing
+
+Clearly defined pixel clusters
+- Crisp edges
+
+COLOR & LIGHTING
+- High contrast lighting
+- Bright, saturated mid-tones
+- Deep shadows and strong highlights
+- Subtle hue shifting (warm highlights, cool shadows)
+- Light source from top-left
+
+POSE & PRESENTATION
+- Neutral idle stance or combat-ready idle pose
+- Balanced, grounded posture
+- Weapon and gear clearly readable
+
+BACKGROUND
+- Transparent background
+- No text, no UI, no borders
+
+CHARACTER DESCRIPTION:
