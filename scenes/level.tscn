@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://gg22pj150ks4"]
+[gd_scene load_steps=7 format=3 uid="uid://gg22pj150ks4"]
 
 [ext_resource type="Texture2D" uid="uid://ctucemrisnpra" path="res://assets/map/tileset.png" id="1_2q6dc"]
 [ext_resource type="PackedScene" uid="uid://cxd0ij0mqlgar" path="res://scenes/player_1.tscn" id="2_w7c3h"]
@@ -547,6 +547,18 @@ physics_layer_0/collision_layer = 1
 physics_layer_0/collision_mask = 2
 sources/0 = SubResource("TileSetAtlasSource_w7c3h")
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_prompt_panel"]
+bg_color = Color(0.115, 0.12, 0.14, 0.97)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.32, 0.36, 0.42, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
 [node name="Level" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource("2_w7c3h")]
@@ -574,88 +586,123 @@ limit_enabled = false
 
 [node name="Prompt" type="Control" parent="CanvasLayer"]
 layout_mode = 3
-anchor_left = -0.072000004
-anchor_top = 0.002
-anchor_right = -0.072000004
-anchor_bottom = 0.002
-offset_left = -128.056
-offset_top = -118.296
-offset_right = 309.944
-offset_bottom = 103.704
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("3_w8frs")
 
 [node name="Blocker" type="ColorRect" parent="CanvasLayer/Prompt"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = -0.071
-anchor_top = 1.983
-anchor_right = -0.071
-anchor_bottom = 1.983
-offset_left = 237.098
-offset_top = -327.226
-offset_right = 1394.098
-offset_bottom = 327.774
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.04, 0.05, 0.07, 0.78)
 
 [node name="Panel" type="Panel" parent="CanvasLayer/Prompt"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = -1.5760001
-anchor_top = -0.22200002
-anchor_right = -1.5760001
-anchor_bottom = -0.22200002
-offset_left = 1281.2881
-offset_top = 277.284
-offset_right = 1677.2881
-offset_bottom = 763.284
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -270.0
+offset_top = -250.0
+offset_right = 270.0
+offset_bottom = 250.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_prompt_panel")
 
 [node name="Label" type="Label" parent="CanvasLayer/Prompt/Panel"]
 layout_mode = 0
-offset_left = 123.99994
-offset_top = 9.0
-offset_right = 303.99994
-offset_bottom = 49.0
-text = "Generate AI Character
-"
+offset_left = 32.0
+offset_top = 24.0
+offset_right = 508.0
+offset_bottom = 52.0
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(0.94, 0.95, 0.97, 1)
+text = "Generate AI Character"
+horizontal_alignment = 1
 
-[node name="CharacterDescription" type="LineEdit" parent="CanvasLayer/Prompt/Panel"]
+[node name="Subtitle" type="Label" parent="CanvasLayer/Prompt/Panel"]
 layout_mode = 0
-offset_left = 60.99994
-offset_top = 104.0
-offset_right = 337.99994
-offset_bottom = 298.0
+offset_left = 48.0
+offset_top = 56.0
+offset_right = 492.0
+offset_bottom = 80.0
+theme_override_font_sizes/font_size = 13
+theme_override_colors/font_color = Color(0.72, 0.76, 0.82, 1)
+text = "Describe the character and optionally attach a reference image."
+horizontal_alignment = 1
 
-[node name="Button" type="Button" parent="CanvasLayer/Prompt/Panel"]
+[node name="TitleLabel" type="Label" parent="CanvasLayer/Prompt/Panel"]
 layout_mode = 0
-offset_left = 57.99994
-offset_top = 398.0
-offset_right = 347.99994
-offset_bottom = 483.0
-action_mode = 0
-text = "Generate"
+offset_left = 48.0
+offset_top = 102.0
+offset_right = 492.0
+offset_bottom = 124.0
+theme_override_colors/font_color = Color(0.86, 0.89, 0.93, 1)
+text = "Character name"
 
 [node name="Title" type="LineEdit" parent="CanvasLayer/Prompt/Panel"]
 layout_mode = 0
-offset_left = 72.99994
-offset_top = 50.0
-offset_right = 328.99994
-offset_bottom = 96.0
+offset_left = 48.0
+offset_top = 128.0
+offset_right = 492.0
+offset_bottom = 166.0
+placeholder_text = "Example: Ryu, cyber knight, desert mage"
+
+[node name="DescriptionLabel" type="Label" parent="CanvasLayer/Prompt/Panel"]
+layout_mode = 0
+offset_left = 48.0
+offset_top = 180.0
+offset_right = 492.0
+offset_bottom = 202.0
+theme_override_colors/font_color = Color(0.86, 0.89, 0.93, 1)
+text = "Character description"
+
+[node name="CharacterDescription" type="TextEdit" parent="CanvasLayer/Prompt/Panel"]
+layout_mode = 0
+offset_left = 48.0
+offset_top = 206.0
+offset_right = 492.0
+offset_bottom = 332.0
+placeholder_text = "Appearance, outfit, weapon, personality, animation style..."
+wrap_mode = 1
+
+[node name="ReferenceImageLabel" type="Label" parent="CanvasLayer/Prompt/Panel"]
+layout_mode = 0
+offset_left = 48.0
+offset_top = 348.0
+offset_right = 492.0
+offset_bottom = 370.0
+theme_override_colors/font_color = Color(0.86, 0.89, 0.93, 1)
+text = "Reference image"
 
 [node name="ReferenceImageButton" type="Button" parent="CanvasLayer/Prompt/Panel"]
 layout_mode = 0
-offset_left = 57.99994
-offset_top = 312.0
-offset_right = 185.99994
-offset_bottom = 352.0
-text = "Reference Image"
+offset_left = 48.0
+offset_top = 374.0
+offset_right = 184.0
+offset_bottom = 412.0
+text = "Choose Image"
 
 [node name="ReferenceImagePath" type="LineEdit" parent="CanvasLayer/Prompt/Panel"]
 layout_mode = 0
-offset_left = 195.99994
-offset_top = 312.0
-offset_right = 347.99994
-offset_bottom = 352.0
+offset_left = 196.0
+offset_top = 374.0
+offset_right = 492.0
+offset_bottom = 412.0
 editable = false
 placeholder_text = "No image selected"
+
+[node name="Button" type="Button" parent="CanvasLayer/Prompt/Panel"]
+layout_mode = 0
+offset_left = 48.0
+offset_top = 436.0
+offset_right = 492.0
+offset_bottom = 476.0
+action_mode = 0
+theme_override_font_sizes/font_size = 15
+text = "Generate Character"
 
 [node name="ReferenceImageDialog" type="FileDialog" parent="CanvasLayer/Prompt/Panel"]
 title = "Select Reference Image"

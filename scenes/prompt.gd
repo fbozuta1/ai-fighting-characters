@@ -4,10 +4,10 @@ signal submitted(title: String, description: String, reference_image_path: Strin
 
 
 @onready var ok_button: Button = $Panel/Button
-@onready var blocker := $Blocker
-@onready var panel := $Panel
-@onready var DescriptionField: = $Panel/CharacterDescription
-@onready var TitleField: = $Panel/Title
+@onready var blocker: ColorRect = $Blocker
+@onready var panel: Panel = $Panel
+@onready var DescriptionField: TextEdit = $Panel/CharacterDescription
+@onready var TitleField: LineEdit = $Panel/Title
 @onready var ReferenceImagePathField: LineEdit = $Panel/ReferenceImagePath
 @onready var ReferenceImageDialog: FileDialog = $Panel/ReferenceImageDialog
 

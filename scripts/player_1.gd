@@ -5,7 +5,7 @@ extends CharacterBody2D
 # Koristimo sprite za animaciju
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var prompt: Control = get_parent().get_node("CanvasLayer/Prompt")
-@onready var ResultField: LineEdit =  get_parent().get_node("CanvasLayer/Prompt/Panel/CharacterDescription")
+@onready var ResultField: TextEdit =  get_parent().get_node("CanvasLayer/Prompt/Panel/CharacterDescription")
 
 const GENERATION_SCRIPT_PATH: String = "C:\\Users\\fbozu\\Documents\\ai-fighting-characters\\scripts\\python_ai_generation\\pixellab_generation_script.py"
 const DEFAULT_RESULT_PATH: String = "res://animation_result.json"
