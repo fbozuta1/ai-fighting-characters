@@ -11,8 +11,46 @@ from data_format import (
 from pathlib import Path
 from utils import new_folder
 from copy import copy
+from json import dump as json_dump
+from os import replace as os_replace
+from time import time
 
 DEFAULT_ANIMATION_FOLDER_NAME: str = "ai_animations"
+
+
+def progress_file_path() -> Optional[str]:
+    if len(argv) >= 3:
+        return argv[2]
+    return None
+
+
+def write_progress(
+    status: str,
+    message: str,
+    action: str = "",
+    action_index: int = 0,
+    total_actions: int = 0,
+) -> None:
+    maybe_progress_path: Optional[str] = progress_file_path()
+    if maybe_progress_path is None or len(maybe_progress_path) == 0:
+        return
+
+    progress_path: Path = Path(maybe_progress_path)
+    progress_path.parent.mkdir(parents=True, exist_ok=True)
+    tmp_path: Path = progress_path.with_suffix(progress_path.suffix + ".tmp")
+    with open(tmp_path, "w") as progress_file:
+        json_dump(
+            {
+                "status": status,
+                "message": message,
+                "action": action,
+                "action_index": action_index,
+                "total_actions": total_actions,
+                "updated_at": time(),
+            },
+            progress_file,
+        )
+    os_replace(tmp_path, progress_path)
 
 
 def generate_animations() -> AnimationResult:
@@ -51,6 +89,13 @@ def generate_animations() -> AnimationResult:
             animation_req.char_data.ref_image_path is None
             or len(animation_req.char_data.ref_image_path) == 0
         ):
+            write_progress(
+                "generating_reference_image",
+                "Generating reference image",
+                "",
+                0,
+                len(animation_req.actions),
+            )
             pixel_art_generator: OpenAIPixelArtGenerator = OpenAIPixelArtGenerator()
             image_save_path: str = (
                 f"{animation_folder_path}/{animation_folder_name}_ref_image"
@@ -68,14 +113,31 @@ def generate_animations() -> AnimationResult:
                 result.add_err("Failed to generate pixel art with open ai")
                 return result
         animator: PixellabAnimator = PixellabAnimator()
+        def on_action_started(action: str, action_index: int, total_actions: int) -> None:
+            write_progress(
+                "generating_action",
+                f"Generating action: {action}",
+                action,
+                action_index,
+                total_actions,
+            )
+
         pixellab_result: PixellabAnimationResult = animator.generate_animations(
-            animation_req, animation_folder_path
+            animation_req, animation_folder_path, on_action_started
         )
         result.action_folders = copy(pixellab_result.action_folders)
         result.errors.extend(pixellab_result.errors)
+        write_progress(
+            "completed",
+            "Generation complete",
+            "",
+            len(animation_req.actions),
+            len(animation_req.actions),
+        )
         return result
     except Exception as e:
         result.add_err(f"Error when generating animations: {e}")
+        write_progress("failed", f"Generation failed: {e}")
         return result
 
 

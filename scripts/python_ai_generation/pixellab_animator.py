@@ -6,7 +6,7 @@ from pixellab.animate_with_text import (
 )
 from PIL.Image import Image as PILImage
 from PIL.Image import open as pil_image_open
-from typing import Optional, List, Dict
+from typing import Optional, List, Dict, Callable
 from cv2 import imread, resize, imwrite, IMREAD_UNCHANGED, INTER_NEAREST
 from utils import (
     new_folder,
@@ -136,7 +136,10 @@ class PixellabAnimator:
         return result
 
     def generate_animations(
-        self, request: AnimationRequest, animations_folder: Optional[str] = None
+        self,
+        request: AnimationRequest,
+        animations_folder: Optional[str] = None,
+        progress_callback: Optional[Callable[[str, int, int], None]] = None,
     ) -> PixellabAnimationResult:
         result: PixellabAnimationResult = PixellabAnimationResult()
         aniumations_save_folder: str = ""
@@ -152,7 +155,10 @@ class PixellabAnimator:
                 "Reference image path not provided in the request, unable to generate animations."
             )
             return result
+        total_actions: int = len(request.actions)
         for i, animation_action in enumerate(request.actions):
+            if progress_callback is not None:
+                progress_callback(animation_action, i, total_actions)
             if i > 0 and len(result.action_folders) > 0:
                 # For consistency between animations of the same character, we use the reference image from the first generated animation for all the other subsequent animations.
                 maybe_existing_animation_image: Optional[str] = (

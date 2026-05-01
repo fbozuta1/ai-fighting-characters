@@ -5,7 +5,7 @@ extends CharacterBody2D
 # Koristimo sprite za animaciju
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var prompt: Control = get_parent().get_node("CanvasLayer/Prompt")
-@onready var ResultField: TextEdit =  get_parent().get_node("CanvasLayer/Prompt/Panel/CharacterDescription")
+@onready var ResultField: Label =  get_parent().get_node("CanvasLayer/Prompt/Panel/GenerationStatusLabel")
 
 const GENERATION_SCRIPT_PATH: String = "C:\\Users\\fbozu\\Documents\\ai-fighting-characters\\scripts\\python_ai_generation\\pixellab_generation_script.py"
 const DEFAULT_RESULT_PATH: String = "res://animation_result.json"
@@ -15,11 +15,21 @@ const ANIMATION_NAMES: Dictionary = {
 	"fight": "Fight",
 }
 const ANIMATION_SPEED: float = 5.0
+const GENERATION_PROGRESS_FILE: String = "user://animation_progress.json"
+
+var generation_thread: Thread
+var generation_progress_timer: Timer
+var generation_progress_file_path: String = ""
+var is_generation_running: bool = false
 
 func _ready(): 
 	state_machine.init()
 	#prompt.visible = false
 	prompt.submitted.connect(_on_prompt_submitted)
+	generation_progress_timer = Timer.new()
+	generation_progress_timer.wait_time = 0.25
+	generation_progress_timer.timeout.connect(_on_generation_progress_timer_timeout)
+	add_child(generation_progress_timer)
 	#sprite.flip_h = true
 	load_animations_from_result_file(DEFAULT_RESULT_PATH)
 
@@ -33,27 +43,111 @@ func _input(event):
 	state_machine.process_input(event)
 
 func _on_prompt_submitted(title: String, description: String, reference_image_path: String):
-	var animation_request_file: String = _save_animation_request_json(title, description, reference_image_path)
-	var animation_result: Array[String] = []
-	OS.execute("python", [GENERATION_SCRIPT_PATH, animation_request_file], animation_result, true)
-	print_result(animation_result)
+	if is_generation_running:
+		return
 
-func print_result(animation_result: Array[String]):
+	var animation_request_file: String = _save_animation_request_json(title, description, reference_image_path)
+	generation_progress_file_path = ProjectSettings.globalize_path(GENERATION_PROGRESS_FILE)
+	_write_initial_generation_progress()
+	is_generation_running = true
+	generation_progress_timer.start()
+	generation_thread = Thread.new()
+	var thread_start_error := generation_thread.start(Callable(self, "_run_generation_script").bind(animation_request_file, generation_progress_file_path))
+	if thread_start_error != OK:
+		generation_progress_timer.stop()
+		is_generation_running = false
+		ResultField.text = "Failed to start generation thread"
+		if prompt.has_method("finish_generation_progress"):
+			prompt.finish_generation_progress(false, ResultField.text)
+
+func _exit_tree() -> void:
+	if generation_thread != null and generation_thread.is_started():
+		generation_thread.wait_to_finish()
+
+func _run_generation_script(animation_request_file: String, progress_file_path: String) -> void:
+	var animation_result: Array[String] = []
+	var exit_code := OS.execute("python", [GENERATION_SCRIPT_PATH, animation_request_file, progress_file_path], animation_result, true)
+	if exit_code != OK and animation_result.is_empty():
+		animation_result.append("Generation script failed with exit code " + str(exit_code))
+	call_deferred("_on_generation_finished", animation_result)
+
+func _on_generation_finished(animation_result: Array[String]) -> void:
+	generation_progress_timer.stop()
+	if generation_thread != null:
+		generation_thread.wait_to_finish()
+		generation_thread = null
+	is_generation_running = false
+
+	var success := print_result(animation_result)
+	if prompt.has_method("finish_generation_progress"):
+		if success:
+			prompt.finish_generation_progress(true, "Loaded animations")
+		else:
+			prompt.finish_generation_progress(false, ResultField.text)
+
+func _write_initial_generation_progress() -> void:
+	var data := {
+		"status": "starting",
+		"message": "Starting generation...",
+		"action": "",
+		"action_index": 0,
+		"total_actions": ANIMATION_NAMES.size(),
+	}
+	var file := FileAccess.open(GENERATION_PROGRESS_FILE, FileAccess.WRITE)
+	if file == null:
+		return
+	file.store_string(JSON.stringify(data, "\t"))
+	file.close()
+
+func _on_generation_progress_timer_timeout() -> void:
+	var file := FileAccess.open(GENERATION_PROGRESS_FILE, FileAccess.READ)
+	if file == null:
+		return
+
+	var progress_text := file.get_as_text()
+	file.close()
+
+	var progress_json := JSON.new()
+	if progress_json.parse(progress_text) != OK:
+		return
+	if typeof(progress_json.data) != TYPE_DICTIONARY:
+		return
+
+	var progress_data: Dictionary = progress_json.data
+	var status := str(progress_data.get("status", "starting"))
+	var message := str(progress_data.get("message", "Starting generation..."))
+	var action_index := int(progress_data.get("action_index", 0))
+	var total_actions := int(progress_data.get("total_actions", ANIMATION_NAMES.size()))
+	var progress_value := _get_generation_progress_value(status, action_index, total_actions)
+
+	if prompt.has_method("update_generation_progress"):
+		prompt.update_generation_progress(progress_value, message)
+
+func _get_generation_progress_value(status: String, action_index: int, total_actions: int) -> float:
+	if status == "completed":
+		return 100.0
+	if status == "generating_reference_image":
+		return 5.0
+	if status == "generating_action" and total_actions > 0:
+		return clamp((float(action_index) / float(total_actions)) * 100.0, 5.0, 95.0)
+	return 0.0
+
+func print_result(animation_result: Array[String]) -> bool:
 	ResultField.text = ""
 	if animation_result.is_empty():
 		ResultField.text = "Empty script output"
-		return
+		return false
 	var animation_result_file: String = _get_animation_result_file(animation_result)
 	if animation_result_file.is_empty():
 		ResultField.text = "Animation result is empty"
-		return
-	load_animations_from_result_file(animation_result_file)
+		return false
+	return load_animations_from_result_file(animation_result_file)
 
-func load_animations_from_result_file(animation_result_file: String) -> void:
+func load_animations_from_result_file(animation_result_file: String) -> bool:
 	var resolved_result_file := _resolve_file_path(animation_result_file)
 	if resolved_result_file.is_empty():
 		ResultField.text = "Animation result file " + animation_result_file + " doesn't exist"
-		return
+		return false
 		
 	var result_file = FileAccess.open(resolved_result_file, FileAccess.READ)
 	var result_text = result_file.get_as_text()
@@ -66,30 +160,31 @@ func load_animations_from_result_file(animation_result_file: String) -> void:
 		print("JSON parse error:", result_json.get_error_message())
 		print("At line:", result_json.get_error_line())
 		ResultField.text = "Failed to parse animation result JSON"
-		return
+		return false
 	
 	var result_data = result_json.data
 	if typeof(result_data) != TYPE_DICTIONARY:
 		ResultField.text = "Animation result JSON is not an object"
-		return
+		return false
 
 	if result_data.has("errors") and result_data["errors"].size() > 0:
 		ResultField.text = ",".join(result_data["errors"])
-		return
+		return false
 
 	if not result_data.has("action_folders"):
 		ResultField.text = "Animation result is missing action_folders"
-		return
+		return false
 	if typeof(result_data["action_folders"]) != TYPE_DICTIONARY:
 		ResultField.text = "Animation result action_folders is not an object"
-		return
+		return false
 
 	var load_errors: Array[String] = _load_sprite_frames(result_data["action_folders"], resolved_result_file)
 	if not load_errors.is_empty():
 		ResultField.text = ",".join(load_errors)
-		return
+		return false
 
 	ResultField.text = "Loaded animations"
+	return true
 
 func _get_animation_result_file(animation_result: Array[String]) -> String:
 	var output_lines: Array[String] = []
