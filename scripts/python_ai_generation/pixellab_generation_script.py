@@ -1,4 +1,8 @@
 from typing import Optional
+from open_ai_action_descriptions import (
+    ActionDescriptionResult,
+    OpenAIActionDescriptionGenerator,
+)
 from open_ai_pixel_art import OpenAIPixelArtGenerator, PixelArtResult
 from pixellab_animator import PixellabAnimator, PixellabAnimationResult
 from sys import argv
@@ -112,6 +116,30 @@ def generate_animations() -> AnimationResult:
             else:
                 result.add_err("Failed to generate pixel art with open ai")
                 return result
+
+        write_progress(
+            "generating_action_descriptions",
+            "Generating action descriptions",
+            "",
+            0,
+            len(animation_req.actions),
+        )
+        action_descriptions = {}
+        action_description_generator: OpenAIActionDescriptionGenerator = (
+            OpenAIActionDescriptionGenerator()
+        )
+        action_description_result: ActionDescriptionResult = (
+            action_description_generator.generate_action_descriptions(
+                animation_req.char_data.description,
+                animation_req.actions,
+            )
+        )
+        result.errors.extend(action_description_result.errors)
+        action_descriptions = {
+            action: f"{action}: {description}"
+            for action, description in action_description_result.action_descriptions.items()
+        }
+
         animator: PixellabAnimator = PixellabAnimator()
         def on_action_started(action: str, action_index: int, total_actions: int) -> None:
             write_progress(
@@ -123,7 +151,10 @@ def generate_animations() -> AnimationResult:
             )
 
         pixellab_result: PixellabAnimationResult = animator.generate_animations(
-            animation_req, animation_folder_path, on_action_started
+            animation_req,
+            animation_folder_path,
+            on_action_started,
+            action_descriptions,
         )
         result.action_folders = copy(pixellab_result.action_folders)
         result.errors.extend(pixellab_result.errors)

@@ -27,7 +27,8 @@ if "pixellab" not in sys.modules:
 if "pixellab.animate_with_text" not in sys.modules:
     animate_mod = types.ModuleType("pixellab.animate_with_text")
     animate_mod.AnimateWithTextResponse = object
-    animate_mod.ImageSize = object
+    animate_mod.ImageSize = MagicMock
+    animate_mod.animate_with_text = MagicMock()
     sys.modules["pixellab.animate_with_text"] = animate_mod
 
 import open_ai_pixel_art
@@ -97,11 +98,12 @@ class TestPixellabAnimator(unittest.TestCase):
     @patch("pixellab_animator.PLClient")
     def test_generate_pixellab_animation_missing_ref_image(self, mock_pl_client):
         animator = pixellab_animator.PixellabAnimator()
-        char_data = CharacterData(
-            title="hero", description="A hero", ref_image_path=None
+        result = animator.generate_pixellab_animation(
+            "A hero",
+            "walk",
+            "animations",
+            "",
         )
-
-        result = animator.generate_pixellab_animation(char_data, "walk")
 
         self.assertEqual(result.action_folders, {})
         self.assertEqual(
@@ -124,7 +126,6 @@ class TestPixellabAnimator(unittest.TestCase):
         ]
 
         fake_client = MagicMock()
-        fake_client.animate_with_text.return_value = fake_response
         mock_pl_client.return_value = fake_client
 
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -151,7 +152,13 @@ class TestPixellabAnimator(unittest.TestCase):
                 char_data = CharacterData(
                     title="hero", description="A hero", ref_image_path="ref.png"
                 )
-                result = animator.generate_pixellab_animation(char_data, "walk")
+                pixellab_animator.animate_with_text.return_value = fake_response
+                result = animator.generate_pixellab_animation(
+                    char_data.description,
+                    "walk",
+                    "animations",
+                    char_data.ref_image_path,
+                )
 
             self.assertEqual(result.errors, [])
             self.assertIn("walk", result.action_folders)
@@ -185,15 +192,28 @@ class TestPixellabAnimator(unittest.TestCase):
 
 class TestPixellabGenerationScript(unittest.TestCase):
     @patch("pixellab_generation_script.OpenAIPixelArtGenerator")
+    @patch("pixellab_generation_script.OpenAIActionDescriptionGenerator")
     @patch("pixellab_generation_script.PixellabAnimator")
     def test_generate_animations_with_mocked_api(
-        self, mock_pixellab_animator_class, mock_openai_class
+        self,
+        mock_pixellab_animator_class,
+        mock_action_description_class,
+        mock_openai_class,
     ):
         openai_instance = MagicMock()
         openai_instance.generate_pixel_art_character.return_value = PixelArtResult(
             gen_image_path="ref.png", errors=[]
         )
         mock_openai_class.return_value = openai_instance
+
+        action_description_instance = MagicMock()
+        action_description_instance.generate_action_descriptions.return_value = (
+            pixellab_generation_script.ActionDescriptionResult(
+                action_descriptions={"walk": "walk with a steady side-view stride"},
+                errors=[],
+            )
+        )
+        mock_action_description_class.return_value = action_description_instance
 
         pixellab_instance = MagicMock()
         pixellab_instance.generate_animations.return_value = PixellabAnimationResult(

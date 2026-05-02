@@ -321,6 +321,7 @@ class PixellabAnimator:
         action: str,
         animations_save_folder: str,
         ref_image_path: str,
+        action_description: Optional[str] = None,
     ) -> PixellabAnimationResult:
         result: PixellabAnimationResult = PixellabAnimationResult()
         try:
@@ -341,7 +342,7 @@ class PixellabAnimator:
             )
             animation_images: List[PILImage] = self.__generate_animation_images(
                 description,
-                action=action,
+                action=action_description or action,
                 reference_image=pixellab_ref_image,
             )
             save_folder_original: str = new_folder(
@@ -374,6 +375,7 @@ class PixellabAnimator:
         request: AnimationRequest,
         animations_folder: Optional[str] = None,
         progress_callback: Optional[Callable[[str, int, int], None]] = None,
+        action_descriptions: Optional[Dict[str, str]] = None,
     ) -> PixellabAnimationResult:
         result: PixellabAnimationResult = PixellabAnimationResult()
         aniumations_save_folder: str = ""
@@ -411,6 +413,11 @@ class PixellabAnimator:
                     animation_action,
                     aniumations_save_folder,
                     ref_image_path,
+                    (
+                        action_descriptions.get(animation_action)
+                        if action_descriptions is not None
+                        else None
+                    ),
                 )
             )
             # Adding a sleep between animation generations to avoid hitting pixellab rate limits in case of multiple animations requested.
