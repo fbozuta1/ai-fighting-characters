@@ -134,7 +134,6 @@ def generate_animations() -> AnimationResult:
                 animation_req.actions,
             )
         )
-        result.errors.extend(action_description_result.errors)
         action_descriptions = {
             action: f"{action}: {description}"
             for action, description in action_description_result.action_descriptions.items()

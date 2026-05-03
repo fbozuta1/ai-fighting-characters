@@ -11,13 +11,14 @@ config_version=5
 [application]
 
 config/name="ai_fighting_characters"
-run/main_scene="uid://gg22pj150ks4"
+run/main_scene="res://scenes/character_selection.tscn"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
 _mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
+CharacterSelectionData="*res://scripts/character_selection_data.gd"
 
 [editor_plugins]
 

@@ -31,7 +31,7 @@ func process_physics(delta: float) -> State:
 		return player.state_machine.idle_state
 	else:
 		# Kad je samo levo pritisnuto, onda flip-uj smer kretanja
-		player.sprite.flip_h = dir == 1
+		player.sprite.flip_h = dir == -1
 
 	return null
 	

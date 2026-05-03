@@ -16,6 +16,9 @@ const ANIMATION_NAMES: Dictionary = {
 }
 const ANIMATION_SPEED: float = 5.0
 const GENERATION_PROGRESS_FILE: String = "user://animation_progress.json"
+const TARGET_SPRITE_HEIGHT: float = 42.0
+const MIN_SPRITE_SCALE: float = 0.12
+const MAX_SPRITE_SCALE: float = 1.2
 
 var generation_thread: Thread
 var generation_progress_timer: Timer
@@ -24,14 +27,19 @@ var is_generation_running: bool = false
 
 func _ready(): 
 	state_machine.init()
-	#prompt.visible = false
+	prompt.visible = false
 	prompt.submitted.connect(_on_prompt_submitted)
 	generation_progress_timer = Timer.new()
 	generation_progress_timer.wait_time = 0.25
 	generation_progress_timer.timeout.connect(_on_generation_progress_timer_timeout)
 	add_child(generation_progress_timer)
 	#sprite.flip_h = true
-	load_animations_from_result_file(DEFAULT_RESULT_PATH)
+	if CharacterSelectionData.selected_action_folders.is_empty() == false:
+		load_animations_from_action_folders(CharacterSelectionData.selected_action_folders)
+	elif CharacterSelectionData.selected_result_file.is_empty() == false:
+		load_animations_from_result_file(CharacterSelectionData.selected_result_file)
+	else:
+		load_animations_from_result_file(DEFAULT_RESULT_PATH)
 
 func _process(delta):
 	state_machine.process_frame(delta)
@@ -59,6 +67,10 @@ func _on_prompt_submitted(title: String, description: String, reference_image_pa
 		ResultField.text = "Failed to start generation thread"
 		if prompt.has_method("finish_generation_progress"):
 			prompt.finish_generation_progress(false, ResultField.text)
+
+func _on_back_to_selection_pressed() -> void:
+	CharacterSelectionData.clear()
+	get_tree().change_scene_to_file("res://scenes/character_selection.tscn")
 
 func _exit_tree() -> void:
 	if generation_thread != null and generation_thread.is_started():
@@ -128,8 +140,10 @@ func _get_generation_progress_value(status: String, action_index: int, total_act
 		return 100.0
 	if status == "generating_reference_image":
 		return 5.0
+	if status == "generating_action_descriptions":
+		return 15.0
 	if status == "generating_action" and total_actions > 0:
-		return clamp((float(action_index) / float(total_actions)) * 100.0, 5.0, 95.0)
+		return clamp(15.0 + (float(action_index) / float(total_actions)) * 80.0, 15.0, 95.0)
 	return 0.0
 
 func print_result(animation_result: Array[String]) -> bool:
@@ -186,6 +200,14 @@ func load_animations_from_result_file(animation_result_file: String) -> bool:
 	ResultField.text = "Loaded animations"
 	return true
 
+func load_animations_from_action_folders(action_folders: Dictionary) -> bool:
+	var load_errors: Array[String] = _load_sprite_frames(action_folders, "")
+	if not load_errors.is_empty():
+		ResultField.text = ",".join(load_errors)
+		return false
+	ResultField.text = "Loaded animations"
+	return true
+
 func _get_animation_result_file(animation_result: Array[String]) -> String:
 	var output_lines: Array[String] = []
 	for output_chunk in animation_result:
@@ -202,10 +224,10 @@ func _get_animation_result_file(animation_result: Array[String]) -> String:
 func _load_sprite_frames(action_folders: Dictionary, result_file_path: String) -> Array[String]:
 	var sprite_frames := SpriteFrames.new()
 	var errors: Array[String] = []
+	var loaded_actions: Array[String] = []
 
 	for action_name in ANIMATION_NAMES.keys():
 		if not action_folders.has(action_name):
-			errors.append("Missing " + action_name + " animation folder")
 			continue
 
 		var animation_name: String = ANIMATION_NAMES[action_name]
@@ -232,24 +254,51 @@ func _load_sprite_frames(action_folders: Dictionary, result_file_path: String) -
 
 		if sprite_frames.get_frame_count(animation_name) == 0:
 			errors.append("No loadable frames for " + action_name)
+		else:
+			loaded_actions.append(action_name)
+
+	if not loaded_actions.has("idle"):
+		errors.append("Missing idle animation")
 
 	if not errors.is_empty():
 		return errors
 
 	sprite.sprite_frames = sprite_frames
+	_normalize_sprite_size()
 	sprite.animation = "Idle"
 	sprite.play("Idle")
 	return []
 
+func has_animation(animation_name: String) -> bool:
+	return sprite.sprite_frames != null and sprite.sprite_frames.has_animation(animation_name)
+
+func _normalize_sprite_size() -> void:
+	var idle_texture := _get_first_animation_texture("Idle")
+	if idle_texture == null:
+		return
+	var texture_height := float(idle_texture.get_height())
+	if texture_height <= 0.0:
+		return
+	var normalized_scale: float = clamp(TARGET_SPRITE_HEIGHT / texture_height, MIN_SPRITE_SCALE, MAX_SPRITE_SCALE)
+	sprite.scale = Vector2(normalized_scale, normalized_scale)
+
+func _get_first_animation_texture(animation_name: String) -> Texture2D:
+	if sprite.sprite_frames == null or not sprite.sprite_frames.has_animation(animation_name):
+		return null
+	if sprite.sprite_frames.get_frame_count(animation_name) <= 0:
+		return null
+	return sprite.sprite_frames.get_frame_texture(animation_name, 0)
+
 func _resolve_folder_path(folder_path: String, result_file_path: String) -> String:
 	var normalized_folder := folder_path.replace("\\", "/")
-	var result_dir := result_file_path.get_base_dir()
+	var result_dir := result_file_path.get_base_dir() if not result_file_path.is_empty() else ""
 	var candidates: Array[String] = []
 
 	candidates.append(normalized_folder)
 	candidates.append(ProjectSettings.globalize_path(normalized_folder))
 	candidates.append(ProjectSettings.globalize_path("res://" + _strip_current_dir_prefix(normalized_folder)))
-	candidates.append(result_dir.path_join(normalized_folder))
+	if not result_dir.is_empty():
+		candidates.append(result_dir.path_join(normalized_folder))
 	candidates.append(ProjectSettings.globalize_path("res://").path_join(normalized_folder))
 	candidates.append(ProjectSettings.globalize_path("res://scripts/python_ai_generation").path_join(normalized_folder))
 
