@@ -30,6 +30,8 @@ var status_label: Label
 var generate_button: Button
 var header_label: Label
 var reference_image_path: String = ""
+var preview_timer: Timer
+var preview_animations: Array[Dictionary] = []
 var generation_thread: Thread
 var progress_timer: Timer
 var generation_progress_file_path: String = ""
@@ -40,6 +42,11 @@ func _ready() -> void:
 	current_player = 1 if not CharacterSelectionData.has_selection(1) else 2
 	_build_ui()
 	_load_character_cards()
+	preview_timer = Timer.new()
+	preview_timer.wait_time = 0.14
+	preview_timer.timeout.connect(_on_preview_timer_timeout)
+	add_child(preview_timer)
+	preview_timer.start()
 	progress_timer = Timer.new()
 	progress_timer.wait_time = 0.25
 	progress_timer.timeout.connect(_on_progress_timer_timeout)
@@ -211,6 +218,7 @@ func _build_generation_panel(parent: Control) -> void:
 	add_child(reference_image_dialog)
 
 func _load_character_cards() -> void:
+	preview_animations.clear()
 	for child in card_grid.get_children():
 		child.queue_free()
 
@@ -242,6 +250,7 @@ func _discover_characters() -> Array[Dictionary]:
 					"root": character_root,
 					"actions": action_folders,
 					"preview": _first_png_in_folder(action_folders["idle"]),
+					"idle_frames": _png_frames_in_folder(action_folders["idle"]),
 				})
 		folder_name = dir.get_next()
 	dir.list_dir_end()
@@ -271,9 +280,13 @@ func _find_action_folders(character_root: String) -> Dictionary:
 	return action_folders
 
 func _first_png_in_folder(folder_path: String) -> String:
+	var frames := _png_frames_in_folder(folder_path)
+	return frames[0] if not frames.is_empty() else ""
+
+func _png_frames_in_folder(folder_path: String) -> Array[String]:
 	var dir := DirAccess.open(folder_path)
 	if dir == null:
-		return ""
+		return []
 	var frames: Array[String] = []
 	dir.list_dir_begin()
 	var file_name := dir.get_next()
@@ -285,7 +298,7 @@ func _first_png_in_folder(folder_path: String) -> String:
 	frames.sort_custom(func(left: String, right: String) -> bool:
 		return left.naturalnocasecmp_to(right) < 0
 	)
-	return frames[0] if not frames.is_empty() else ""
+	return frames
 
 func _create_character_card(character: Dictionary) -> Button:
 	var card := Button.new()
@@ -303,15 +316,45 @@ func _create_character_card(character: Dictionary) -> Button:
 	box.offset_bottom = -8
 	card.add_child(box)
 
+	var top_strip := ColorRect.new()
+	top_strip.custom_minimum_size = Vector2(0, 5)
+	top_strip.color = COLOR_AMBER
+	top_strip.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	box.add_child(top_strip)
+
+	var preview_panel := PanelContainer.new()
+	preview_panel.custom_minimum_size = Vector2(128, 118)
+	preview_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	preview_panel.add_theme_stylebox_override("panel", _make_preview_style())
+	preview_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	box.add_child(preview_panel)
+
+	var preview_margin := MarginContainer.new()
+	preview_margin.add_theme_constant_override("margin_left", 8)
+	preview_margin.add_theme_constant_override("margin_top", 8)
+	preview_margin.add_theme_constant_override("margin_right", 8)
+	preview_margin.add_theme_constant_override("margin_bottom", 8)
+	preview_margin.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	preview_panel.add_child(preview_margin)
+
 	var preview := TextureRect.new()
-	preview.custom_minimum_size = Vector2(128, 112)
+	preview.custom_minimum_size = Vector2(112, 98)
 	preview.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	preview.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var preview_path := str(character.get("preview", ""))
-	if not preview_path.is_empty():
-		preview.texture = _load_png_texture(preview_path)
-	box.add_child(preview)
+	preview_margin.add_child(preview)
+
+	var idle_frames: Array[String] = []
+	for frame_path in character.get("idle_frames", []):
+		idle_frames.append(str(frame_path))
+	var idle_textures := _load_preview_textures(idle_frames)
+	if not idle_textures.is_empty():
+		preview.texture = idle_textures[0]
+		preview_animations.append({
+			"target": preview,
+			"frames": idle_textures,
+			"frame": 0,
+		})
 
 	var name_label := Label.new()
 	name_label.text = str(character["name"])
@@ -324,6 +367,7 @@ func _create_character_card(character: Dictionary) -> Button:
 
 	var badges := HBoxContainer.new()
 	badges.alignment = BoxContainer.ALIGNMENT_CENTER
+	badges.add_theme_constant_override("separation", 5)
 	badges.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	box.add_child(badges)
 
@@ -332,11 +376,32 @@ func _create_character_card(character: Dictionary) -> Button:
 		var badge := Label.new()
 		badge.text = ACTION_LABELS[action]
 		badge.add_theme_color_override("font_color", COLOR_AMBER if actions.has(action) else Color(0.28, 0.32, 0.34, 1.0))
+		badge.add_theme_color_override("font_shadow_color", Color(0.0, 0.0, 0.0, 0.75))
+		badge.add_theme_constant_override("shadow_offset_x", 1)
+		badge.add_theme_constant_override("shadow_offset_y", 1)
 		badge.add_theme_font_size_override("font_size", 13)
 		badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		badges.add_child(badge)
 
 	return card
+
+func _on_preview_timer_timeout() -> void:
+	for preview_data in preview_animations:
+		var target := preview_data.get("target") as TextureRect
+		var frames: Array = preview_data.get("frames", [])
+		if target == null or frames.is_empty():
+			continue
+		var frame := (int(preview_data.get("frame", 0)) + 1) % frames.size()
+		preview_data["frame"] = frame
+		target.texture = frames[frame] as Texture2D
+
+func _load_preview_textures(frame_paths: Array[String]) -> Array[Texture2D]:
+	var textures: Array[Texture2D] = []
+	for frame_path in frame_paths:
+		var texture := _load_png_texture(frame_path)
+		if texture != null:
+			textures.append(texture)
+	return textures
 
 func _make_panel_style(bg_color: Color, border_color: Color) -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
@@ -367,6 +432,22 @@ func _make_button_style(bg_color: Color, border_color: Color) -> StyleBoxFlat:
 	style.content_margin_bottom = 8
 	return style
 
+func _make_preview_style() -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.015, 0.022, 0.032, 1.0)
+	style.border_color = Color(0.34, 0.96, 0.58, 1.0)
+	style.border_width_left = 3
+	style.border_width_top = 3
+	style.border_width_right = 3
+	style.border_width_bottom = 3
+	style.corner_radius_top_left = 2
+	style.corner_radius_top_right = 2
+	style.corner_radius_bottom_left = 2
+	style.corner_radius_bottom_right = 2
+	style.shadow_color = Color(0.0, 0.0, 0.0, 0.45)
+	style.shadow_size = 5
+	return style
+
 func _style_button(button: Button, primary: bool) -> void:
 	var border := COLOR_AMBER if primary else COLOR_BORDER
 	button.add_theme_stylebox_override("normal", _make_button_style(COLOR_BUTTON, border))
@@ -377,10 +458,20 @@ func _style_button(button: Button, primary: bool) -> void:
 	button.add_theme_font_size_override("font_size", 14)
 
 func _style_character_card(card: Button) -> void:
-	card.add_theme_stylebox_override("normal", _make_button_style(Color(0.08, 0.10, 0.13, 1.0), Color(0.22, 0.34, 0.36, 1.0)))
-	card.add_theme_stylebox_override("hover", _make_button_style(Color(0.11, 0.15, 0.16, 1.0), COLOR_BORDER))
-	card.add_theme_stylebox_override("pressed", _make_button_style(Color(0.06, 0.08, 0.10, 1.0), COLOR_AMBER))
+	card.add_theme_stylebox_override("normal", _make_card_style(Color(0.075, 0.085, 0.12, 1.0), Color(0.23, 0.40, 0.40, 1.0)))
+	card.add_theme_stylebox_override("hover", _make_card_style(Color(0.10, 0.14, 0.15, 1.0), COLOR_BORDER))
+	card.add_theme_stylebox_override("pressed", _make_card_style(Color(0.055, 0.07, 0.09, 1.0), COLOR_AMBER))
 	card.add_theme_color_override("font_color", COLOR_TEXT)
+
+func _make_card_style(bg_color: Color, border_color: Color) -> StyleBoxFlat:
+	var style := _make_button_style(bg_color, border_color)
+	style.border_width_left = 3
+	style.border_width_top = 3
+	style.border_width_right = 3
+	style.border_width_bottom = 3
+	style.shadow_color = Color(0.0, 0.0, 0.0, 0.42)
+	style.shadow_size = 7
+	return style
 
 func _style_form_label(label: Label) -> void:
 	label.add_theme_color_override("font_color", COLOR_MUTED)
