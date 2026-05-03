@@ -10,6 +10,15 @@ const ACTION_LABELS: Dictionary = {
 	"walk": "W",
 	"fight": "F",
 }
+const COLOR_BG: Color = Color(0.035, 0.045, 0.075, 1.0)
+const COLOR_PANEL: Color = Color(0.075, 0.085, 0.13, 0.98)
+const COLOR_PANEL_ALT: Color = Color(0.105, 0.095, 0.145, 0.98)
+const COLOR_BORDER: Color = Color(0.48, 0.88, 0.62, 1.0)
+const COLOR_AMBER: Color = Color(1.0, 0.78, 0.27, 1.0)
+const COLOR_TEXT: Color = Color(0.92, 0.96, 0.88, 1.0)
+const COLOR_MUTED: Color = Color(0.58, 0.68, 0.68, 1.0)
+const COLOR_BUTTON: Color = Color(0.13, 0.19, 0.19, 1.0)
+const COLOR_BUTTON_HOVER: Color = Color(0.18, 0.28, 0.24, 1.0)
 
 var card_grid: GridContainer
 var title_field: LineEdit
@@ -42,29 +51,39 @@ func _exit_tree() -> void:
 		generation_thread.wait_to_finish()
 
 func _build_ui() -> void:
+	var backdrop := ColorRect.new()
+	backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	backdrop.color = COLOR_BG
+	add_child(backdrop)
+
 	var root := VBoxContainer.new()
 	root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	root.add_theme_constant_override("separation", 12)
-	root.offset_left = 24
-	root.offset_top = 20
-	root.offset_right = -24
-	root.offset_bottom = -20
+	root.add_theme_constant_override("separation", 14)
+	root.offset_left = 30
+	root.offset_top = 22
+	root.offset_right = -30
+	root.offset_bottom = -24
 	add_child(root)
 
 	header_label = Label.new()
 	header_label.text = "Select Character"
 	header_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	header_label.add_theme_font_size_override("font_size", 28)
+	header_label.add_theme_font_size_override("font_size", 34)
+	header_label.add_theme_color_override("font_color", COLOR_AMBER)
+	header_label.add_theme_color_override("font_shadow_color", Color(0.0, 0.0, 0.0, 0.8))
+	header_label.add_theme_constant_override("shadow_offset_x", 3)
+	header_label.add_theme_constant_override("shadow_offset_y", 3)
 	root.add_child(header_label)
 
 	var body := HBoxContainer.new()
 	body.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	body.add_theme_constant_override("separation", 18)
+	body.add_theme_constant_override("separation", 20)
 	root.add_child(body)
 
 	var existing_panel := PanelContainer.new()
 	existing_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	existing_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	existing_panel.add_theme_stylebox_override("panel", _make_panel_style(COLOR_PANEL, COLOR_BORDER))
 	body.add_child(existing_panel)
 
 	var existing_margin := MarginContainer.new()
@@ -79,8 +98,9 @@ func _build_ui() -> void:
 	existing_margin.add_child(existing_box)
 
 	var existing_title := Label.new()
-	existing_title.text = "Existing characters"
-	existing_title.add_theme_font_size_override("font_size", 18)
+	existing_title.text = "Fighter Roster"
+	existing_title.add_theme_font_size_override("font_size", 20)
+	existing_title.add_theme_color_override("font_color", COLOR_TEXT)
 	existing_box.add_child(existing_title)
 
 	var scroll := ScrollContainer.new()
@@ -98,6 +118,7 @@ func _build_generation_panel(parent: Control) -> void:
 	var generation_panel := PanelContainer.new()
 	generation_panel.custom_minimum_size = Vector2(360, 0)
 	generation_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	generation_panel.add_theme_stylebox_override("panel", _make_panel_style(COLOR_PANEL_ALT, COLOR_AMBER))
 	parent.add_child(generation_panel)
 
 	var margin := MarginContainer.new()
@@ -112,30 +133,36 @@ func _build_generation_panel(parent: Control) -> void:
 	margin.add_child(box)
 
 	var title := Label.new()
-	title.text = "Generate with AI"
-	title.add_theme_font_size_override("font_size", 18)
+	title.text = "Create Fighter"
+	title.add_theme_font_size_override("font_size", 20)
+	title.add_theme_color_override("font_color", COLOR_AMBER)
 	box.add_child(title)
 
 	var name_label := Label.new()
 	name_label.text = "Name"
+	_style_form_label(name_label)
 	box.add_child(name_label)
 
 	title_field = LineEdit.new()
 	title_field.placeholder_text = "Example: iron duelist"
+	_style_line_edit(title_field)
 	box.add_child(title_field)
 
 	var description_label := Label.new()
 	description_label.text = "Description"
+	_style_form_label(description_label)
 	box.add_child(description_label)
 
 	description_field = TextEdit.new()
 	description_field.custom_minimum_size = Vector2(0, 130)
 	description_field.placeholder_text = "Appearance, outfit, weapon, fighting style..."
 	description_field.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
+	_style_text_edit(description_field)
 	box.add_child(description_field)
 
 	var reference_label := Label.new()
 	reference_label.text = "Reference image"
+	_style_form_label(reference_label)
 	box.add_child(reference_label)
 
 	var reference_row := HBoxContainer.new()
@@ -144,6 +171,7 @@ func _build_generation_panel(parent: Control) -> void:
 
 	var reference_button := Button.new()
 	reference_button.text = "Choose"
+	_style_button(reference_button, false)
 	reference_button.pressed.connect(_on_reference_image_button_pressed)
 	reference_row.add_child(reference_button)
 
@@ -151,22 +179,26 @@ func _build_generation_panel(parent: Control) -> void:
 	reference_image_path_field.editable = false
 	reference_image_path_field.placeholder_text = "Optional"
 	reference_image_path_field.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_style_line_edit(reference_image_path_field)
 	reference_row.add_child(reference_image_path_field)
 
 	generate_button = Button.new()
 	generate_button.text = "Generate and Play"
+	_style_button(generate_button, true)
 	generate_button.pressed.connect(_on_generate_pressed)
 	box.add_child(generate_button)
 
 	progress_bar = ProgressBar.new()
 	progress_bar.visible = false
 	progress_bar.show_percentage = false
+	_style_progress_bar(progress_bar)
 	box.add_child(progress_bar)
 
 	status_label = Label.new()
 	status_label.visible = false
 	status_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	status_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	status_label.add_theme_color_override("font_color", COLOR_MUTED)
 	box.add_child(status_label)
 
 	reference_image_dialog = FileDialog.new()
@@ -259,6 +291,7 @@ func _create_character_card(character: Dictionary) -> Button:
 	var card := Button.new()
 	card.custom_minimum_size = Vector2(160, 190)
 	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_style_character_card(card)
 	card.pressed.connect(_on_character_selected.bind(character))
 
 	var box := VBoxContainer.new()
@@ -284,6 +317,8 @@ func _create_character_card(character: Dictionary) -> Button:
 	name_label.text = str(character["name"])
 	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	name_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	name_label.add_theme_color_override("font_color", COLOR_TEXT)
+	name_label.add_theme_font_size_override("font_size", 14)
 	name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	box.add_child(name_label)
 
@@ -296,11 +331,77 @@ func _create_character_card(character: Dictionary) -> Button:
 	for action in ["idle", "walk", "fight"]:
 		var badge := Label.new()
 		badge.text = ACTION_LABELS[action]
-		badge.modulate = Color(0.96, 0.96, 0.96, 1.0) if actions.has(action) else Color(0.35, 0.35, 0.35, 1.0)
+		badge.add_theme_color_override("font_color", COLOR_AMBER if actions.has(action) else Color(0.28, 0.32, 0.34, 1.0))
+		badge.add_theme_font_size_override("font_size", 13)
 		badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		badges.add_child(badge)
 
 	return card
+
+func _make_panel_style(bg_color: Color, border_color: Color) -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = bg_color
+	style.border_color = border_color
+	style.border_width_left = 2
+	style.border_width_top = 2
+	style.border_width_right = 2
+	style.border_width_bottom = 2
+	style.corner_radius_top_left = 4
+	style.corner_radius_top_right = 4
+	style.corner_radius_bottom_left = 4
+	style.corner_radius_bottom_right = 4
+	style.shadow_color = Color(0.0, 0.0, 0.0, 0.35)
+	style.shadow_size = 8
+	return style
+
+func _make_button_style(bg_color: Color, border_color: Color) -> StyleBoxFlat:
+	var style := _make_panel_style(bg_color, border_color)
+	style.corner_radius_top_left = 3
+	style.corner_radius_top_right = 3
+	style.corner_radius_bottom_left = 3
+	style.corner_radius_bottom_right = 3
+	style.shadow_size = 0
+	style.content_margin_left = 12
+	style.content_margin_right = 12
+	style.content_margin_top = 8
+	style.content_margin_bottom = 8
+	return style
+
+func _style_button(button: Button, primary: bool) -> void:
+	var border := COLOR_AMBER if primary else COLOR_BORDER
+	button.add_theme_stylebox_override("normal", _make_button_style(COLOR_BUTTON, border))
+	button.add_theme_stylebox_override("hover", _make_button_style(COLOR_BUTTON_HOVER, border))
+	button.add_theme_stylebox_override("pressed", _make_button_style(Color(0.08, 0.12, 0.13, 1.0), border))
+	button.add_theme_color_override("font_color", COLOR_TEXT)
+	button.add_theme_color_override("font_hover_color", Color.WHITE)
+	button.add_theme_font_size_override("font_size", 14)
+
+func _style_character_card(card: Button) -> void:
+	card.add_theme_stylebox_override("normal", _make_button_style(Color(0.08, 0.10, 0.13, 1.0), Color(0.22, 0.34, 0.36, 1.0)))
+	card.add_theme_stylebox_override("hover", _make_button_style(Color(0.11, 0.15, 0.16, 1.0), COLOR_BORDER))
+	card.add_theme_stylebox_override("pressed", _make_button_style(Color(0.06, 0.08, 0.10, 1.0), COLOR_AMBER))
+	card.add_theme_color_override("font_color", COLOR_TEXT)
+
+func _style_form_label(label: Label) -> void:
+	label.add_theme_color_override("font_color", COLOR_MUTED)
+	label.add_theme_font_size_override("font_size", 13)
+
+func _style_line_edit(field: LineEdit) -> void:
+	field.add_theme_stylebox_override("normal", _make_button_style(Color(0.035, 0.045, 0.06, 1.0), Color(0.26, 0.38, 0.38, 1.0)))
+	field.add_theme_stylebox_override("focus", _make_button_style(Color(0.045, 0.06, 0.07, 1.0), COLOR_BORDER))
+	field.add_theme_color_override("font_color", COLOR_TEXT)
+	field.add_theme_color_override("font_placeholder_color", Color(0.44, 0.52, 0.52, 1.0))
+
+func _style_text_edit(field: TextEdit) -> void:
+	field.add_theme_stylebox_override("normal", _make_button_style(Color(0.035, 0.045, 0.06, 1.0), Color(0.26, 0.38, 0.38, 1.0)))
+	field.add_theme_stylebox_override("focus", _make_button_style(Color(0.045, 0.06, 0.07, 1.0), COLOR_BORDER))
+	field.add_theme_color_override("font_color", COLOR_TEXT)
+	field.add_theme_color_override("font_placeholder_color", Color(0.44, 0.52, 0.52, 1.0))
+
+func _style_progress_bar(bar: ProgressBar) -> void:
+	bar.custom_minimum_size.y = 18
+	bar.add_theme_stylebox_override("background", _make_button_style(Color(0.03, 0.04, 0.05, 1.0), Color(0.25, 0.34, 0.34, 1.0)))
+	bar.add_theme_stylebox_override("fill", _make_button_style(Color(0.36, 0.95, 0.45, 1.0), Color(0.71, 1.0, 0.64, 1.0)))
 
 func _on_character_selected(character: Dictionary) -> void:
 	CharacterSelectionData.select_action_folders(current_player, character["actions"])
