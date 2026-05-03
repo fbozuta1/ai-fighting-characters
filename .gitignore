@@ -1,3 +1,26 @@
 # Godot 4+ specific ignores
 .godot/
 /android/
+
+# Local/editor-generated files
+*.tmp
+*.pyc
+__pycache__/
+
+# Local generation inputs/outputs can contain absolute paths, prompts, provider
+# error payloads, and job ids.
+animation_result*.json
+scripts/python_ai_generation/animation_result*.json
+scripts/python_ai_generation/animation_request.json
+user://
+
+# Local secrets and credentials
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa
+id_ed25519
+*_api_key.gd

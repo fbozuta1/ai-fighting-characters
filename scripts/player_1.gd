@@ -7,7 +7,7 @@ extends CharacterBody2D
 @onready var prompt: Control = get_parent().get_node("CanvasLayer/Prompt")
 @onready var ResultField: Label =  get_parent().get_node("CanvasLayer/Prompt/Panel/GenerationStatusLabel")
 
-const GENERATION_SCRIPT_PATH: String = "C:\\Users\\fbozu\\Documents\\ai-fighting-characters\\scripts\\python_ai_generation\\pixellab_generation_script.py"
+const GENERATION_SCRIPT_PATH: String = "res://scripts/python_ai_generation/pixellab_generation_script.py"
 const DEFAULT_RESULT_PATH: String = "res://animation_result.json"
 const ANIMATION_NAMES: Dictionary = {
 	"idle": "Idle",
@@ -78,7 +78,8 @@ func _exit_tree() -> void:
 
 func _run_generation_script(animation_request_file: String, progress_file_path: String) -> void:
 	var animation_result: Array[String] = []
-	var exit_code := OS.execute("python", [GENERATION_SCRIPT_PATH, animation_request_file, progress_file_path], animation_result, true)
+	var script_path: String = ProjectSettings.globalize_path(GENERATION_SCRIPT_PATH)
+	var exit_code := OS.execute("python", [script_path, animation_request_file, progress_file_path], animation_result, true)
 	if exit_code != OK and animation_result.is_empty():
 		animation_result.append("Generation script failed with exit code " + str(exit_code))
 	call_deferred("_on_generation_finished", animation_result)

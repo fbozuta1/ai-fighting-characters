@@ -17,6 +17,7 @@ from utils import (
     new_image_file_path,
     image_path_with_extension,
     find_first_image_in_folder,
+    sanitize_error_message,
 )
 from os import environ
 from data_format import AnimationRequest
@@ -366,7 +367,7 @@ class PixellabAnimator:
             result.action_folders[action] = save_folder_upscaled
         except Exception as e:
             result.add_err(
-                f"An error ocurred when trying to generate {action} animation with pixellab: {e}"
+                f"An error ocurred when trying to generate {action} animation with pixellab: {sanitize_error_message(e)}"
             )
         return result
 

@@ -1,9 +1,21 @@
 from pathlib import Path
 from os import makedirs, listdir, path as os_path
+from re import sub
 from typing import Optional
 
 DEFAULT_IMAGE_EXTENSION: str = "png"
 JSON_EXTENSION: str = "json"
+
+
+def sanitize_error_message(error: Exception) -> str:
+    """
+    Keeps provider errors useful while removing key-shaped tokens that SDKs may echo.
+    """
+    message: str = str(error)
+    message = sub(r"sk-[A-Za-z0-9_\-]{8,}", "[REDACTED_OPENAI_KEY]", message)
+    message = sub(r"sk-proj-[A-Za-z0-9_\-]{8,}", "[REDACTED_OPENAI_KEY]", message)
+    message = sub(r"Bearer\s+[A-Za-z0-9_\-\.]{8,}", "Bearer [REDACTED_TOKEN]", message)
+    return message
 
 
 def new_folder(folder_path_str: str) -> str:

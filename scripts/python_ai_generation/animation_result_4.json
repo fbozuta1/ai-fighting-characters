@@ -1,1 +1,0 @@
-{"char_data": null, "action_folders": {}, "result_folder": null, "errors": ["Error when reading animation data: missing value for field \"base_folder\"", "Failed to load animation request from file: ['Error when reading animation data: missing value for field \"base_folder\"']"], "_AnimationResult__DEFAULT_SAVE_PATH": "animation_result"}

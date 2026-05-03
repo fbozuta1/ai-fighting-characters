@@ -2,7 +2,7 @@ from openai import OpenAI
 from openai.types import ImagesResponse
 from typing import Optional, List
 from base64 import b64decode
-from utils import new_image_file_path
+from utils import new_image_file_path, sanitize_error_message
 from dataclasses import dataclass, field
 
 
@@ -77,5 +77,7 @@ class OpenAIPixelArtGenerator:
             result.gen_image_path = image_file_path
             return result
         except Exception as e:
-            result.add_err(f"Error when generating open ai image: {e}")
+            result.add_err(
+                f"Error when generating open ai image: {sanitize_error_message(e)}"
+            )
             return result

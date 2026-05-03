@@ -1,7 +1,7 @@
 extends Control
 
 const ANIMATIONS_ROOT: String = "res://assets/animations"
-const GENERATION_SCRIPT_PATH: String = "C:\\Users\\fbozu\\Documents\\ai-fighting-characters\\scripts\\python_ai_generation\\pixellab_generation_script.py"
+const GENERATION_SCRIPT_PATH: String = "res://scripts/python_ai_generation/pixellab_generation_script.py"
 const GENERATION_PROGRESS_FILE: String = "user://animation_progress.json"
 const REQUEST_FILE_PATH: String = "user://animation_request.json"
 
@@ -336,7 +336,8 @@ func _on_generate_pressed() -> void:
 
 func _run_generation_script(animation_request_file: String, progress_file_path: String) -> void:
 	var output: Array[String] = []
-	var exit_code := OS.execute("python", [GENERATION_SCRIPT_PATH, animation_request_file, progress_file_path], output, true)
+	var script_path: String = ProjectSettings.globalize_path(GENERATION_SCRIPT_PATH)
+	var exit_code := OS.execute("python", [script_path, animation_request_file, progress_file_path], output, true)
 	if exit_code != OK and output.is_empty():
 		output.append("Generation script failed with exit code " + str(exit_code))
 	call_deferred("_on_generation_finished", output)

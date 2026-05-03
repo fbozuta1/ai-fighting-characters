@@ -4,6 +4,7 @@ from os import environ
 from typing import Dict, List, Optional
 
 from openai import OpenAI
+from utils import sanitize_error_message
 
 
 @dataclass
@@ -119,5 +120,7 @@ class OpenAIActionDescriptionGenerator:
                 )
             return result
         except Exception as e:
-            result.add_err(f"Error when generating OpenAI action descriptions: {e}")
+            result.add_err(
+                f"Error when generating OpenAI action descriptions: {sanitize_error_message(e)}"
+            )
             return result

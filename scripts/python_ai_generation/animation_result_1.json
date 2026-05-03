@@ -1,1 +1,0 @@
-{"char_data": null, "action_folders": {}, "result_folder": null, "errors": ["Error when reading animation data: 'WindowsPath' object has no attribute 'endswith'", "Failed to load animation request from file: [\"Error when reading animation data: 'WindowsPath' object has no attribute 'endswith'\"]"], "_AnimationResult__DEFAULT_SAVE_PATH": "animation_result"}
