@@ -12,6 +12,10 @@ func exit() -> void:
 	player.set_hitbox_active(false)
 
 func process_physics(delta: float) -> State:
+	if player.is_in_hit_stun():
+		super(delta)
+		return player.state_machine.idle_state
+
 	var move_x := Input.get_axis(left_key, right_key)
 	var move_y := Input.get_axis(up_key, down_key)
 	player.velocity.x = move_x * SPEED

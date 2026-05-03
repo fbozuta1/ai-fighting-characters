@@ -11,6 +11,7 @@ signal defeated(player_id: int)
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var hurtbox: Area2D = $Hurtbox
 @onready var hitbox: Area2D = $Hitbox
+@onready var hitbox_shape: CollisionShape2D = $Hitbox/CollisionShape2D
 
 const GENERATION_SCRIPT_PATH: String = "res://scripts/python_ai_generation/pixellab_generation_script.py"
 const DEFAULT_RESULT_PATH: String = "res://animation_result.json"
@@ -25,15 +26,24 @@ const TARGET_SPRITE_HEIGHT: float = 42.0
 const MIN_SPRITE_SCALE: float = 0.12
 const MAX_SPRITE_SCALE: float = 1.2
 
-const HITBOX_OFFSET_X: float = 22.0
-const FIGHT_DAMAGE_PER_TICK: float = 0.6
-const KNOCKBACK_FORCE: float = 180.0
-const HURTBOX_LAYER_BY_ID: Dictionary = {1: 2, 2: 3}
+const HITBOX_OFFSET_X: float = 28.0
+const HITBOX_SIZE: Vector2 = Vector2(44.0, 38.0)
+const ATTACK_RANGE_X: float = 54.0
+const ATTACK_RANGE_Y: float = 34.0
+const FIGHT_DAMAGE: float = 7.0
+const ATTACK_HIT_COOLDOWN: float = 0.22
+const KNOCKBACK_FORCE: float = 95.0
+const MAX_KNOCKBACK_SPEED: float = 130.0
+const KNOCKBACK_DECELERATION: float = 560.0
+const HIT_STUN_DURATION: float = 0.12
+const HURTBOX_LAYER_BY_ID: Dictionary = {1: 2, 2: 4}
 const HITBOX_MASK_BY_ID: Dictionary = {1: 4, 2: 2}
 
 var input_config: Dictionary = {}
 var hp: float = 0.0
 var is_attacking: bool = false
+var hit_cooldowns: Dictionary = {}
+var hit_stun_time: float = 0.0
 
 var prompt: Control = null
 var ResultField: Label = null
@@ -71,9 +81,11 @@ func _process(delta):
 	state_machine.process_frame(delta)
 
 func _physics_process(delta):
+	hit_stun_time = max(0.0, hit_stun_time - delta)
 	state_machine.process_physics(delta)
 	if hitbox != null:
 		hitbox.position.x = (-1.0 if sprite.flip_h else 1.0) * HITBOX_OFFSET_X
+	_update_hit_cooldowns(delta)
 	_process_active_hits()
 
 func _input(event):
@@ -108,6 +120,9 @@ func _init_combat_areas() -> void:
 		hitbox.collision_mask = HITBOX_MASK_BY_ID.get(player_id, 4)
 		hitbox.monitoring = true
 		hitbox.monitorable = false
+	if hitbox_shape != null and hitbox_shape.shape is RectangleShape2D:
+		var shape := hitbox_shape.shape as RectangleShape2D
+		shape.size = HITBOX_SIZE
 
 func _load_initial_character() -> void:
 	var folders: Dictionary = CharacterSelectionData.get_action_folders(player_id)
@@ -120,6 +135,8 @@ func _load_initial_character() -> void:
 		load_animations_from_result_file(DEFAULT_RESULT_PATH)
 
 func set_hitbox_active(active: bool) -> void:
+	if active and not is_attacking:
+		hit_cooldowns.clear()
 	is_attacking = active
 
 func take_damage(amount: float, knockback: Vector2) -> void:
@@ -127,22 +144,68 @@ func take_damage(amount: float, knockback: Vector2) -> void:
 		return
 	hp = max(0.0, hp - amount)
 	velocity += knockback
+	velocity = velocity.limit_length(MAX_KNOCKBACK_SPEED)
+	hit_stun_time = HIT_STUN_DURATION
 	hp_changed.emit(hp, max_hp)
 	if hp <= 0.0:
 		defeated.emit(player_id)
 
+func is_in_hit_stun() -> bool:
+	return hit_stun_time > 0.0
+
+func decelerate_knockback(delta: float) -> void:
+	velocity = velocity.move_toward(Vector2.ZERO, KNOCKBACK_DECELERATION * delta)
+
+func _update_hit_cooldowns(delta: float) -> void:
+	var expired: Array[int] = []
+	for instance_id in hit_cooldowns:
+		var remaining := float(hit_cooldowns[instance_id]) - delta
+		if remaining <= 0.0:
+			expired.append(instance_id)
+		else:
+			hit_cooldowns[instance_id] = remaining
+	for instance_id in expired:
+		hit_cooldowns.erase(instance_id)
+
 func _process_active_hits() -> void:
 	if not is_attacking or hitbox == null:
 		return
-	for area in hitbox.get_overlapping_areas():
-		var other_node: Node = area.get_parent()
-		if other_node == null or not (other_node is Player) or other_node == self:
+	for other in _get_attack_targets():
+		var other_id := other.get_instance_id()
+		if hit_cooldowns.has(other_id):
 			continue
-		var other: Player = other_node
 		var dir: Vector2 = (other.global_position - global_position).normalized()
 		if dir == Vector2.ZERO:
 			dir = Vector2(-1.0 if sprite.flip_h else 1.0, 0.0)
-		other.take_damage(FIGHT_DAMAGE_PER_TICK, dir * KNOCKBACK_FORCE)
+		dir.y *= 0.35
+		dir = dir.normalized()
+		other.take_damage(FIGHT_DAMAGE, dir * KNOCKBACK_FORCE)
+		hit_cooldowns[other_id] = ATTACK_HIT_COOLDOWN
+
+func _get_attack_targets() -> Array[Player]:
+	var targets: Array[Player] = []
+	for area in hitbox.get_overlapping_areas():
+		var other_node: Node = area.get_parent()
+		if other_node is Player and other_node != self:
+			var other := other_node as Player
+			if not targets.has(other):
+				targets.append(other)
+
+	var parent := get_parent()
+	if parent == null:
+		return targets
+	for child in parent.get_children():
+		if child is Player and child != self:
+			var other := child as Player
+			if not targets.has(other) and _is_player_in_attack_range(other):
+				targets.append(other)
+	return targets
+
+func _is_player_in_attack_range(other: Player) -> bool:
+	var offset := other.global_position - global_position
+	var facing := -1.0 if sprite.flip_h else 1.0
+	var in_front: bool = abs(offset.x) <= 2.0 or signf(offset.x) == signf(facing)
+	return in_front and abs(offset.x) <= ATTACK_RANGE_X and abs(offset.y) <= ATTACK_RANGE_Y
 
 func _on_prompt_submitted(title: String, description: String, reference_image_path: String):
 	if is_generation_running:

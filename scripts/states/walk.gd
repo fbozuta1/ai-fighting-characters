@@ -7,6 +7,10 @@ func enter() -> void:
 	player.sprite.play("Walk")
 
 func process_physics(delta: float) -> State:
+	if player.is_in_hit_stun():
+		super(delta)
+		return null
+
 	var move_x := Input.get_axis(left_key, right_key)
 	var move_y := Input.get_axis(up_key, down_key)
 	player.velocity.x = move_x * SPEED
