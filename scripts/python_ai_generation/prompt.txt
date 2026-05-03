@@ -1,40 +1,50 @@
-Create a png which reprsents a right facing idling state for a 2D pixel art game character designed to be EASY TO ANIMATE.
+Create a PNG reference sprite for a 2D pixel art fighting game character designed to be easy to animate and easy to estimate as a skeleton.
 
 STYLE & CAMERA
-- High-detail pixel art, modern retro style (16-bit inspired but detailed)
-- Orthographic camera, straight-on or slight 3/4 view
-- Full body visible
-- Centered in frame
-- Game-ready sprite (idle pose)
+- High-detail pixel art, modern retro style, 16-bit inspired but detailed
+- Orthographic camera
+- Strict side-view silhouette, facing right/east
+- Full body visible, centered in frame
+- Neutral animation reference pose, not a final action pose
+
+SKELETON ESTIMATION REQUIREMENTS
+- Arms and legs clearly visible and slightly separated from the torso
+- Elbows, hands, knees, feet, shoulders, hips, neck, and head readable in the silhouette
+- No crossed limbs
+- No cropped body parts
+- No extreme crouch, jump, lunge, kick, punch, or foreshortened pose
+- Weapon or gear may be present, but must not hide the torso, arms, hips, knees, or feet
 
 RESOLUTION & SCALE
-- Working resolution: 1024×1024 pixels
-- Intended to be downscaled to 64×64 or 96×96
-- Character occupies ~70–85% of the canvas height
+- Working resolution: 1024x1024 pixels
+- Intended to be downscaled to 64x64, 96x96, or 256x256
+- Character occupies about 70-85% of the canvas height
 - Small pixel size, high pixel density
 
 PIXEL ART CONSTRAINTS
 - Pixel-perfect rendering
-- No blur, no smooth gradients
+- No blur
+- No smooth gradients
 - No anti-aliasing
-
-Clearly defined pixel clusters
+- Clearly defined pixel clusters
 - Crisp edges
 
 COLOR & LIGHTING
 - High contrast lighting
 - Bright, saturated mid-tones
 - Deep shadows and strong highlights
-- Subtle hue shifting (warm highlights, cool shadows)
+- Subtle hue shifting, with warm highlights and cool shadows
 - Light source from top-left
 
 POSE & PRESENTATION
-- Neutral idle stance or combat-ready idle pose
-- Balanced, grounded posture
-- Weapon and gear clearly readable
+- Balanced, grounded neutral stance
+- Combat-ready but readable, like a rigging/reference pose
+- Character identity, outfit, weapon, and gear clearly readable
 
 BACKGROUND
 - Transparent background
-- No text, no UI, no borders
+- No text
+- No UI
+- No borders
 
 CHARACTER DESCRIPTION:

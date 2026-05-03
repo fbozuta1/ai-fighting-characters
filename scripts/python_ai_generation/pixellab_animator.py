@@ -4,8 +4,12 @@ from pixellab.animate_with_text import (
     ImageSize,
     animate_with_text,
 )
+from pixellab.estimate_skeleton import estimate_skeleton
 from base64 import b64decode, b64encode
+from copy import deepcopy
 from io import BytesIO
+from json import dump as json_dump
+from math import pi, sin
 from PIL.Image import Image as PILImage
 from PIL.Image import open as pil_image_open
 from typing import Any, Optional, List, Dict, Callable
@@ -15,6 +19,7 @@ from cv2 import imread, resize, imwrite, IMREAD_UNCHANGED, INTER_NEAREST
 from utils import (
     new_folder,
     new_image_file_path,
+    new_json_file_path,
     image_path_with_extension,
     find_first_image_in_folder,
     sanitize_error_message,
@@ -55,8 +60,9 @@ class PixellabAnimator:
     __BASE_URL: str = "https://api.pixellab.ai/v2"
     __ANIMATE_WITH_TEXT_V1: str = "animate-with-text"
     __ANIMATE_WITH_TEXT_V2: str = "animate-with-text-v2"
+    __ANIMATE_WITH_SKELETON: str = "animate-with-skeleton"
     __BACKGROUND_JOBS: str = "background-jobs"
-    __DEFAULT_ANIMATION_ENDPOINT: str = __ANIMATE_WITH_TEXT_V1
+    __DEFAULT_ANIMATION_ENDPOINT: str = __ANIMATE_WITH_SKELETON
     __V1_IMAGE_SIZE: int = 64
     __V2_IMAGE_SIZE: int = 256
     __V2_POLL_SECONDS: int = 5
@@ -102,6 +108,17 @@ class PixellabAnimator:
         image.save(image_bytes, format="PNG")
         encoded_image: str = b64encode(image_bytes.getvalue()).decode("utf-8")
         return f"data:image/png;base64,{encoded_image}"
+
+    @staticmethod
+    def __image_to_base64_image_payload(image: PILImage) -> Dict[str, str]:
+        image_bytes: BytesIO = BytesIO()
+        image.save(image_bytes, format="PNG")
+        encoded_image: str = b64encode(image_bytes.getvalue()).decode("utf-8")
+        return {
+            "type": "base64",
+            "base64": encoded_image,
+            "format": "png",
+        }
 
     @staticmethod
     def __pil_image_from_base64(image_base64: str) -> PILImage:
@@ -286,34 +303,311 @@ class PixellabAnimator:
             f"{self.__V2_MAX_POLL_ATTEMPTS * self.__V2_POLL_SECONDS} seconds"
         )
 
+    @staticmethod
+    def __copy_keypoint(keypoint: Any) -> Dict[str, Any]:
+        return dict(keypoint)
+
+    @classmethod
+    def __translated_keypoints(
+        cls,
+        keypoints: List[Any],
+        labels: List[str],
+        dx: float = 0.0,
+        dy: float = 0.0,
+    ) -> List[Dict[str, Any]]:
+        translated_keypoints: List[Dict[str, Any]] = []
+        labels_set = set(labels)
+        for keypoint in keypoints:
+            copied_keypoint: Dict[str, Any] = cls.__copy_keypoint(keypoint)
+            if copied_keypoint.get("label") in labels_set:
+                copied_keypoint["x"] = float(copied_keypoint.get("x", 0.0)) + dx
+                copied_keypoint["y"] = float(copied_keypoint.get("y", 0.0)) + dy
+            translated_keypoints.append(copied_keypoint)
+        return translated_keypoints
+
+    @classmethod
+    def __idle_skeleton_frames(
+        cls,
+        base_keypoints: List[Any],
+        frame_count: int = 4,
+    ) -> List[List[Dict[str, Any]]]:
+        head_labels: List[str] = [
+            "NOSE",
+            "LEFT EYE",
+            "RIGHT EYE",
+            "LEFT EAR",
+            "RIGHT EAR",
+        ]
+        torso_labels: List[str] = [
+            "NECK",
+            "LEFT SHOULDER",
+            "RIGHT SHOULDER",
+            "LEFT HIP",
+            "RIGHT HIP",
+        ]
+        arm_labels: List[str] = ["LEFT ELBOW", "LEFT ARM", "RIGHT ELBOW", "RIGHT ARM"]
+        frames: List[List[Dict[str, Any]]] = []
+        for frame_index in range(frame_count):
+            phase: float = (frame_index / frame_count) * 2 * pi
+            bob: float = sin(phase) * 0.008
+            frame_keypoints: List[Dict[str, Any]] = deepcopy(base_keypoints)
+            frame_keypoints = cls.__translated_keypoints(
+                frame_keypoints,
+                head_labels,
+                dy=bob * 1.2,
+            )
+            frame_keypoints = cls.__translated_keypoints(
+                frame_keypoints,
+                torso_labels,
+                dy=bob,
+            )
+            frame_keypoints = cls.__translated_keypoints(
+                frame_keypoints,
+                arm_labels,
+                dy=bob * 0.7,
+            )
+            frames.append(frame_keypoints)
+        return frames
+
+    @classmethod
+    def __walk_skeleton_frames(
+        cls,
+        base_keypoints: List[Any],
+        frame_count: int = 6,
+    ) -> List[List[Dict[str, Any]]]:
+        frames: List[List[Dict[str, Any]]] = []
+        for frame_index in range(frame_count):
+            phase: float = (frame_index / frame_count) * 2 * pi
+            body_bob: float = abs(sin(phase)) * -0.008
+            left_leg_swing: float = sin(phase)
+            right_leg_swing: float = sin(phase + pi)
+            left_arm_swing: float = sin(phase + pi)
+            right_arm_swing: float = sin(phase)
+
+            frame_keypoints: List[Dict[str, Any]] = deepcopy(base_keypoints)
+            frame_keypoints = cls.__translated_keypoints(
+                frame_keypoints,
+                [
+                    "NOSE",
+                    "NECK",
+                    "LEFT SHOULDER",
+                    "RIGHT SHOULDER",
+                    "LEFT HIP",
+                    "RIGHT HIP",
+                ],
+                dy=body_bob,
+            )
+            frame_keypoints = cls.__translated_keypoints(
+                frame_keypoints,
+                ["LEFT ELBOW", "LEFT ARM"],
+                dx=left_arm_swing * 0.016,
+                dy=abs(left_arm_swing) * 0.006,
+            )
+            frame_keypoints = cls.__translated_keypoints(
+                frame_keypoints,
+                ["RIGHT ELBOW", "RIGHT ARM"],
+                dx=right_arm_swing * 0.016,
+                dy=abs(right_arm_swing) * 0.006,
+            )
+            frame_keypoints = cls.__translated_keypoints(
+                frame_keypoints,
+                ["LEFT KNEE"],
+                dx=left_leg_swing * 0.016,
+                dy=-max(0.0, left_leg_swing) * 0.012,
+            )
+            frame_keypoints = cls.__translated_keypoints(
+                frame_keypoints,
+                ["LEFT LEG"],
+                dx=left_leg_swing * 0.032,
+                dy=-max(0.0, left_leg_swing) * 0.016,
+            )
+            frame_keypoints = cls.__translated_keypoints(
+                frame_keypoints,
+                ["RIGHT KNEE"],
+                dx=right_leg_swing * 0.016,
+                dy=-max(0.0, right_leg_swing) * 0.012,
+            )
+            frame_keypoints = cls.__translated_keypoints(
+                frame_keypoints,
+                ["RIGHT LEG"],
+                dx=right_leg_swing * 0.032,
+                dy=-max(0.0, right_leg_swing) * 0.016,
+            )
+            frames.append(frame_keypoints)
+        return frames
+
+    @classmethod
+    def __procedural_skeleton_frames(
+        cls,
+        action: str,
+        base_keypoints: List[Any],
+    ) -> List[List[Dict[str, Any]]]:
+        action_lower: str = action.lower()
+        if "walk" in action_lower or "run" in action_lower:
+            return cls.__walk_skeleton_frames(base_keypoints)
+        return cls.__idle_skeleton_frames(base_keypoints)
+
+    @staticmethod
+    def __save_skeleton_debug_json(
+        debug_folder: str,
+        action: str,
+        neutral_keypoints: List[Any],
+        skeleton_frames: List[List[Dict[str, Any]]],
+    ) -> None:
+        skeleton_json_path: str = new_json_file_path(
+            f"{debug_folder}/{action}_skeleton_keypoints"
+        )
+        with open(skeleton_json_path, "w") as skeleton_json_file:
+            json_dump(
+                {
+                    "neutral_keypoints": neutral_keypoints,
+                    "skeleton_keypoints": skeleton_frames,
+                },
+                skeleton_json_file,
+                indent=2,
+            )
+
+    @staticmethod
+    def __save_skeleton_request_debug_json(
+        debug_folder: str,
+        action: str,
+        request_body: Dict[str, Any],
+    ) -> None:
+        debug_request_body: Dict[str, Any] = deepcopy(request_body)
+        reference_image: Any = debug_request_body.get("reference_image")
+        if isinstance(reference_image, dict) and "base64" in reference_image:
+            reference_image["base64"] = (
+                f"[base64 image omitted, {len(reference_image['base64'])} chars]"
+            )
+        request_json_path: str = new_json_file_path(
+            f"{debug_folder}/{action}_animate_with_skeleton_request"
+        )
+        with open(request_json_path, "w") as request_json_file:
+            json_dump(debug_request_body, request_json_file, indent=2)
+
+    @staticmethod
+    def __raise_for_status_with_body(response: Any) -> None:
+        try:
+            response.raise_for_status()
+        except Exception as error:
+            response_body: str = ""
+            try:
+                response_body = response.text
+            except Exception:
+                response_body = ""
+            if len(response_body) == 0:
+                try:
+                    response_body = str(response.json())
+                except Exception:
+                    response_body = ""
+            if len(response_body) > 0:
+                raise Exception(f"{error}. Response body: {response_body}") from error
+            raise
+
+    def __generate_animation_images_with_skeleton(
+        self,
+        action: str,
+        reference_image: PILImage,
+        debug_folder: str,
+    ) -> List[PILImage]:
+        estimated_skeleton = estimate_skeleton(
+            self.__client,
+            reference_image,
+        )
+        neutral_keypoints: List[Any] = [
+            self.__copy_keypoint(keypoint) for keypoint in estimated_skeleton.keypoints
+        ]
+        skeleton_frames: List[List[Dict[str, Any]]] = self.__procedural_skeleton_frames(
+            action,
+            neutral_keypoints,
+        )
+        self.__save_skeleton_debug_json(
+            debug_folder,
+            action,
+            neutral_keypoints,
+            skeleton_frames,
+        )
+        request_body: Dict[str, Any] = {
+            "image_size": {
+                "height": self.__V2_IMAGE_SIZE,
+                "width": self.__V2_IMAGE_SIZE,
+            },
+            "skeleton_keypoints": skeleton_frames,
+            "view": "side",
+            "direction": "east",
+            "reference_guidance_scale": 1.1,
+            "pose_guidance_scale": 3.0,
+            "reference_image": self.__image_to_base64_image_payload(reference_image),
+            "seed": 42,
+        }
+        self.__save_skeleton_request_debug_json(
+            debug_folder,
+            action,
+            request_body,
+        )
+        response = requests_post(
+            f"{self.__BASE_URL}/{self.__ANIMATE_WITH_SKELETON}",
+            headers={
+                "Authorization": f"Bearer {self.__api_key}",
+                "Content-Type": "application/json",
+            },
+            json=request_body,
+            timeout=120,
+        )
+        self.__raise_for_status_with_body(response)
+        return self.__images_from_v2_response(response.json())
+
     def __reference_image_size(self) -> int:
         endpoint: str = self.__animation_endpoint.lower()
-        if endpoint in ("v2", self.__ANIMATE_WITH_TEXT_V2):
+        if endpoint in (
+            "v2",
+            self.__ANIMATE_WITH_TEXT_V2,
+            "skeleton",
+            self.__ANIMATE_WITH_SKELETON,
+        ):
             return self.__V2_IMAGE_SIZE
         return self.__V1_IMAGE_SIZE
 
     def __should_upscale_animation(self) -> bool:
         endpoint: str = self.__animation_endpoint.lower()
-        return endpoint not in ("v2", self.__ANIMATE_WITH_TEXT_V2)
+        return endpoint not in (
+            "v2",
+            self.__ANIMATE_WITH_TEXT_V2,
+            "skeleton",
+            self.__ANIMATE_WITH_SKELETON,
+        )
 
     def __generate_animation_images(
         self,
         description: str,
         action: str,
         reference_image: PILImage,
+        debug_folder: str,
+        action_description: Optional[str] = None,
     ) -> List[PILImage]:
         endpoint: str = self.__animation_endpoint.lower()
+        pixellab_action: str = action_description or action
         if endpoint in ("v1", self.__ANIMATE_WITH_TEXT_V1):
             return self.__generate_animation_images_v1(
                 description,
-                action,
+                pixellab_action,
                 reference_image,
             )
         if endpoint in ("v2", self.__ANIMATE_WITH_TEXT_V2):
-            return self.__generate_animation_images_v2(action, reference_image)
+            return self.__generate_animation_images_v2(
+                pixellab_action,
+                reference_image,
+            )
+        if endpoint in ("skeleton", self.__ANIMATE_WITH_SKELETON):
+            return self.__generate_animation_images_with_skeleton(
+                action,
+                reference_image,
+                debug_folder,
+            )
         raise Exception(
             f"Unknown Pixellab animation endpoint '{self.__animation_endpoint}'. "
-            f"Use '{self.__ANIMATE_WITH_TEXT_V1}' or '{self.__ANIMATE_WITH_TEXT_V2}'."
+            f"Use '{self.__ANIMATE_WITH_TEXT_V1}', '{self.__ANIMATE_WITH_TEXT_V2}', "
+            f"or '{self.__ANIMATE_WITH_SKELETON}'."
         )
 
     def generate_pixellab_animation(
@@ -341,15 +635,17 @@ class PixellabAnimator:
             pixellab_ref_image = pixellab_ref_image.resize(
                 (reference_image_size, reference_image_size)
             )
-            animation_images: List[PILImage] = self.__generate_animation_images(
-                description,
-                action=action_description or action,
-                reference_image=pixellab_ref_image,
-            )
             save_folder_original: str = new_folder(
                 f"{animations_save_folder}/{action}_{reference_image_size}"
             )
             save_folder_upscaled: str = new_folder(f"{animations_save_folder}/{action}")
+            animation_images: List[PILImage] = self.__generate_animation_images(
+                description,
+                action=action,
+                reference_image=pixellab_ref_image,
+                debug_folder=save_folder_original,
+                action_description=action_description,
+            )
             for i, animation_img in enumerate(animation_images):
                 animation_file_path_original: str = new_image_file_path(
                     f"{save_folder_original}/{action}_{reference_image_size}x{reference_image_size}_{i}"

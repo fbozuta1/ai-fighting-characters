@@ -31,6 +31,18 @@ if "pixellab.animate_with_text" not in sys.modules:
     animate_mod.animate_with_text = MagicMock()
     sys.modules["pixellab.animate_with_text"] = animate_mod
 
+if "pixellab.animate_with_skeleton" not in sys.modules:
+    animate_skeleton_mod = types.ModuleType("pixellab.animate_with_skeleton")
+    animate_skeleton_mod.AnimateWithSkeletonResponse = object
+    animate_skeleton_mod.SkeletonFrame = dict
+    animate_skeleton_mod.animate_with_skeleton = MagicMock()
+    sys.modules["pixellab.animate_with_skeleton"] = animate_skeleton_mod
+
+if "pixellab.estimate_skeleton" not in sys.modules:
+    estimate_skeleton_mod = types.ModuleType("pixellab.estimate_skeleton")
+    estimate_skeleton_mod.estimate_skeleton = MagicMock()
+    sys.modules["pixellab.estimate_skeleton"] = estimate_skeleton_mod
+
 import open_ai_pixel_art
 import pixellab_animator
 import pixellab_generation_script
@@ -91,10 +103,16 @@ class TestOpenAIPixelArtGenerator(unittest.TestCase):
 
 class TestPixellabAnimator(unittest.TestCase):
     def setUp(self):
-        self.patcher_env = patch.dict(os.environ, {"PIXELLAB_API_KEY": "test-key"})
+        self.patcher_env = patch.dict(
+            os.environ,
+            {"PIXELLAB_API_KEY": "test-key"},
+            clear=False,
+        )
         self.patcher_env.start()
+        os.environ.pop("PIXELLAB_ANIMATION_ENDPOINT", None)
         self.addCleanup(self.patcher_env.stop)
 
+    @patch.dict(os.environ, {"PIXELLAB_ANIMATION_ENDPOINT": "animate-with-text"})
     @patch("pixellab_animator.PLClient")
     def test_generate_pixellab_animation_missing_ref_image(self, mock_pl_client):
         animator = pixellab_animator.PixellabAnimator()
@@ -111,6 +129,7 @@ class TestPixellabAnimator(unittest.TestCase):
             ["Reference image not provided, unable to generate walk animation."],
         )
 
+    @patch.dict(os.environ, {"PIXELLAB_ANIMATION_ENDPOINT": "animate-with-text"})
     @patch("pixellab_animator.PLClient")
     @patch("pixellab_animator.pil_image_open")
     @patch("pixellab_animator.PixellabAnimator._PixellabAnimator__upscale_animation")
@@ -163,6 +182,95 @@ class TestPixellabAnimator(unittest.TestCase):
             self.assertEqual(result.errors, [])
             self.assertIn("walk", result.action_folders)
             self.assertTrue(Path(result.action_folders["walk"]).exists())
+
+    @patch.dict(
+        os.environ,
+        {"PIXELLAB_API_KEY": "test-key", "PIXELLAB_ANIMATION_ENDPOINT": "skeleton"},
+    )
+    @patch("pixellab_animator.PLClient")
+    @patch("pixellab_animator.pil_image_open")
+    def test_generate_pixellab_animation_with_skeleton_success(
+        self, mock_pil_open, mock_pl_client
+    ):
+        fake_reference = MagicMock()
+        fake_reference.resize.return_value = fake_reference
+        fake_image = MagicMock()
+        fake_image.save.side_effect = lambda path: Path(path).write_bytes(b"fake")
+
+        fake_estimate = MagicMock()
+        fake_estimate.keypoints = [
+            {"x": 128.0, "y": 40.0, "label": "NOSE", "z_index": 0.0},
+            {"x": 128.0, "y": 64.0, "label": "NECK", "z_index": 0.0},
+            {"x": 112.0, "y": 80.0, "label": "LEFT SHOULDER", "z_index": 0.0},
+            {"x": 144.0, "y": 80.0, "label": "RIGHT SHOULDER", "z_index": 0.0},
+            {"x": 116.0, "y": 128.0, "label": "LEFT HIP", "z_index": 0.0},
+            {"x": 140.0, "y": 128.0, "label": "RIGHT HIP", "z_index": 0.0},
+        ]
+
+        fake_response = MagicMock()
+        fake_response.raise_for_status = MagicMock()
+        fake_response.json.return_value = {"images": []}
+
+        fake_client = MagicMock()
+        mock_pl_client.return_value = fake_client
+        mock_pil_open.return_value = fake_reference
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+
+            def fake_new_folder(path_str):
+                folder = Path(temp_dir) / Path(path_str)
+                folder.mkdir(parents=True, exist_ok=True)
+                return str(folder)
+
+            def fake_new_image_file_path(path_str):
+                target_path = Path(temp_dir) / Path(path_str)
+                target_path.parent.mkdir(parents=True, exist_ok=True)
+                return str(target_path.with_suffix(".png"))
+
+            def fake_new_json_file_path(path_str):
+                target_path = Path(temp_dir) / Path(path_str)
+                target_path.parent.mkdir(parents=True, exist_ok=True)
+                return str(target_path.with_suffix(".json"))
+
+            animator = pixellab_animator.PixellabAnimator()
+
+            with patch(
+                "pixellab_animator.new_folder", side_effect=fake_new_folder
+            ), patch(
+                "pixellab_animator.new_image_file_path",
+                side_effect=fake_new_image_file_path,
+            ), patch(
+                "pixellab_animator.new_json_file_path",
+                side_effect=fake_new_json_file_path,
+            ), patch(
+                "pixellab_animator.estimate_skeleton", return_value=fake_estimate
+            ), patch(
+                "pixellab_animator.requests_post", return_value=fake_response
+            ) as mock_requests_post, patch.object(
+                pixellab_animator.PixellabAnimator,
+                "_PixellabAnimator__images_from_v2_response",
+                return_value=[fake_image],
+            ):
+                result = animator.generate_pixellab_animation(
+                    "A hero",
+                    "idle",
+                    "animations",
+                    "ref.png",
+                )
+
+            self.assertEqual(result.errors, [])
+            self.assertIn("idle", result.action_folders)
+            self.assertTrue(mock_requests_post.called)
+            request_body = mock_requests_post.call_args.kwargs["json"]
+            self.assertIsInstance(request_body["skeleton_keypoints"][0], list)
+            self.assertNotIn("inpainting_images", request_body)
+            self.assertNotIn("mask_images", request_body)
+            skeleton_json_files = list(Path(temp_dir).rglob("*skeleton_keypoints.json"))
+            self.assertEqual(len(skeleton_json_files), 1)
+            request_json_files = list(
+                Path(temp_dir).rglob("*animate_with_skeleton_request.json")
+            )
+            self.assertEqual(len(request_json_files), 1)
 
     @patch("pixellab_animator.PLClient")
     def test_generate_animations_composes_actions(self, mock_pl_client):
@@ -234,7 +342,9 @@ class TestPixellabGenerationScript(unittest.TestCase):
             }
             request_path.write_text(json.dumps(request_data))
 
-            with patch.object(sys, "argv", ["script", str(request_path)]), patch(
+            with patch.object(
+                pixellab_generation_script, "argv", ["script", str(request_path)]
+            ), patch(
                 "pixellab_generation_script.new_folder",
                 return_value=str(Path(temp_dir) / "ai_animations"),
             ):

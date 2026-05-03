@@ -24,7 +24,11 @@ class OpenAIPixelArtGenerator:
     __DEFAULT_IMAGE_NAME: str = "open_ai_image"
     __BASE_PROMPT_FILE: str = "prompt.txt"
     __DEFAULT_PROMPT: str = (
-        "Generate 2d pixel art animation for a gaming character sprite. The character is in idling state and is facing east:\n"
+        "Create a PNG reference sprite for a 2D pixel art fighting game character.\n"
+        "The character must be full-body, side-view, facing right/east, centered, "
+        "and standing in a neutral animation reference pose. Keep arms and legs "
+        "visible and slightly separated from the torso so a skeleton can be "
+        "estimated reliably. Use a transparent background. Character description:\n"
     )
 
     def __init__(self, model: str = __DEFAULT_MODEL):
