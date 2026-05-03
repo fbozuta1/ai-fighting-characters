@@ -1,8 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://gg22pj150ks4"]
+[gd_scene load_steps=11 format=3 uid="uid://gg22pj150ks4"]
 
 [ext_resource type="Texture2D" uid="uid://ctucemrisnpra" path="res://assets/map/tileset.png" id="1_2q6dc"]
 [ext_resource type="PackedScene" uid="uid://cxd0ij0mqlgar" path="res://scenes/player_1.tscn" id="2_w7c3h"]
 [ext_resource type="Script" uid="uid://cca6e262i72t" path="res://scenes/prompt.gd" id="3_w8frs"]
+[ext_resource type="Script" path="res://scripts/level.gd" id="4_lvl"]
+[ext_resource type="Script" path="res://scripts/camera_follow.gd" id="5_cam"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_w7c3h"]
 texture = ExtResource("1_2q6dc")
@@ -560,9 +562,15 @@ corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
 [node name="Level" type="Node2D"]
+script = ExtResource("4_lvl")
 
 [node name="Player" parent="." instance=ExtResource("2_w7c3h")]
-position = Vector2(3, 5)
+position = Vector2(-40, 5)
+player_id = 1
+
+[node name="Player2" parent="." instance=ExtResource("2_w7c3h")]
+position = Vector2(40, 5)
+player_id = 2
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_w8frs")
@@ -581,6 +589,9 @@ layer_3/z_index = -2
 position = Vector2(2, -8)
 zoom = Vector2(3, 3)
 limit_enabled = false
+script = ExtResource("5_cam")
+p1_path = NodePath("../Player")
+p2_path = NodePath("../Player2")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -590,6 +601,86 @@ offset_top = 16.0
 offset_right = 166.0
 offset_bottom = 50.0
 text = "Select Character"
+
+[node name="HUD" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="P1Label" type="Label" parent="CanvasLayer/HUD"]
+offset_left = 16.0
+offset_top = 60.0
+offset_right = 320.0
+offset_bottom = 84.0
+text = "P1"
+theme_override_font_sizes/font_size = 16
+
+[node name="P1HPBar" type="ProgressBar" parent="CanvasLayer/HUD"]
+offset_left = 16.0
+offset_top = 86.0
+offset_right = 320.0
+offset_bottom = 110.0
+show_percentage = false
+
+[node name="P2Label" type="Label" parent="CanvasLayer/HUD"]
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -320.0
+offset_top = 60.0
+offset_right = -16.0
+offset_bottom = 84.0
+text = "P2"
+horizontal_alignment = 2
+theme_override_font_sizes/font_size = 16
+
+[node name="P2HPBar" type="ProgressBar" parent="CanvasLayer/HUD"]
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -320.0
+offset_top = 86.0
+offset_right = -16.0
+offset_bottom = 110.0
+show_percentage = false
+
+[node name="WinPanel" type="Control" parent="CanvasLayer"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Background" type="ColorRect" parent="CanvasLayer/WinPanel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.6)
+
+[node name="Label" type="Label" parent="CanvasLayer/WinPanel"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -60.0
+offset_right = 200.0
+offset_bottom = -10.0
+text = "Player N Wins"
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 36
+
+[node name="RestartButton" type="Button" parent="CanvasLayer/WinPanel"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -80.0
+offset_top = 10.0
+offset_right = 80.0
+offset_bottom = 50.0
+text = "Rematch"
 
 [node name="Prompt" type="Control" parent="CanvasLayer"]
 layout_mode = 3

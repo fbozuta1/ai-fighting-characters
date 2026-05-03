@@ -1,11 +1,16 @@
 class_name Player
 extends CharacterBody2D
 
+signal hp_changed(new_hp: float, max_hp: float)
+signal defeated(player_id: int)
+
+@export var player_id: int = 1
+@export var max_hp: float = 100.0
+
 @onready var state_machine: StateMachine = $"StateMachine"
-# Koristimo sprite za animaciju
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
-@onready var prompt: Control = get_parent().get_node("CanvasLayer/Prompt")
-@onready var ResultField: Label =  get_parent().get_node("CanvasLayer/Prompt/Panel/GenerationStatusLabel")
+@onready var hurtbox: Area2D = $Hurtbox
+@onready var hitbox: Area2D = $Hitbox
 
 const GENERATION_SCRIPT_PATH: String = "res://scripts/python_ai_generation/pixellab_generation_script.py"
 const DEFAULT_RESULT_PATH: String = "res://animation_result.json"
@@ -14,41 +19,130 @@ const ANIMATION_NAMES: Dictionary = {
 	"walk": "Walk",
 	"fight": "Fight",
 }
-const ANIMATION_SPEED: float = 5.0
+const ANIMATION_SPEED: float = 10.0
 const GENERATION_PROGRESS_FILE: String = "user://animation_progress.json"
 const TARGET_SPRITE_HEIGHT: float = 42.0
 const MIN_SPRITE_SCALE: float = 0.12
 const MAX_SPRITE_SCALE: float = 1.2
+
+const HITBOX_OFFSET_X: float = 22.0
+const FIGHT_DAMAGE_PER_TICK: float = 0.6
+const KNOCKBACK_FORCE: float = 180.0
+const HURTBOX_LAYER_BY_ID: Dictionary = {1: 2, 2: 3}
+const HITBOX_MASK_BY_ID: Dictionary = {1: 4, 2: 2}
+
+var input_config: Dictionary = {}
+var hp: float = 0.0
+var is_attacking: bool = false
+
+var prompt: Control = null
+var ResultField: Label = null
 
 var generation_thread: Thread
 var generation_progress_timer: Timer
 var generation_progress_file_path: String = ""
 var is_generation_running: bool = false
 
-func _ready(): 
+func _ready():
+	_init_input_config()
+	hp = max_hp
+	_init_combat_areas()
 	state_machine.init()
-	prompt.visible = false
-	prompt.submitted.connect(_on_prompt_submitted)
-	generation_progress_timer = Timer.new()
-	generation_progress_timer.wait_time = 0.25
-	generation_progress_timer.timeout.connect(_on_generation_progress_timer_timeout)
-	add_child(generation_progress_timer)
-	#sprite.flip_h = true
-	if CharacterSelectionData.selected_action_folders.is_empty() == false:
-		load_animations_from_action_folders(CharacterSelectionData.selected_action_folders)
-	elif CharacterSelectionData.selected_result_file.is_empty() == false:
-		load_animations_from_result_file(CharacterSelectionData.selected_result_file)
-	else:
-		load_animations_from_result_file(DEFAULT_RESULT_PATH)
+	if player_id == 2:
+		sprite.flip_h = true
+
+	if player_id == 1:
+		var canvas := get_parent().get_node_or_null("CanvasLayer")
+		if canvas != null:
+			prompt = canvas.get_node_or_null("Prompt")
+			if prompt != null:
+				ResultField = prompt.get_node_or_null("Panel/GenerationStatusLabel")
+				prompt.visible = false
+				if prompt.has_signal("submitted"):
+					prompt.submitted.connect(_on_prompt_submitted)
+		generation_progress_timer = Timer.new()
+		generation_progress_timer.wait_time = 0.25
+		generation_progress_timer.timeout.connect(_on_generation_progress_timer_timeout)
+		add_child(generation_progress_timer)
+
+	_load_initial_character()
 
 func _process(delta):
 	state_machine.process_frame(delta)
 
 func _physics_process(delta):
 	state_machine.process_physics(delta)
+	if hitbox != null:
+		hitbox.position.x = (-1.0 if sprite.flip_h else 1.0) * HITBOX_OFFSET_X
+	_process_active_hits()
 
 func _input(event):
 	state_machine.process_input(event)
+
+func _init_input_config() -> void:
+	if player_id == 2:
+		input_config = {
+			"left": "P2_Left",
+			"right": "P2_Right",
+			"up": "P2_Up",
+			"down": "P2_Down",
+			"fight": "P2_Fight",
+			"movement": "P2_Movement",
+		}
+	else:
+		input_config = {
+			"left": "Left",
+			"right": "Right",
+			"up": "Up",
+			"down": "Down",
+			"fight": "Fight",
+			"movement": "Movement",
+		}
+
+func _init_combat_areas() -> void:
+	if hurtbox != null:
+		hurtbox.collision_layer = HURTBOX_LAYER_BY_ID.get(player_id, 2)
+		hurtbox.collision_mask = 0
+	if hitbox != null:
+		hitbox.collision_layer = 0
+		hitbox.collision_mask = HITBOX_MASK_BY_ID.get(player_id, 4)
+		hitbox.monitoring = true
+		hitbox.monitorable = false
+
+func _load_initial_character() -> void:
+	var folders: Dictionary = CharacterSelectionData.get_action_folders(player_id)
+	var result_file: String = CharacterSelectionData.get_result_file(player_id)
+	if not folders.is_empty():
+		load_animations_from_action_folders(folders)
+	elif not result_file.is_empty():
+		load_animations_from_result_file(result_file)
+	elif player_id == 1:
+		load_animations_from_result_file(DEFAULT_RESULT_PATH)
+
+func set_hitbox_active(active: bool) -> void:
+	is_attacking = active
+
+func take_damage(amount: float, knockback: Vector2) -> void:
+	if hp <= 0.0:
+		return
+	hp = max(0.0, hp - amount)
+	velocity += knockback
+	hp_changed.emit(hp, max_hp)
+	if hp <= 0.0:
+		defeated.emit(player_id)
+
+func _process_active_hits() -> void:
+	if not is_attacking or hitbox == null:
+		return
+	for area in hitbox.get_overlapping_areas():
+		var other_node: Node = area.get_parent()
+		if other_node == null or not (other_node is Player) or other_node == self:
+			continue
+		var other: Player = other_node
+		var dir: Vector2 = (other.global_position - global_position).normalized()
+		if dir == Vector2.ZERO:
+			dir = Vector2(-1.0 if sprite.flip_h else 1.0, 0.0)
+		other.take_damage(FIGHT_DAMAGE_PER_TICK, dir * KNOCKBACK_FORCE)
 
 func _on_prompt_submitted(title: String, description: String, reference_image_path: String):
 	if is_generation_running:
@@ -64,9 +158,10 @@ func _on_prompt_submitted(title: String, description: String, reference_image_pa
 	if thread_start_error != OK:
 		generation_progress_timer.stop()
 		is_generation_running = false
-		ResultField.text = "Failed to start generation thread"
-		if prompt.has_method("finish_generation_progress"):
-			prompt.finish_generation_progress(false, ResultField.text)
+		if ResultField != null:
+			ResultField.text = "Failed to start generation thread"
+		if prompt != null and prompt.has_method("finish_generation_progress"):
+			prompt.finish_generation_progress(false, "Failed to start generation thread")
 
 func _on_back_to_selection_pressed() -> void:
 	CharacterSelectionData.clear()
@@ -92,11 +187,11 @@ func _on_generation_finished(animation_result: Array[String]) -> void:
 	is_generation_running = false
 
 	var success := print_result(animation_result)
-	if prompt.has_method("finish_generation_progress"):
+	if prompt != null and prompt.has_method("finish_generation_progress"):
 		if success:
 			prompt.finish_generation_progress(true, "Loaded animations")
 		else:
-			prompt.finish_generation_progress(false, ResultField.text)
+			prompt.finish_generation_progress(false, ResultField.text if ResultField != null else "Generation failed")
 
 func _write_initial_generation_progress() -> void:
 	var data := {
@@ -133,7 +228,7 @@ func _on_generation_progress_timer_timeout() -> void:
 	var total_actions := int(progress_data.get("total_actions", ANIMATION_NAMES.size()))
 	var progress_value := _get_generation_progress_value(status, action_index, total_actions)
 
-	if prompt.has_method("update_generation_progress"):
+	if prompt != null and prompt.has_method("update_generation_progress"):
 		prompt.update_generation_progress(progress_value, message)
 
 func _get_generation_progress_value(status: String, action_index: int, total_actions: int) -> float:
@@ -148,22 +243,25 @@ func _get_generation_progress_value(status: String, action_index: int, total_act
 	return 0.0
 
 func print_result(animation_result: Array[String]) -> bool:
-	ResultField.text = ""
+	if ResultField != null:
+		ResultField.text = ""
 	if animation_result.is_empty():
-		ResultField.text = "Empty script output"
+		if ResultField != null:
+			ResultField.text = "Empty script output"
 		return false
 	var animation_result_file: String = _get_animation_result_file(animation_result)
 	if animation_result_file.is_empty():
-		ResultField.text = "Animation result is empty"
+		if ResultField != null:
+			ResultField.text = "Animation result is empty"
 		return false
 	return load_animations_from_result_file(animation_result_file)
 
 func load_animations_from_result_file(animation_result_file: String) -> bool:
 	var resolved_result_file := _resolve_file_path(animation_result_file)
 	if resolved_result_file.is_empty():
-		ResultField.text = "Animation result file " + animation_result_file + " doesn't exist"
+		_set_status("Animation result file " + animation_result_file + " doesn't exist")
 		return false
-		
+
 	var result_file = FileAccess.open(resolved_result_file, FileAccess.READ)
 	var result_text = result_file.get_as_text()
 	result_file.close()
@@ -174,40 +272,44 @@ func load_animations_from_result_file(animation_result_file: String) -> bool:
 	if result_parse_status != OK:
 		print("JSON parse error:", result_json.get_error_message())
 		print("At line:", result_json.get_error_line())
-		ResultField.text = "Failed to parse animation result JSON"
+		_set_status("Failed to parse animation result JSON")
 		return false
-	
+
 	var result_data = result_json.data
 	if typeof(result_data) != TYPE_DICTIONARY:
-		ResultField.text = "Animation result JSON is not an object"
+		_set_status("Animation result JSON is not an object")
 		return false
 
 	if result_data.has("errors") and result_data["errors"].size() > 0:
-		ResultField.text = ",".join(result_data["errors"])
+		_set_status(",".join(result_data["errors"]))
 		return false
 
 	if not result_data.has("action_folders"):
-		ResultField.text = "Animation result is missing action_folders"
+		_set_status("Animation result is missing action_folders")
 		return false
 	if typeof(result_data["action_folders"]) != TYPE_DICTIONARY:
-		ResultField.text = "Animation result action_folders is not an object"
+		_set_status("Animation result action_folders is not an object")
 		return false
 
 	var load_errors: Array[String] = _load_sprite_frames(result_data["action_folders"], resolved_result_file)
 	if not load_errors.is_empty():
-		ResultField.text = ",".join(load_errors)
+		_set_status(",".join(load_errors))
 		return false
 
-	ResultField.text = "Loaded animations"
+	_set_status("Loaded animations")
 	return true
 
 func load_animations_from_action_folders(action_folders: Dictionary) -> bool:
 	var load_errors: Array[String] = _load_sprite_frames(action_folders, "")
 	if not load_errors.is_empty():
-		ResultField.text = ",".join(load_errors)
+		_set_status(",".join(load_errors))
 		return false
-	ResultField.text = "Loaded animations"
+	_set_status("Loaded animations")
 	return true
+
+func _set_status(text: String) -> void:
+	if ResultField != null:
+		ResultField.text = text
 
 func _get_animation_result_file(animation_result: Array[String]) -> String:
 	var output_lines: Array[String] = []

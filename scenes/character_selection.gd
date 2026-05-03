@@ -19,18 +19,23 @@ var reference_image_dialog: FileDialog
 var progress_bar: ProgressBar
 var status_label: Label
 var generate_button: Button
+var header_label: Label
 var reference_image_path: String = ""
 var generation_thread: Thread
 var progress_timer: Timer
 var generation_progress_file_path: String = ""
 
+var current_player: int = 1
+
 func _ready() -> void:
+	current_player = 1 if not CharacterSelectionData.has_selection(1) else 2
 	_build_ui()
 	_load_character_cards()
 	progress_timer = Timer.new()
 	progress_timer.wait_time = 0.25
 	progress_timer.timeout.connect(_on_progress_timer_timeout)
 	add_child(progress_timer)
+	_refresh_header()
 
 func _exit_tree() -> void:
 	if generation_thread != null and generation_thread.is_started():
@@ -46,11 +51,11 @@ func _build_ui() -> void:
 	root.offset_bottom = -20
 	add_child(root)
 
-	var header := Label.new()
-	header.text = "Select Character"
-	header.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	header.add_theme_font_size_override("font_size", 28)
-	root.add_child(header)
+	header_label = Label.new()
+	header_label.text = "Select Character"
+	header_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	header_label.add_theme_font_size_override("font_size", 28)
+	root.add_child(header_label)
 
 	var body := HBoxContainer.new()
 	body.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -298,8 +303,20 @@ func _create_character_card(character: Dictionary) -> Button:
 	return card
 
 func _on_character_selected(character: Dictionary) -> void:
-	CharacterSelectionData.select_action_folders(character["actions"])
+	CharacterSelectionData.select_action_folders(current_player, character["actions"])
+	_advance_player_or_start()
+
+func _advance_player_or_start() -> void:
+	if current_player == 1:
+		current_player = 2
+		_refresh_header()
+		return
 	get_tree().change_scene_to_file(CharacterSelectionData.LEVEL_SCENE_PATH)
+
+func _refresh_header() -> void:
+	if header_label == null:
+		return
+	header_label.text = "Select Player %d's character" % current_player
 
 func _on_reference_image_button_pressed() -> void:
 	reference_image_dialog.popup_centered_ratio(0.8)
@@ -357,8 +374,8 @@ func _on_generation_finished(output: Array[String]) -> void:
 	if not result_error.is_empty():
 		status_label.text = result_error
 		return
-	CharacterSelectionData.select_result_file(result_file)
-	get_tree().change_scene_to_file(CharacterSelectionData.LEVEL_SCENE_PATH)
+	CharacterSelectionData.select_result_file(current_player, result_file)
+	_advance_player_or_start()
 
 func _write_initial_generation_progress() -> void:
 	var data := {

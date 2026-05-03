@@ -1,7 +1,7 @@
-[gd_scene load_steps=24 format=3 uid="uid://cxd0ij0mqlgar"]
+[gd_scene load_steps=26 format=3 uid="uid://cxd0ij0mqlgar"]
 
 [ext_resource type="Script" uid="uid://jokh06wmac42" path="res://scripts/player_1.gd" id="1_a5yar"]
-[ext_resource type="Script" uid="uid://o2u01th6ik8" path="res://scripts/state_machine.gd" id="1_h7q5r"]
+[ext_resource type="Script" uid="uid://o2u01th6ik8" path="res://scripts/states/state_machine.gd" id="1_h7q5r"]
 [ext_resource type="Texture2D" uid="uid://c3li33mc1os67" path="res://assets/animations/romeon/fight/fight_0.png" id="2_8o4l0"]
 [ext_resource type="Texture2D" uid="uid://c2lusb257kixs" path="res://assets/animations/romeon/fight/fight_1.png" id="3_a5yar"]
 [ext_resource type="Texture2D" uid="uid://bceqnr22rvwsc" path="res://assets/animations/romeon/fight/fight_2.png" id="4_0xj1c"]
@@ -13,10 +13,10 @@
 [ext_resource type="Texture2D" uid="uid://dx2cfdy7dyx07" path="res://assets/animations/romeon/walk/walk_0.png" id="10_m8x2t"]
 [ext_resource type="Texture2D" uid="uid://c2et2fgdacsty" path="res://assets/animations/romeon/walk/walk_1.png" id="11_h5b11"]
 [ext_resource type="Texture2D" uid="uid://bfaakpgu1cg4" path="res://assets/animations/romeon/walk/walk_2.png" id="12_hnfa5"]
-[ext_resource type="Script" uid="uid://usqhn2nxoa5q" path="res://scenes/fight.gd" id="13_3wjnj"]
+[ext_resource type="Script" uid="uid://usqhn2nxoa5q" path="res://scripts/states/fight.gd" id="13_3wjnj"]
 [ext_resource type="Texture2D" uid="uid://bptva5y4a6veg" path="res://assets/animations/romeon/walk/walk_3.png" id="13_q1mos"]
-[ext_resource type="Script" uid="uid://fg2c64nj2t8x" path="res://scripts/idle.gd" id="16_61r2x"]
-[ext_resource type="Script" uid="uid://o7oyieam7u50" path="res://scripts/walk.gd" id="17_8o4l0"]
+[ext_resource type="Script" uid="uid://fg2c64nj2t8x" path="res://scripts/states/idle.gd" id="16_61r2x"]
+[ext_resource type="Script" uid="uid://o7oyieam7u50" path="res://scripts/states/walk.gd" id="17_8o4l0"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_mviyr"]
 animations = [{
@@ -35,7 +35,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"Fight",
-"speed": 5.0
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -52,7 +52,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"Idle",
-"speed": 5.0
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -69,11 +69,17 @@ animations = [{
 }],
 "loop": true,
 "name": &"Walk",
-"speed": 5.0
+"speed": 10.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d614h"]
 size = Vector2(18, 41)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hurt"]
+size = Vector2(20, 42)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hit"]
+size = Vector2(28, 36)
 
 [sub_resource type="Animation" id="Animation_8o4l0"]
 resource_name = "Idle"
@@ -170,6 +176,7 @@ _data = {
 }
 
 [node name="Player" type="CharacterBody2D"]
+motion_mode = 1
 script = ExtResource("1_a5yar")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -181,6 +188,23 @@ animation = &"Idle"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-3, 9.5)
 shape = SubResource("RectangleShape2D_d614h")
+
+[node name="Hurtbox" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(-3, 9.5)
+shape = SubResource("RectangleShape2D_hurt")
+
+[node name="Hitbox" type="Area2D" parent="."]
+position = Vector2(22, 9.5)
+collision_layer = 0
+collision_mask = 4
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource("RectangleShape2D_hit")
 
 [node name="Animation" type="AnimationPlayer" parent="."]
 libraries = {
