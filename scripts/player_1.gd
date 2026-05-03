@@ -44,6 +44,8 @@ var hp: float = 0.0
 var is_attacking: bool = false
 var hit_cooldowns: Dictionary = {}
 var hit_stun_time: float = 0.0
+var play_area_bounds: Rect2 = Rect2()
+var has_play_area_bounds: bool = false
 
 var prompt: Control = null
 var ResultField: Label = null
@@ -153,8 +155,27 @@ func take_damage(amount: float, knockback: Vector2) -> void:
 func is_in_hit_stun() -> bool:
 	return hit_stun_time > 0.0
 
+func set_play_area_bounds(bounds: Rect2) -> void:
+	play_area_bounds = bounds
+	has_play_area_bounds = bounds.size.x > 0.0 and bounds.size.y > 0.0
+	_apply_play_area_bounds()
+
 func decelerate_knockback(delta: float) -> void:
 	velocity = velocity.move_toward(Vector2.ZERO, KNOCKBACK_DECELERATION * delta)
+
+func apply_post_move_constraints() -> void:
+	_apply_play_area_bounds()
+
+func _apply_play_area_bounds() -> void:
+	if not has_play_area_bounds:
+		return
+
+	var clamped_position := global_position.clamp(play_area_bounds.position, play_area_bounds.position + play_area_bounds.size)
+	if clamped_position.x != global_position.x:
+		velocity.x = 0.0
+	if clamped_position.y != global_position.y:
+		velocity.y = 0.0
+	global_position = clamped_position
 
 func _update_hit_cooldowns(delta: float) -> void:
 	var expired: Array[int] = []

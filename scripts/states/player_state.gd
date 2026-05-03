@@ -26,5 +26,6 @@ func _key(name: String, fallback: String) -> String:
 
 func process_physics(delta: float) -> State:
 	player.move_and_slide()
+	player.apply_post_move_constraints()
 	player.decelerate_knockback(delta)
 	return null

@@ -1,5 +1,10 @@
 extends Node2D
 
+@export var play_area_left: float = -136.0
+@export var play_area_right: float = 152.0
+@export var play_area_top: float = -8.0
+@export var play_area_bottom: float = 88.0
+
 @onready var p1: Player = $Player
 @onready var p2: Player = $Player2
 @onready var p1_hp_bar: ProgressBar = $CanvasLayer/HUD/P1HPBar
@@ -23,6 +28,7 @@ var p1_hit_tween: Tween
 var p2_hit_tween: Tween
 
 func _ready() -> void:
+	_apply_play_area_bounds()
 	_style_hud()
 	_init_bar(p1_hp_bar, p1.max_hp)
 	_init_bar(p2_hp_bar, p2.max_hp)
@@ -32,6 +38,14 @@ func _ready() -> void:
 	p2.defeated.connect(_on_player_defeated)
 	win_panel.visible = false
 	restart_button.pressed.connect(_on_restart_pressed)
+
+func _apply_play_area_bounds() -> void:
+	var bounds := Rect2(
+		Vector2(play_area_left, play_area_top),
+		Vector2(play_area_right - play_area_left, play_area_bottom - play_area_top)
+	)
+	p1.set_play_area_bounds(bounds)
+	p2.set_play_area_bounds(bounds)
 
 func _init_bar(bar: ProgressBar, max_value: float) -> void:
 	bar.min_value = 0.0
