@@ -1,0 +1,57 @@
+{
+  "character": {
+    "id": "7700706d-3945-4209-9eb6-99c5cafd2d33",
+    "name": "Crystal Deer Sentinel",
+    "prompt": "a crystal deer sentinel with translucent gemstone skin and glowing sapphire antlers, wielding a long prism spear surrounded by floating shards of ice, wearing elegant armor crafted from frozen branches and silver moss, pixel art, side view",
+    "size": {
+      "width": 68,
+      "height": 68
+    },
+    "template_id": "mannequin",
+    "directions": 8,
+    "view": "side",
+    "created_at": "2026-05-11T22:40:33.927138+00:00"
+  },
+  "frames": {
+    "rotations": {
+      "south": "rotations/south.png",
+      "south-east": "rotations/south-east.png",
+      "east": "rotations/east.png",
+      "north-east": "rotations/north-east.png",
+      "north": "rotations/north.png",
+      "north-west": "rotations/north-west.png",
+      "west": "rotations/west.png",
+      "south-west": "rotations/south-west.png"
+    },
+    "animations": {
+      "walking-482f3a21": {
+        "east": [
+          "animations/walking-482f3a21/east/frame_000.png",
+          "animations/walking-482f3a21/east/frame_001.png",
+          "animations/walking-482f3a21/east/frame_002.png",
+          "animations/walking-482f3a21/east/frame_003.png",
+          "animations/walking-482f3a21/east/frame_004.png",
+          "animations/walking-482f3a21/east/frame_005.png"
+        ]
+      },
+      "hurricane_kick-013d9c13": {
+        "east": [
+          "animations/hurricane_kick-013d9c13/east/frame_000.png",
+          "animations/hurricane_kick-013d9c13/east/frame_001.png",
+          "animations/hurricane_kick-013d9c13/east/frame_002.png",
+          "animations/hurricane_kick-013d9c13/east/frame_003.png"
+        ]
+      },
+      "animating-435dbb11": {
+        "east": [
+          "animations/animating-435dbb11/east/frame_000.png",
+          "animations/animating-435dbb11/east/frame_001.png",
+          "animations/animating-435dbb11/east/frame_002.png",
+          "animations/animating-435dbb11/east/frame_003.png"
+        ]
+      }
+    }
+  },
+  "export_version": "2.0",
+  "export_date": "2026-05-11T22:54:03.680663"
+}

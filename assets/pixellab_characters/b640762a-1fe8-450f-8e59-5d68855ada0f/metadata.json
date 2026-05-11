@@ -1,0 +1,57 @@
+{
+  "character": {
+    "id": "b640762a-1fe8-450f-8e59-5d68855ada0f",
+    "name": "Panda Monk",
+    "prompt": "a panda monk wielding twin bamboo chakrams glowing with wind energy, wearing layered robes stitched from giant leaves, feathers, and braided vines, with a floating lantern halo made of tiny blossoms and fireflies around its head, pixel art, side view",
+    "size": {
+      "width": 68,
+      "height": 68
+    },
+    "template_id": "mannequin",
+    "directions": 8,
+    "view": "side",
+    "created_at": "2026-05-11T20:24:53.417714+00:00"
+  },
+  "frames": {
+    "rotations": {
+      "south": "rotations/south.png",
+      "south-east": "rotations/south-east.png",
+      "east": "rotations/east.png",
+      "north-east": "rotations/north-east.png",
+      "north": "rotations/north.png",
+      "north-west": "rotations/north-west.png",
+      "west": "rotations/west.png",
+      "south-west": "rotations/south-west.png"
+    },
+    "animations": {
+      "walking-1af310df": {
+        "east": [
+          "animations/walking-1af310df/east/frame_000.png",
+          "animations/walking-1af310df/east/frame_001.png",
+          "animations/walking-1af310df/east/frame_002.png",
+          "animations/walking-1af310df/east/frame_003.png",
+          "animations/walking-1af310df/east/frame_004.png",
+          "animations/walking-1af310df/east/frame_005.png"
+        ]
+      },
+      "animating-f270f4c5": {
+        "east": [
+          "animations/animating-f270f4c5/east/frame_000.png",
+          "animations/animating-f270f4c5/east/frame_001.png",
+          "animations/animating-f270f4c5/east/frame_002.png",
+          "animations/animating-f270f4c5/east/frame_003.png"
+        ]
+      },
+      "hurricane_kick-2d020567": {
+        "east": [
+          "animations/hurricane_kick-2d020567/east/frame_000.png",
+          "animations/hurricane_kick-2d020567/east/frame_001.png",
+          "animations/hurricane_kick-2d020567/east/frame_002.png",
+          "animations/hurricane_kick-2d020567/east/frame_003.png"
+        ]
+      }
+    }
+  },
+  "export_version": "2.0",
+  "export_date": "2026-05-11T22:08:33.320935"
+}

@@ -1,6 +1,7 @@
 extends Control
 
-const ANIMATIONS_ROOT: String = "res://assets/animations"
+const CLEAN_ANIMATIONS_ROOT: String = "res://assets/clean_animations"
+const ALL_ANIMATIONS_ROOT: String = "res://assets/animations"
 const GENERATION_SCRIPT_PATH: String = "res://scripts/python_ai_generation/pixellab_generation_script.py"
 const GENERATION_PROGRESS_FILE: String = "user://animation_progress.json"
 const REQUEST_FILE_PATH: String = "user://animation_request.json"
@@ -21,6 +22,7 @@ const COLOR_BUTTON: Color = Color(0.13, 0.19, 0.19, 1.0)
 const COLOR_BUTTON_HOVER: Color = Color(0.18, 0.28, 0.24, 1.0)
 
 var card_grid: GridContainer
+var roster_toggle_button: Button
 var title_field: LineEdit
 var description_field: TextEdit
 var reference_image_path_field: LineEdit
@@ -35,6 +37,7 @@ var preview_animations: Array[Dictionary] = []
 var generation_thread: Thread
 var progress_timer: Timer
 var generation_progress_file_path: String = ""
+var show_all_characters: bool = false
 
 var current_player: int = 1
 
@@ -104,11 +107,22 @@ func _build_ui() -> void:
 	existing_box.add_theme_constant_override("separation", 10)
 	existing_margin.add_child(existing_box)
 
+	var roster_header := HBoxContainer.new()
+	roster_header.add_theme_constant_override("separation", 10)
+	existing_box.add_child(roster_header)
+
 	var existing_title := Label.new()
 	existing_title.text = "Fighter Roster"
+	existing_title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	existing_title.add_theme_font_size_override("font_size", 20)
 	existing_title.add_theme_color_override("font_color", COLOR_TEXT)
-	existing_box.add_child(existing_title)
+	roster_header.add_child(existing_title)
+
+	roster_toggle_button = Button.new()
+	_style_button(roster_toggle_button, false)
+	roster_toggle_button.pressed.connect(_on_roster_toggle_pressed)
+	roster_header.add_child(roster_toggle_button)
+	_refresh_roster_toggle()
 
 	var scroll := ScrollContainer.new()
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -234,7 +248,29 @@ func _load_character_cards() -> void:
 
 func _discover_characters() -> Array[Dictionary]:
 	var characters: Array[Dictionary] = []
-	var dir := DirAccess.open(ANIMATIONS_ROOT)
+	var seen_roots := {}
+	for root in _get_roster_roots():
+		for character in _discover_characters_in_root(root):
+			var character_root := str(character["root"])
+			if seen_roots.has(character_root):
+				continue
+			seen_roots[character_root] = true
+			characters.append(character)
+
+	characters.sort_custom(func(left: Dictionary, right: Dictionary) -> bool:
+		return str(left["name"]).naturalnocasecmp_to(str(right["name"])) < 0
+	)
+	return characters
+
+func _get_roster_roots() -> Array[String]:
+	var roots: Array[String] = [CLEAN_ANIMATIONS_ROOT]
+	if show_all_characters:
+		roots.append(ALL_ANIMATIONS_ROOT)
+	return roots
+
+func _discover_characters_in_root(root_path: String) -> Array[Dictionary]:
+	var characters: Array[Dictionary] = []
+	var dir := DirAccess.open(root_path)
 	if dir == null:
 		return characters
 
@@ -242,7 +278,7 @@ func _discover_characters() -> Array[Dictionary]:
 	var folder_name := dir.get_next()
 	while not folder_name.is_empty():
 		if dir.current_is_dir() and not folder_name.begins_with("."):
-			var character_root := ANIMATIONS_ROOT.path_join(folder_name)
+			var character_root := root_path.path_join(folder_name)
 			var action_folders := _find_action_folders(character_root)
 			if action_folders.has("idle"):
 				characters.append({
@@ -254,10 +290,6 @@ func _discover_characters() -> Array[Dictionary]:
 				})
 		folder_name = dir.get_next()
 	dir.list_dir_end()
-
-	characters.sort_custom(func(left: Dictionary, right: Dictionary) -> bool:
-		return str(left["name"]).naturalnocasecmp_to(str(right["name"])) < 0
-	)
 	return characters
 
 func _find_action_folders(character_root: String) -> Dictionary:
@@ -456,6 +488,16 @@ func _style_button(button: Button, primary: bool) -> void:
 	button.add_theme_color_override("font_color", COLOR_TEXT)
 	button.add_theme_color_override("font_hover_color", Color.WHITE)
 	button.add_theme_font_size_override("font_size", 14)
+
+func _refresh_roster_toggle() -> void:
+	if roster_toggle_button == null:
+		return
+	roster_toggle_button.text = "Clean Roster" if show_all_characters else "All Characters"
+
+func _on_roster_toggle_pressed() -> void:
+	show_all_characters = not show_all_characters
+	_refresh_roster_toggle()
+	_load_character_cards()
 
 func _style_character_card(card: Button) -> void:
 	card.add_theme_stylebox_override("normal", _make_card_style(Color(0.075, 0.085, 0.12, 1.0), Color(0.23, 0.40, 0.40, 1.0)))

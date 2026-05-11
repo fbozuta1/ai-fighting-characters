@@ -1,0 +1,60 @@
+{
+  "character": {
+    "id": "b9685950-b641-42a9-819c-98f72d1ff117",
+    "name": "Treant Berserker",
+    "prompt": "a treant berserker wielding an enormous molten sap axe carved from an ancient tree trunk, body covered in glowing mushrooms, hanging moss, and cracked bark armor with roots crawling across its limbs, crowned with antlers blooming with flowers, pixel art, side view",
+    "size": {
+      "width": 68,
+      "height": 68
+    },
+    "template_id": "mannequin",
+    "directions": 8,
+    "view": "side",
+    "created_at": "2026-05-11T20:24:54.377019+00:00"
+  },
+  "frames": {
+    "rotations": {
+      "south": "rotations/south.png",
+      "south-east": "rotations/south-east.png",
+      "east": "rotations/east.png",
+      "north-east": "rotations/north-east.png",
+      "north": "rotations/north.png",
+      "north-west": "rotations/north-west.png",
+      "west": "rotations/west.png",
+      "south-west": "rotations/south-west.png"
+    },
+    "animations": {
+      "animating-0927f8c4": {
+        "east": [
+          "animations/animating-0927f8c4/east/frame_000.png",
+          "animations/animating-0927f8c4/east/frame_001.png",
+          "animations/animating-0927f8c4/east/frame_002.png",
+          "animations/animating-0927f8c4/east/frame_003.png",
+          "animations/animating-0927f8c4/east/frame_004.png",
+          "animations/animating-0927f8c4/east/frame_005.png",
+          "animations/animating-0927f8c4/east/frame_006.png"
+        ]
+      },
+      "walking-b306e858": {
+        "east": [
+          "animations/walking-b306e858/east/frame_000.png",
+          "animations/walking-b306e858/east/frame_001.png",
+          "animations/walking-b306e858/east/frame_002.png",
+          "animations/walking-b306e858/east/frame_003.png",
+          "animations/walking-b306e858/east/frame_004.png",
+          "animations/walking-b306e858/east/frame_005.png"
+        ]
+      },
+      "animating-d906600f": {
+        "east": [
+          "animations/animating-d906600f/east/frame_000.png",
+          "animations/animating-d906600f/east/frame_001.png",
+          "animations/animating-d906600f/east/frame_002.png",
+          "animations/animating-d906600f/east/frame_003.png"
+        ]
+      }
+    }
+  },
+  "export_version": "2.0",
+  "export_date": "2026-05-11T22:12:21.048496"
+}

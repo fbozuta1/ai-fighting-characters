@@ -1,0 +1,72 @@
+{
+  "character": {
+    "id": "a4455911-f8cf-4671-ab9b-7f67f5b807be",
+    "name": "Ember Warden",
+    "prompt": "A legendary warrior called the Ember Warden.  A heavily armored knight from a forgotten volcanic kingdom. The armor is forged from blackened steel with glowing magma cracks running through the chestplate, gauntlets, and helmet visor as if fire burns inside the suit itself. The helmet has two curved horn-like crests made from obsidian.  The warrior carries an enormous two-handed blade called \u201cAshfang\u201d, a chipped greatsword with molten lava glowing through engraved runes along the edge. The sword leaves behind faint ember particles when swung.  Over the armor hangs a torn crimson cape burned at the ends, constantly releasing tiny sparks into the air. Around the waist are chains, old talismans, and small volcanic stones glowing orange.  The character\u2019s left shoulder armor is oversized and shaped like a dragon skull, while the right arm is wrapped in dark cloth and leather straps from years of battle. Heavy boots leave scorched footprints for a second after stepping.  Idle animation ideas:  Heat distortion subtly rising around the armor Embers drifting upward Sword glowing brighter occasionally Cape slowly moving in invisible hot wind  Color palette:  Black steel Burning orange Deep crimson red Ash gray Bright molten yellow highlights  Style:  Dark fantasy warrior Intimidating silhouette Designed for a side-scrolling action RPG or soulslike pixel art game",
+    "size": {
+      "width": 80,
+      "height": 80
+    },
+    "template_id": "mannequin",
+    "directions": 8,
+    "view": "low top-down",
+    "created_at": "2026-05-11T22:15:49.581796+00:00"
+  },
+  "frames": {
+    "rotations": {
+      "south": "rotations/south.png",
+      "south-east": "rotations/south-east.png",
+      "east": "rotations/east.png",
+      "north-east": "rotations/north-east.png",
+      "north": "rotations/north.png",
+      "north-west": "rotations/north-west.png",
+      "west": "rotations/west.png",
+      "south-west": "rotations/south-west.png"
+    },
+    "animations": {
+      "Fight_Stance_Idle-e7366348": {
+        "east": [
+          "animations/Fight_Stance_Idle-e7366348/east/frame_000.png",
+          "animations/Fight_Stance_Idle-e7366348/east/frame_001.png",
+          "animations/Fight_Stance_Idle-e7366348/east/frame_002.png",
+          "animations/Fight_Stance_Idle-e7366348/east/frame_003.png",
+          "animations/Fight_Stance_Idle-e7366348/east/frame_004.png",
+          "animations/Fight_Stance_Idle-e7366348/east/frame_005.png",
+          "animations/Fight_Stance_Idle-e7366348/east/frame_006.png",
+          "animations/Fight_Stance_Idle-e7366348/east/frame_007.png"
+        ]
+      },
+      "animation-2dd50ed0": {
+        "south": [
+          "animations/animation-2dd50ed0/south/frame_000.png",
+          "animations/animation-2dd50ed0/south/frame_001.png",
+          "animations/animation-2dd50ed0/south/frame_002.png",
+          "animations/animation-2dd50ed0/south/frame_003.png",
+          "animations/animation-2dd50ed0/south/frame_004.png",
+          "animations/animation-2dd50ed0/south/frame_005.png"
+        ],
+        "east": [
+          "animations/animation-2dd50ed0/east/frame_000.png",
+          "animations/animation-2dd50ed0/east/frame_001.png",
+          "animations/animation-2dd50ed0/east/frame_002.png",
+          "animations/animation-2dd50ed0/east/frame_003.png",
+          "animations/animation-2dd50ed0/east/frame_004.png",
+          "animations/animation-2dd50ed0/east/frame_005.png"
+        ]
+      },
+      "High_Kick-c6cba690": {
+        "east": [
+          "animations/High_Kick-c6cba690/east/frame_000.png",
+          "animations/High_Kick-c6cba690/east/frame_001.png",
+          "animations/High_Kick-c6cba690/east/frame_002.png",
+          "animations/High_Kick-c6cba690/east/frame_003.png",
+          "animations/High_Kick-c6cba690/east/frame_004.png",
+          "animations/High_Kick-c6cba690/east/frame_005.png",
+          "animations/High_Kick-c6cba690/east/frame_006.png"
+        ]
+      }
+    }
+  },
+  "export_version": "2.0",
+  "export_date": "2026-05-11T22:50:42.659631"
+}

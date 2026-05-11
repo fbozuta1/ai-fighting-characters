@@ -1,0 +1,60 @@
+{
+  "character": {
+    "id": "bf73138a-a30d-4451-9f89-b03231fb0618",
+    "name": "Owl Sorcerer",
+    "prompt": "an owl wizard with a glowing ivy staff, wearing bark robes with feathered sleeves and wooden talons, crowned with flower petals and floating stars, pixel art, side view",
+    "size": {
+      "width": 68,
+      "height": 68
+    },
+    "template_id": "mannequin",
+    "directions": 8,
+    "view": "side",
+    "created_at": "2026-05-11T21:05:11.804837+00:00"
+  },
+  "frames": {
+    "rotations": {
+      "south": "rotations/south.png",
+      "south-east": "rotations/south-east.png",
+      "east": "rotations/east.png",
+      "north-east": "rotations/north-east.png",
+      "north": "rotations/north.png",
+      "north-west": "rotations/north-west.png",
+      "west": "rotations/west.png",
+      "south-west": "rotations/south-west.png"
+    },
+    "animations": {
+      "walking-cb933d87": {
+        "east": [
+          "animations/walking-cb933d87/east/frame_000.png",
+          "animations/walking-cb933d87/east/frame_001.png",
+          "animations/walking-cb933d87/east/frame_002.png",
+          "animations/walking-cb933d87/east/frame_003.png",
+          "animations/walking-cb933d87/east/frame_004.png",
+          "animations/walking-cb933d87/east/frame_005.png"
+        ]
+      },
+      "animating-d01e03d6": {
+        "east": [
+          "animations/animating-d01e03d6/east/frame_000.png",
+          "animations/animating-d01e03d6/east/frame_001.png",
+          "animations/animating-d01e03d6/east/frame_002.png",
+          "animations/animating-d01e03d6/east/frame_003.png"
+        ]
+      },
+      "uppercut-bf2a7b3b": {
+        "east": [
+          "animations/uppercut-bf2a7b3b/east/frame_000.png",
+          "animations/uppercut-bf2a7b3b/east/frame_001.png",
+          "animations/uppercut-bf2a7b3b/east/frame_002.png",
+          "animations/uppercut-bf2a7b3b/east/frame_003.png",
+          "animations/uppercut-bf2a7b3b/east/frame_004.png",
+          "animations/uppercut-bf2a7b3b/east/frame_005.png",
+          "animations/uppercut-bf2a7b3b/east/frame_006.png"
+        ]
+      }
+    }
+  },
+  "export_version": "2.0",
+  "export_date": "2026-05-11T22:12:44.739327"
+}

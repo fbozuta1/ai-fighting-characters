@@ -1,0 +1,71 @@
+{
+  "character": {
+    "id": "efa87c47-badf-4167-a124-3a9010a00ed9",
+    "name": "A tall, mystical wanderer known as the Ashen Stargazer. The character wears a long dark-blue robe stitched with glowing constellations that slowly pulse like a night sky. Around their shoulders floats a tattered silver scarf that moves as if underwater. Their face is hidden behind an ancient cracked porcelain mask with faint cyan light leaking through the cracks where the eyes should be.  They carry a massive crescent-shaped staff forged from black metal and crystal, with a tiny orbiting moon rotating around the tip. Small glowing runes drift around their body like fireflies. One arm is partially transformed into translucent cosmic energy, revealing stars and nebulae beneath the skin.  The boots are armored with worn bronze plates, and pieces of floating stone orbit around their feet whenever they move. Their idle animation could include the robe subtly waving, runes orbiting slowly, and the moon artifact rotating gently.  Color palette:  Deep navy blue Cyan glow Silver-white highlights Dark bronze accents Purple cosmic particles  Style:  Dark fantasy mixed with cosmic mysticism Detailed but readable silhouette for a 2D game sprite Slightly eerie but heroic presence",
+    "prompt": "A tall, mystical wanderer known as the Ashen Stargazer. The character wears a long dark-blue robe stitched with glowing constellations that slowly pulse like a night sky. Around their shoulders floats a tattered silver scarf that moves as if underwater. Their face is hidden behind an ancient cracked porcelain mask with faint cyan light leaking through the cracks where the eyes should be.  They carry a massive crescent-shaped staff forged from black metal and crystal, with a tiny orbiting moon rotating around the tip. Small glowing runes drift around their body like fireflies. One arm is partially transformed into translucent cosmic energy, revealing stars and nebulae beneath the skin.  The boots are armored with worn bronze plates, and pieces of floating stone orbit around their feet whenever they move. Their idle animation could include the robe subtly waving, runes orbiting slowly, and the moon artifact rotating gently.  Color palette:  Deep navy blue Cyan glow Silver-white highlights Dark bronze accents Purple cosmic particles  Style:  Dark fantasy mixed with cosmic mysticism Detailed but readable silhouette for a 2D game sprite Slightly eerie but heroic presence",
+    "size": {
+      "width": 68,
+      "height": 68
+    },
+    "template_id": "mannequin",
+    "directions": 8,
+    "view": "low top-down",
+    "created_at": "2026-05-11T21:01:19.342381+00:00"
+  },
+  "frames": {
+    "rotations": {
+      "south": "rotations/south.png",
+      "south-east": "rotations/south-east.png",
+      "east": "rotations/east.png",
+      "north-east": "rotations/north-east.png",
+      "north": "rotations/north.png",
+      "north-west": "rotations/north-west.png",
+      "west": "rotations/west.png",
+      "south-west": "rotations/south-west.png"
+    },
+    "animations": {
+      "Fight_Stance_Idle-4ca7d603": {
+        "south": [
+          "animations/Fight_Stance_Idle-4ca7d603/south/frame_000.png",
+          "animations/Fight_Stance_Idle-4ca7d603/south/frame_001.png",
+          "animations/Fight_Stance_Idle-4ca7d603/south/frame_002.png",
+          "animations/Fight_Stance_Idle-4ca7d603/south/frame_003.png",
+          "animations/Fight_Stance_Idle-4ca7d603/south/frame_004.png",
+          "animations/Fight_Stance_Idle-4ca7d603/south/frame_005.png",
+          "animations/Fight_Stance_Idle-4ca7d603/south/frame_006.png",
+          "animations/Fight_Stance_Idle-4ca7d603/south/frame_007.png"
+        ],
+        "east": [
+          "animations/Fight_Stance_Idle-4ca7d603/east/frame_000.png",
+          "animations/Fight_Stance_Idle-4ca7d603/east/frame_001.png",
+          "animations/Fight_Stance_Idle-4ca7d603/east/frame_002.png",
+          "animations/Fight_Stance_Idle-4ca7d603/east/frame_003.png",
+          "animations/Fight_Stance_Idle-4ca7d603/east/frame_004.png",
+          "animations/Fight_Stance_Idle-4ca7d603/east/frame_005.png",
+          "animations/Fight_Stance_Idle-4ca7d603/east/frame_006.png",
+          "animations/Fight_Stance_Idle-4ca7d603/east/frame_007.png"
+        ]
+      },
+      "animation-2ab4c9b8": {
+        "east": [
+          "animations/animation-2ab4c9b8/east/frame_000.png",
+          "animations/animation-2ab4c9b8/east/frame_001.png",
+          "animations/animation-2ab4c9b8/east/frame_002.png",
+          "animations/animation-2ab4c9b8/east/frame_003.png",
+          "animations/animation-2ab4c9b8/east/frame_004.png",
+          "animations/animation-2ab4c9b8/east/frame_005.png"
+        ]
+      },
+      "Hurricane_Kick-bc56cddf": {
+        "east": [
+          "animations/Hurricane_Kick-bc56cddf/east/frame_000.png",
+          "animations/Hurricane_Kick-bc56cddf/east/frame_001.png",
+          "animations/Hurricane_Kick-bc56cddf/east/frame_002.png",
+          "animations/Hurricane_Kick-bc56cddf/east/frame_003.png"
+        ]
+      }
+    }
+  },
+  "export_version": "2.0",
+  "export_date": "2026-05-11T22:12:42.021797"
+}
