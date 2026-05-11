@@ -1,0 +1,59 @@
+{
+  "character": {
+    "id": "a906c67a-b3e9-4c2d-ad36-736624b0b16e",
+    "name": "Frog Warrior",
+    "prompt": "a frog warrior wielding water sword with a flower like crown wearing armor made of wood and roots, pixel art, side view",
+    "size": {
+      "width": 68,
+      "height": 68
+    },
+    "template_id": "mannequin",
+    "directions": 8,
+    "view": "side",
+    "created_at": "2026-05-11T19:51:26.429429+00:00"
+  },
+  "frames": {
+    "rotations": {
+      "south": "rotations/south.png",
+      "south-east": "rotations/south-east.png",
+      "east": "rotations/east.png",
+      "north-east": "rotations/north-east.png",
+      "north": "rotations/north.png",
+      "north-west": "rotations/north-west.png",
+      "west": "rotations/west.png",
+      "south-west": "rotations/south-west.png"
+    },
+    "animations": {
+      "animating-cad8455a": {
+        "east": [
+          "animations/animating-cad8455a/east/frame_000.png",
+          "animations/animating-cad8455a/east/frame_001.png",
+          "animations/animating-cad8455a/east/frame_002.png",
+          "animations/animating-cad8455a/east/frame_003.png"
+        ]
+      },
+      "cross_punch_attack-ee88a56a": {
+        "east": [
+          "animations/cross_punch_attack-ee88a56a/east/frame_000.png",
+          "animations/cross_punch_attack-ee88a56a/east/frame_001.png",
+          "animations/cross_punch_attack-ee88a56a/east/frame_002.png",
+          "animations/cross_punch_attack-ee88a56a/east/frame_003.png",
+          "animations/cross_punch_attack-ee88a56a/east/frame_004.png",
+          "animations/cross_punch_attack-ee88a56a/east/frame_005.png"
+        ]
+      },
+      "walking-b1bf7532": {
+        "east": [
+          "animations/walking-b1bf7532/east/frame_000.png",
+          "animations/walking-b1bf7532/east/frame_001.png",
+          "animations/walking-b1bf7532/east/frame_002.png",
+          "animations/walking-b1bf7532/east/frame_003.png",
+          "animations/walking-b1bf7532/east/frame_004.png",
+          "animations/walking-b1bf7532/east/frame_005.png"
+        ]
+      }
+    }
+  },
+  "export_version": "2.0",
+  "export_date": "2026-05-11T20:10:15.296311"
+}

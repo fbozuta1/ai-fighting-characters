@@ -1,0 +1,59 @@
+{
+  "character": {
+    "id": "36b8d8cc-0a2e-471e-87a7-788e43596d1a",
+    "name": "Stone Golem",
+    "prompt": "A stone golem wearing iron armor and a stone mace with steel boots",
+    "size": {
+      "width": 68,
+      "height": 68
+    },
+    "template_id": "mannequin",
+    "directions": 8,
+    "view": "side",
+    "created_at": "2026-05-11T19:13:24.093079+00:00"
+  },
+  "frames": {
+    "rotations": {
+      "south": "rotations/south.png",
+      "south-east": "rotations/south-east.png",
+      "east": "rotations/east.png",
+      "north-east": "rotations/north-east.png",
+      "north": "rotations/north.png",
+      "north-west": "rotations/north-west.png",
+      "west": "rotations/west.png",
+      "south-west": "rotations/south-west.png"
+    },
+    "animations": {
+      "walking-fd40876c": {
+        "east": [
+          "animations/walking-fd40876c/east/frame_000.png",
+          "animations/walking-fd40876c/east/frame_001.png",
+          "animations/walking-fd40876c/east/frame_002.png",
+          "animations/walking-fd40876c/east/frame_003.png",
+          "animations/walking-fd40876c/east/frame_004.png",
+          "animations/walking-fd40876c/east/frame_005.png"
+        ]
+      },
+      "animating-944e0099": {
+        "east": [
+          "animations/animating-944e0099/east/frame_000.png",
+          "animations/animating-944e0099/east/frame_001.png",
+          "animations/animating-944e0099/east/frame_002.png",
+          "animations/animating-944e0099/east/frame_003.png"
+        ]
+      },
+      "cross_punch_attack-133f0bf2": {
+        "east": [
+          "animations/cross_punch_attack-133f0bf2/east/frame_000.png",
+          "animations/cross_punch_attack-133f0bf2/east/frame_001.png",
+          "animations/cross_punch_attack-133f0bf2/east/frame_002.png",
+          "animations/cross_punch_attack-133f0bf2/east/frame_003.png",
+          "animations/cross_punch_attack-133f0bf2/east/frame_004.png",
+          "animations/cross_punch_attack-133f0bf2/east/frame_005.png"
+        ]
+      }
+    }
+  },
+  "export_version": "2.0",
+  "export_date": "2026-05-11T19:32:27.080927"
+}

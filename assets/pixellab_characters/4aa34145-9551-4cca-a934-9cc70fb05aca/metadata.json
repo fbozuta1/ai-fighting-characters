@@ -1,0 +1,60 @@
+{
+  "character": {
+    "id": "4aa34145-9551-4cca-a934-9cc70fb05aca",
+    "name": "Turtle Paladin",
+    "prompt": "a turtle paladin wielding a massive coral hammer infused with tidal energy, wearing heavy armor formed from mossy stone, driftwood, and glowing seashells, crowned with blooming lotus petals and hanging vines, pixel art, side view",
+    "size": {
+      "width": 68,
+      "height": 68
+    },
+    "template_id": "mannequin",
+    "directions": 8,
+    "view": "side",
+    "created_at": "2026-05-11T19:51:26.63346+00:00"
+  },
+  "frames": {
+    "rotations": {
+      "south": "rotations/south.png",
+      "south-east": "rotations/south-east.png",
+      "east": "rotations/east.png",
+      "north-east": "rotations/north-east.png",
+      "north": "rotations/north.png",
+      "north-west": "rotations/north-west.png",
+      "west": "rotations/west.png",
+      "south-west": "rotations/south-west.png"
+    },
+    "animations": {
+      "walking-c841b16e": {
+        "east": [
+          "animations/walking-c841b16e/east/frame_000.png",
+          "animations/walking-c841b16e/east/frame_001.png",
+          "animations/walking-c841b16e/east/frame_002.png",
+          "animations/walking-c841b16e/east/frame_003.png",
+          "animations/walking-c841b16e/east/frame_004.png",
+          "animations/walking-c841b16e/east/frame_005.png"
+        ]
+      },
+      "uppercut-587c4fb0": {
+        "east": [
+          "animations/uppercut-587c4fb0/east/frame_000.png",
+          "animations/uppercut-587c4fb0/east/frame_001.png",
+          "animations/uppercut-587c4fb0/east/frame_002.png",
+          "animations/uppercut-587c4fb0/east/frame_003.png",
+          "animations/uppercut-587c4fb0/east/frame_004.png",
+          "animations/uppercut-587c4fb0/east/frame_005.png",
+          "animations/uppercut-587c4fb0/east/frame_006.png"
+        ]
+      },
+      "animating-c51296e3": {
+        "east": [
+          "animations/animating-c51296e3/east/frame_000.png",
+          "animations/animating-c51296e3/east/frame_001.png",
+          "animations/animating-c51296e3/east/frame_002.png",
+          "animations/animating-c51296e3/east/frame_003.png"
+        ]
+      }
+    }
+  },
+  "export_version": "2.0",
+  "export_date": "2026-05-11T20:14:25.000079"
+}
