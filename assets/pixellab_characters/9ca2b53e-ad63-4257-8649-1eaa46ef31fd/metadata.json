@@ -1,0 +1,66 @@
+{
+  "group_id": null,
+  "states": [
+    {
+      "character": {
+        "id": "9ca2b53e-ad63-4257-8649-1eaa46ef31fd",
+        "name": "Skeletal Ram Knight",
+        "prompt": "a skeletal knight with ram skull and ghost fire, wielding a heavy chain mace, wearing charred bone armor, pixel art, side view",
+        "size": {
+          "width": 68,
+          "height": 68
+        },
+        "template_id": "mannequin",
+        "directions": 8,
+        "view": "side",
+        "created_at": "2026-05-11T23:11:10.615103+00:00"
+      },
+      "folder": "states/Skeletal_Ram_Knight",
+      "frames": {
+        "rotations": {
+          "south": "states/Skeletal_Ram_Knight/rotations/south.png",
+          "south-east": "states/Skeletal_Ram_Knight/rotations/south-east.png",
+          "east": "states/Skeletal_Ram_Knight/rotations/east.png",
+          "north-east": "states/Skeletal_Ram_Knight/rotations/north-east.png",
+          "north": "states/Skeletal_Ram_Knight/rotations/north.png",
+          "north-west": "states/Skeletal_Ram_Knight/rotations/north-west.png",
+          "west": "states/Skeletal_Ram_Knight/rotations/west.png",
+          "south-west": "states/Skeletal_Ram_Knight/rotations/south-west.png"
+        },
+        "animations": {
+          "roundhouse_kick-08f10f86": {
+            "east": [
+              "states/Skeletal_Ram_Knight/animations/roundhouse_kick-08f10f86/east/frame_000.png",
+              "states/Skeletal_Ram_Knight/animations/roundhouse_kick-08f10f86/east/frame_001.png",
+              "states/Skeletal_Ram_Knight/animations/roundhouse_kick-08f10f86/east/frame_002.png",
+              "states/Skeletal_Ram_Knight/animations/roundhouse_kick-08f10f86/east/frame_003.png",
+              "states/Skeletal_Ram_Knight/animations/roundhouse_kick-08f10f86/east/frame_004.png",
+              "states/Skeletal_Ram_Knight/animations/roundhouse_kick-08f10f86/east/frame_005.png",
+              "states/Skeletal_Ram_Knight/animations/roundhouse_kick-08f10f86/east/frame_006.png"
+            ]
+          },
+          "animating-49904f5e": {
+            "east": [
+              "states/Skeletal_Ram_Knight/animations/animating-49904f5e/east/frame_000.png",
+              "states/Skeletal_Ram_Knight/animations/animating-49904f5e/east/frame_001.png",
+              "states/Skeletal_Ram_Knight/animations/animating-49904f5e/east/frame_002.png",
+              "states/Skeletal_Ram_Knight/animations/animating-49904f5e/east/frame_003.png"
+            ]
+          },
+          "walking-3b7b1360": {
+            "east": [
+              "states/Skeletal_Ram_Knight/animations/walking-3b7b1360/east/frame_000.png",
+              "states/Skeletal_Ram_Knight/animations/walking-3b7b1360/east/frame_001.png",
+              "states/Skeletal_Ram_Knight/animations/walking-3b7b1360/east/frame_002.png",
+              "states/Skeletal_Ram_Knight/animations/walking-3b7b1360/east/frame_003.png",
+              "states/Skeletal_Ram_Knight/animations/walking-3b7b1360/east/frame_004.png",
+              "states/Skeletal_Ram_Knight/animations/walking-3b7b1360/east/frame_005.png"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "export_version": "3.0",
+  "export_date": "2026-05-13T18:34:01.328569"
+}

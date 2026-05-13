@@ -1,0 +1,89 @@
+{
+  "group_id": null,
+  "states": [
+    {
+      "character": {
+        "id": "1e6b1e05-a1cd-4a2d-b20b-880ea4b4741b",
+        "name": "An ogre mage wearing black robes and carrying a magical shiny staff",
+        "prompt": "An ogre mage wearing black robes and carrying a magical shiny staff",
+        "size": {
+          "width": 112,
+          "height": 112
+        },
+        "template_id": "mannequin",
+        "directions": 8,
+        "view": "low top-down",
+        "created_at": "2026-05-11T19:44:40.438415+00:00"
+      },
+      "folder": "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma",
+      "frames": {
+        "rotations": {
+          "south": "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma/rotations/south.png",
+          "south-east": "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma/rotations/south-east.png",
+          "east": "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma/rotations/east.png",
+          "north-east": "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma/rotations/north-east.png",
+          "north": "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma/rotations/north.png",
+          "north-west": "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma/rotations/north-west.png",
+          "west": "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma/rotations/west.png",
+          "south-west": "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma/rotations/south-west.png"
+        },
+        "animations": {
+          "High_Kick-54221767": {
+            "south": [
+              "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma/animations/High_Kick-54221767/south/frame_000.png",
+              "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma/animations/High_Kick-54221767/south/frame_001.png",
+              "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma/animations/High_Kick-54221767/south/frame_002.png",
+              "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma/animations/High_Kick-54221767/south/frame_003.png",
+              "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma/animations/High_Kick-54221767/south/frame_004.png",
+              "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma/animations/High_Kick-54221767/south/frame_005.png",
+              "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma/animations/High_Kick-54221767/south/frame_006.png"
+            ],
+            "east": [
+              "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma/animations/High_Kick-54221767/east/frame_000.png",
+              "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma/animations/High_Kick-54221767/east/frame_001.png",
+              "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma/animations/High_Kick-54221767/east/frame_002.png",
+              "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma/animations/High_Kick-54221767/east/frame_003.png",
+              "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma/animations/High_Kick-54221767/east/frame_004.png",
+              "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma/animations/High_Kick-54221767/east/frame_005.png",
+              "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma/animations/High_Kick-54221767/east/frame_006.png"
+            ]
+          },
+          "Breathing_Idle-e0e89e88": {
+            "east": [
+              "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma/animations/Breathing_Idle-e0e89e88/east/frame_000.png",
+              "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma/animations/Breathing_Idle-e0e89e88/east/frame_001.png",
+              "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma/animations/Breathing_Idle-e0e89e88/east/frame_002.png",
+              "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma/animations/Breathing_Idle-e0e89e88/east/frame_003.png"
+            ],
+            "south": [
+              "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma/animations/Breathing_Idle-e0e89e88/south/frame_000.png",
+              "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma/animations/Breathing_Idle-e0e89e88/south/frame_001.png",
+              "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma/animations/Breathing_Idle-e0e89e88/south/frame_002.png",
+              "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma/animations/Breathing_Idle-e0e89e88/south/frame_003.png"
+            ]
+          },
+          "Walking-46dedc91": {
+            "south": [
+              "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma/animations/Walking-46dedc91/south/frame_000.png",
+              "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma/animations/Walking-46dedc91/south/frame_001.png",
+              "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma/animations/Walking-46dedc91/south/frame_002.png",
+              "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma/animations/Walking-46dedc91/south/frame_003.png",
+              "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma/animations/Walking-46dedc91/south/frame_004.png",
+              "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma/animations/Walking-46dedc91/south/frame_005.png"
+            ],
+            "east": [
+              "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma/animations/Walking-46dedc91/east/frame_000.png",
+              "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma/animations/Walking-46dedc91/east/frame_001.png",
+              "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma/animations/Walking-46dedc91/east/frame_002.png",
+              "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma/animations/Walking-46dedc91/east/frame_003.png",
+              "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma/animations/Walking-46dedc91/east/frame_004.png",
+              "states/An_ogre_mage_wearing_black_robes_and_carrying_a_ma/animations/Walking-46dedc91/east/frame_005.png"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "export_version": "3.0",
+  "export_date": "2026-05-13T17:58:45.075153"
+}

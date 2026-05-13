@@ -1,0 +1,99 @@
+{
+  "group_id": null,
+  "states": [
+    {
+      "character": {
+        "id": "ba9258fe-3385-49af-b0e7-97746f586c3b",
+        "name": "A disciplined wandering swordsman known as the Silver Fang Duelist.\nA lean human warrior wearing layered steel-and-leather armor designed for speed rather than heavy protection. The armor is polished but visibly worn from years of travel and battle. A dark sleeveless cloak hangs from one shoulder, fluttering dramatically during movement.\nThe swordsman has medium-length black hair tied loosely behind the head, with several strands falling across a calm but battle-hardened face. A thin scar runs across one eyebrow. The eyes are sharp and focused, giving the feeling of someone constantly analyzing opponents.\nThe weapon is a long elegant sword with a slightly curved silver blade and a detailed crossguard shaped like wolf fangs. The blade reflects faint blue light during attacks, hinting at subtle magical enchantment.\nThe character wears:\n\n\nReinforced leather boots\n\n\nFingerless combat gloves\n\n\nA belt carrying small daggers and potion flasks\n\n\nCloth wraps around the forearms for extra protection\n\n\nAdditional details:\n\n\nOne shoulder plate engraved with an old kingdom insignia\n\n\nSword sheath decorated with faded blue cloth\n\n\nSmall battle cuts and scratches across the armor\n\n\nA silver pendant hanging around the neck\n\n\nIdle animation ideas:\n\n\nResting hand on sword handle\n\n\nCloak moving softly in the wind\n\n\nOccasional blade shine effect\n\n\nCalm breathing stance shifting slightly\n\n\nColor palette:\n\n\nSteel silver\n\n\nDark navy blue\n\n\nBrown leather\n\n\nBlack cloth\n\n\nSubtle icy-blue highlights\n\n\nStyle:\n\n\nClassic fantasy human swordsman\n\n\nHeroic but grounded appearance\n\n\nSuitable for a pixel art RPG, metroidvania, or action-adventure game\n\n",
+        "prompt": "A disciplined wandering swordsman known as the Silver Fang Duelist.\nA lean human warrior wearing layered steel-and-leather armor designed for speed rather than heavy protection. The armor is polished but visibly worn from years of travel and battle. A dark sleeveless cloak hangs from one shoulder, fluttering dramatically during movement.\nThe swordsman has medium-length black hair tied loosely behind the head, with several strands falling across a calm but battle-hardened face. A thin scar runs across one eyebrow. The eyes are sharp and focused, giving the feeling of someone constantly analyzing opponents.\nThe weapon is a long elegant sword with a slightly curved silver blade and a detailed crossguard shaped like wolf fangs. The blade reflects faint blue light during attacks, hinting at subtle magical enchantment.\nThe character wears:\n\n\nReinforced leather boots\n\n\nFingerless combat gloves\n\n\nA belt carrying small daggers and potion flasks\n\n\nCloth wraps around the forearms for extra protection\n\n\nAdditional details:\n\n\nOne shoulder plate engraved with an old kingdom insignia\n\n\nSword sheath decorated with faded blue cloth\n\n\nSmall battle cuts and scratches across the armor\n\n\nA silver pendant hanging around the neck\n\n\nIdle animation ideas:\n\n\nResting hand on sword handle\n\n\nCloak moving softly in the wind\n\n\nOccasional blade shine effect\n\n\nCalm breathing stance shifting slightly\n\n\nColor palette:\n\n\nSteel silver\n\n\nDark navy blue\n\n\nBrown leather\n\n\nBlack cloth\n\n\nSubtle icy-blue highlights\n\n\nStyle:\n\n\nClassic fantasy human swordsman\n\n\nHeroic but grounded appearance\n\n\nSuitable for a pixel art RPG, metroidvania, or action-adventure game\n\n",
+        "size": {
+          "width": 136,
+          "height": 136
+        },
+        "template_id": "mannequin",
+        "directions": 8,
+        "view": "low top-down",
+        "created_at": "2026-05-13T08:44:44.902884+00:00"
+      },
+      "folder": "states/A_disciplined_wandering_swordsman_known_as_the_Sil",
+      "frames": {
+        "rotations": {
+          "south": "states/A_disciplined_wandering_swordsman_known_as_the_Sil/rotations/south.png",
+          "south-east": "states/A_disciplined_wandering_swordsman_known_as_the_Sil/rotations/south-east.png",
+          "east": "states/A_disciplined_wandering_swordsman_known_as_the_Sil/rotations/east.png",
+          "north-east": "states/A_disciplined_wandering_swordsman_known_as_the_Sil/rotations/north-east.png",
+          "north": "states/A_disciplined_wandering_swordsman_known_as_the_Sil/rotations/north.png",
+          "north-west": "states/A_disciplined_wandering_swordsman_known_as_the_Sil/rotations/north-west.png",
+          "west": "states/A_disciplined_wandering_swordsman_known_as_the_Sil/rotations/west.png",
+          "south-west": "states/A_disciplined_wandering_swordsman_known_as_the_Sil/rotations/south-west.png"
+        },
+        "animations": {
+          "animation-221d5611": {
+            "south": [
+              "states/A_disciplined_wandering_swordsman_known_as_the_Sil/animations/animation-221d5611/south/frame_000.png",
+              "states/A_disciplined_wandering_swordsman_known_as_the_Sil/animations/animation-221d5611/south/frame_001.png",
+              "states/A_disciplined_wandering_swordsman_known_as_the_Sil/animations/animation-221d5611/south/frame_002.png",
+              "states/A_disciplined_wandering_swordsman_known_as_the_Sil/animations/animation-221d5611/south/frame_003.png",
+              "states/A_disciplined_wandering_swordsman_known_as_the_Sil/animations/animation-221d5611/south/frame_004.png",
+              "states/A_disciplined_wandering_swordsman_known_as_the_Sil/animations/animation-221d5611/south/frame_005.png"
+            ],
+            "east": [
+              "states/A_disciplined_wandering_swordsman_known_as_the_Sil/animations/animation-221d5611/east/frame_000.png",
+              "states/A_disciplined_wandering_swordsman_known_as_the_Sil/animations/animation-221d5611/east/frame_001.png",
+              "states/A_disciplined_wandering_swordsman_known_as_the_Sil/animations/animation-221d5611/east/frame_002.png",
+              "states/A_disciplined_wandering_swordsman_known_as_the_Sil/animations/animation-221d5611/east/frame_003.png",
+              "states/A_disciplined_wandering_swordsman_known_as_the_Sil/animations/animation-221d5611/east/frame_004.png",
+              "states/A_disciplined_wandering_swordsman_known_as_the_Sil/animations/animation-221d5611/east/frame_005.png"
+            ]
+          },
+          "Fight_Stance_Idle-01dbc48e": {
+            "east": [
+              "states/A_disciplined_wandering_swordsman_known_as_the_Sil/animations/Fight_Stance_Idle-01dbc48e/east/frame_000.png",
+              "states/A_disciplined_wandering_swordsman_known_as_the_Sil/animations/Fight_Stance_Idle-01dbc48e/east/frame_001.png",
+              "states/A_disciplined_wandering_swordsman_known_as_the_Sil/animations/Fight_Stance_Idle-01dbc48e/east/frame_002.png",
+              "states/A_disciplined_wandering_swordsman_known_as_the_Sil/animations/Fight_Stance_Idle-01dbc48e/east/frame_003.png",
+              "states/A_disciplined_wandering_swordsman_known_as_the_Sil/animations/Fight_Stance_Idle-01dbc48e/east/frame_004.png",
+              "states/A_disciplined_wandering_swordsman_known_as_the_Sil/animations/Fight_Stance_Idle-01dbc48e/east/frame_005.png",
+              "states/A_disciplined_wandering_swordsman_known_as_the_Sil/animations/Fight_Stance_Idle-01dbc48e/east/frame_006.png",
+              "states/A_disciplined_wandering_swordsman_known_as_the_Sil/animations/Fight_Stance_Idle-01dbc48e/east/frame_007.png"
+            ]
+          },
+          "Cross_Punch-99afcba0": {
+            "south": [
+              "states/A_disciplined_wandering_swordsman_known_as_the_Sil/animations/Cross_Punch-99afcba0/south/frame_000.png",
+              "states/A_disciplined_wandering_swordsman_known_as_the_Sil/animations/Cross_Punch-99afcba0/south/frame_001.png",
+              "states/A_disciplined_wandering_swordsman_known_as_the_Sil/animations/Cross_Punch-99afcba0/south/frame_002.png",
+              "states/A_disciplined_wandering_swordsman_known_as_the_Sil/animations/Cross_Punch-99afcba0/south/frame_003.png",
+              "states/A_disciplined_wandering_swordsman_known_as_the_Sil/animations/Cross_Punch-99afcba0/south/frame_004.png",
+              "states/A_disciplined_wandering_swordsman_known_as_the_Sil/animations/Cross_Punch-99afcba0/south/frame_005.png"
+            ]
+          },
+          "Fight_Stance_Idle-d3e9c121": {
+            "south": [
+              "states/A_disciplined_wandering_swordsman_known_as_the_Sil/animations/Fight_Stance_Idle-d3e9c121/south/frame_000.png",
+              "states/A_disciplined_wandering_swordsman_known_as_the_Sil/animations/Fight_Stance_Idle-d3e9c121/south/frame_001.png",
+              "states/A_disciplined_wandering_swordsman_known_as_the_Sil/animations/Fight_Stance_Idle-d3e9c121/south/frame_002.png",
+              "states/A_disciplined_wandering_swordsman_known_as_the_Sil/animations/Fight_Stance_Idle-d3e9c121/south/frame_003.png",
+              "states/A_disciplined_wandering_swordsman_known_as_the_Sil/animations/Fight_Stance_Idle-d3e9c121/south/frame_004.png",
+              "states/A_disciplined_wandering_swordsman_known_as_the_Sil/animations/Fight_Stance_Idle-d3e9c121/south/frame_005.png",
+              "states/A_disciplined_wandering_swordsman_known_as_the_Sil/animations/Fight_Stance_Idle-d3e9c121/south/frame_006.png",
+              "states/A_disciplined_wandering_swordsman_known_as_the_Sil/animations/Fight_Stance_Idle-d3e9c121/south/frame_007.png"
+            ]
+          },
+          "Cross_Punch-bfdc8e11": {
+            "east": [
+              "states/A_disciplined_wandering_swordsman_known_as_the_Sil/animations/Cross_Punch-bfdc8e11/east/frame_000.png",
+              "states/A_disciplined_wandering_swordsman_known_as_the_Sil/animations/Cross_Punch-bfdc8e11/east/frame_001.png",
+              "states/A_disciplined_wandering_swordsman_known_as_the_Sil/animations/Cross_Punch-bfdc8e11/east/frame_002.png",
+              "states/A_disciplined_wandering_swordsman_known_as_the_Sil/animations/Cross_Punch-bfdc8e11/east/frame_003.png",
+              "states/A_disciplined_wandering_swordsman_known_as_the_Sil/animations/Cross_Punch-bfdc8e11/east/frame_004.png",
+              "states/A_disciplined_wandering_swordsman_known_as_the_Sil/animations/Cross_Punch-bfdc8e11/east/frame_005.png"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "export_version": "3.0",
+  "export_date": "2026-05-13T18:42:54.829293"
+}

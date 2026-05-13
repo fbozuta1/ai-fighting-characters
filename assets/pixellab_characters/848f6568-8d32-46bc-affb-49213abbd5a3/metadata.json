@@ -1,0 +1,75 @@
+{
+  "group_id": null,
+  "states": [
+    {
+      "character": {
+        "id": "848f6568-8d32-46bc-affb-49213abbd5a3",
+        "name": "Voidcaller Sage",
+        "prompt": "A mysterious arcane master known as the Voidcaller Sage. A tall elderly wizard wrapped in layered robes so dark they almost blend into the surrounding shadows. The outer robe is deep purple-black with glowing silver symbols stitched across the sleeves and hem like moving constellations. Beneath the hood, only a long white beard and two glowing violet eyes are visible. The wizard carries an ancient floating tome chained to the left arm, its pages turning on their own while emitting tiny magical glyphs into the air. In the right hand is a twisted crystal staff topped with a levitating black orb surrounded by rotating rings of arcane energy. Instead of a normal cloak, fragments of magical fabric drift behind the wizard independently like pieces of living shadow. Small floating rocks and broken crystal shards orbit slowly around the character whenever magic is being channeled. The wizard\u2019s body appears partially disconnected from reality:   Feet slightly hovering above the ground   Robes fading into smoke near the bottom   Hands glowing through cracks in reality   Occasional distortion effects around the silhouette   Additional details:   Belts carrying glowing potions and scrolls   Long metallic finger claws used for spellcasting gestures   Ancient runes tattooed across visible skin   Arcane circles briefly appearing beneath the feet   Idle animation ideas:   Floating tome pages flipping slowly   Staff orb pulsing with energy   Magical particles orbiting the body   Cloak fragments drifting unnaturally   Eyes flashing brighter during spell charge   Color palette:   Deep purple   Midnight black   Silver arcane glow   Violet magical energy   Pale gray beard   Cyan crystal highlights   Style:   Dark fantasy wizard   Powerful and mysterious silhouette   Designed for a pixel art RPG boss, mage class, or mystical NPC in a dark magical world",
+        "size": {
+          "width": 136,
+          "height": 136
+        },
+        "template_id": "mannequin",
+        "directions": 8,
+        "view": "side",
+        "created_at": "2026-05-13T18:39:52.79982+00:00"
+      },
+      "folder": "states/Voidcaller_Sage",
+      "frames": {
+        "rotations": {
+          "south": "states/Voidcaller_Sage/rotations/south.png",
+          "south-east": "states/Voidcaller_Sage/rotations/south-east.png",
+          "east": "states/Voidcaller_Sage/rotations/east.png",
+          "north-east": "states/Voidcaller_Sage/rotations/north-east.png",
+          "north": "states/Voidcaller_Sage/rotations/north.png",
+          "north-west": "states/Voidcaller_Sage/rotations/north-west.png",
+          "west": "states/Voidcaller_Sage/rotations/west.png",
+          "south-west": "states/Voidcaller_Sage/rotations/south-west.png"
+        },
+        "animations": {
+          "animating-ecd6bcbe": {
+            "east": [
+              "states/Voidcaller_Sage/animations/animating-ecd6bcbe/east/frame_000.png",
+              "states/Voidcaller_Sage/animations/animating-ecd6bcbe/east/frame_001.png",
+              "states/Voidcaller_Sage/animations/animating-ecd6bcbe/east/frame_002.png",
+              "states/Voidcaller_Sage/animations/animating-ecd6bcbe/east/frame_003.png"
+            ]
+          },
+          "walking-131712b1": {
+            "east": [
+              "states/Voidcaller_Sage/animations/walking-131712b1/east/frame_000.png",
+              "states/Voidcaller_Sage/animations/walking-131712b1/east/frame_001.png",
+              "states/Voidcaller_Sage/animations/walking-131712b1/east/frame_002.png",
+              "states/Voidcaller_Sage/animations/walking-131712b1/east/frame_003.png",
+              "states/Voidcaller_Sage/animations/walking-131712b1/east/frame_004.png",
+              "states/Voidcaller_Sage/animations/walking-131712b1/east/frame_005.png"
+            ]
+          },
+          "cross_punch_attack-0a449581": {
+            "east": [
+              "states/Voidcaller_Sage/animations/cross_punch_attack-0a449581/east/frame_000.png",
+              "states/Voidcaller_Sage/animations/cross_punch_attack-0a449581/east/frame_001.png",
+              "states/Voidcaller_Sage/animations/cross_punch_attack-0a449581/east/frame_002.png",
+              "states/Voidcaller_Sage/animations/cross_punch_attack-0a449581/east/frame_003.png",
+              "states/Voidcaller_Sage/animations/cross_punch_attack-0a449581/east/frame_004.png",
+              "states/Voidcaller_Sage/animations/cross_punch_attack-0a449581/east/frame_005.png"
+            ]
+          },
+          "casting_a_fireball-9bb571df": {
+            "east": [
+              "states/Voidcaller_Sage/animations/casting_a_fireball-9bb571df/east/frame_000.png",
+              "states/Voidcaller_Sage/animations/casting_a_fireball-9bb571df/east/frame_001.png",
+              "states/Voidcaller_Sage/animations/casting_a_fireball-9bb571df/east/frame_002.png",
+              "states/Voidcaller_Sage/animations/casting_a_fireball-9bb571df/east/frame_003.png",
+              "states/Voidcaller_Sage/animations/casting_a_fireball-9bb571df/east/frame_004.png",
+              "states/Voidcaller_Sage/animations/casting_a_fireball-9bb571df/east/frame_005.png"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "export_version": "3.0",
+  "export_date": "2026-05-13T19:47:06.800278"
+}

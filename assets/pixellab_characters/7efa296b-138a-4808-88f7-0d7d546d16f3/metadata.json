@@ -1,0 +1,79 @@
+{
+  "group_id": null,
+  "states": [
+    {
+      "character": {
+        "id": "7efa296b-138a-4808-88f7-0d7d546d16f3",
+        "name": "A mysterious moonlit assassin called the Ghost of the Bamboo Veil.\n\nA slender ninja dressed in layered pale-gray and midnight-blue robes designed to blend into foggy night environments. Unlike a traditional dark ninja, this one has an eerie almost ghostlike appearance. The fabric is lightweight and ragged at the edges, constantly drifting as if moved by invisible wind.\n\nThe face is hidden behind a smooth white ceramic mask painted with thin black markings resembling tears. Only glowing pale-blue eyes are visible through narrow slits. Long white hair tied into a high ponytail flows behind the character during movement.\n\nThe ninja wields a thin elegant nodachi slightly longer than a normal katana. The blade has a reflective moon-silver finish and leaves faint blue afterimages during attacks. Several enchanted paper talismans are attached to the sword handle and armor pieces.\n\nAround the waist hangs a collection of small smoke bombs, bells, and charms stolen from ancient shrines. Thin ropes wrap around the forearms and calves for mobility and grip while climbing.\n\nSpecial mystical detail:\nThe ninja\u2019s shadow moves a fraction slower than the body itself, creating an unsettling supernatural effect.\n\nIdle animation ideas:\n\nCloth and ponytail flowing softly\nTalisman papers fluttering slightly\nEyes glowing brighter occasionally\nSmall mist particles appearing around the feet\nSword emitting a faint moonlight shimmer\n\nColor palette:\n\nMidnight blue\nPale gray\nMoonlight silver\nCold cyan glow\nWhite cloth accents\nSubtle black shadows\n\nStyle:\n\nElegant supernatural ninja\nCalm and deadly aesthetic\nDesigned for a cinematic pixel art stealth/action game with mystical themes",
+        "prompt": "A mysterious moonlit assassin called the Ghost of the Bamboo Veil.\n\nA slender ninja dressed in layered pale-gray and midnight-blue robes designed to blend into foggy night environments. Unlike a traditional dark ninja, this one has an eerie almost ghostlike appearance. The fabric is lightweight and ragged at the edges, constantly drifting as if moved by invisible wind.\n\nThe face is hidden behind a smooth white ceramic mask painted with thin black markings resembling tears. Only glowing pale-blue eyes are visible through narrow slits. Long white hair tied into a high ponytail flows behind the character during movement.\n\nThe ninja wields a thin elegant nodachi slightly longer than a normal katana. The blade has a reflective moon-silver finish and leaves faint blue afterimages during attacks. Several enchanted paper talismans are attached to the sword handle and armor pieces.\n\nAround the waist hangs a collection of small smoke bombs, bells, and charms stolen from ancient shrines. Thin ropes wrap around the forearms and calves for mobility and grip while climbing.\n\nSpecial mystical detail:\nThe ninja\u2019s shadow moves a fraction slower than the body itself, creating an unsettling supernatural effect.\n\nIdle animation ideas:\n\nCloth and ponytail flowing softly\nTalisman papers fluttering slightly\nEyes glowing brighter occasionally\nSmall mist particles appearing around the feet\nSword emitting a faint moonlight shimmer\n\nColor palette:\n\nMidnight blue\nPale gray\nMoonlight silver\nCold cyan glow\nWhite cloth accents\nSubtle black shadows\n\nStyle:\n\nElegant supernatural ninja\nCalm and deadly aesthetic\nDesigned for a cinematic pixel art stealth/action game with mystical themes",
+        "size": {
+          "width": 136,
+          "height": 136
+        },
+        "template_id": "mannequin",
+        "directions": 8,
+        "view": "low top-down",
+        "created_at": "2026-05-13T08:54:25.688731+00:00"
+      },
+      "folder": "states/A_mysterious_moonlit_assassin_called_the_Ghost_of",
+      "frames": {
+        "rotations": {
+          "south": "states/A_mysterious_moonlit_assassin_called_the_Ghost_of/rotations/south.png",
+          "south-east": "states/A_mysterious_moonlit_assassin_called_the_Ghost_of/rotations/south-east.png",
+          "east": "states/A_mysterious_moonlit_assassin_called_the_Ghost_of/rotations/east.png",
+          "north-east": "states/A_mysterious_moonlit_assassin_called_the_Ghost_of/rotations/north-east.png",
+          "north": "states/A_mysterious_moonlit_assassin_called_the_Ghost_of/rotations/north.png",
+          "north-west": "states/A_mysterious_moonlit_assassin_called_the_Ghost_of/rotations/north-west.png",
+          "west": "states/A_mysterious_moonlit_assassin_called_the_Ghost_of/rotations/west.png",
+          "south-west": "states/A_mysterious_moonlit_assassin_called_the_Ghost_of/rotations/south-west.png"
+        },
+        "animations": {
+          "Breathing_Idle-9c31b849": {
+            "south": [
+              "states/A_mysterious_moonlit_assassin_called_the_Ghost_of/animations/Breathing_Idle-9c31b849/south/frame_000.png",
+              "states/A_mysterious_moonlit_assassin_called_the_Ghost_of/animations/Breathing_Idle-9c31b849/south/frame_001.png",
+              "states/A_mysterious_moonlit_assassin_called_the_Ghost_of/animations/Breathing_Idle-9c31b849/south/frame_002.png",
+              "states/A_mysterious_moonlit_assassin_called_the_Ghost_of/animations/Breathing_Idle-9c31b849/south/frame_003.png"
+            ],
+            "east": [
+              "states/A_mysterious_moonlit_assassin_called_the_Ghost_of/animations/Breathing_Idle-9c31b849/east/frame_000.png",
+              "states/A_mysterious_moonlit_assassin_called_the_Ghost_of/animations/Breathing_Idle-9c31b849/east/frame_001.png",
+              "states/A_mysterious_moonlit_assassin_called_the_Ghost_of/animations/Breathing_Idle-9c31b849/east/frame_002.png",
+              "states/A_mysterious_moonlit_assassin_called_the_Ghost_of/animations/Breathing_Idle-9c31b849/east/frame_003.png"
+            ]
+          },
+          "animation-7772184c": {
+            "east": [
+              "states/A_mysterious_moonlit_assassin_called_the_Ghost_of/animations/animation-7772184c/east/frame_000.png",
+              "states/A_mysterious_moonlit_assassin_called_the_Ghost_of/animations/animation-7772184c/east/frame_001.png",
+              "states/A_mysterious_moonlit_assassin_called_the_Ghost_of/animations/animation-7772184c/east/frame_002.png",
+              "states/A_mysterious_moonlit_assassin_called_the_Ghost_of/animations/animation-7772184c/east/frame_003.png",
+              "states/A_mysterious_moonlit_assassin_called_the_Ghost_of/animations/animation-7772184c/east/frame_004.png",
+              "states/A_mysterious_moonlit_assassin_called_the_Ghost_of/animations/animation-7772184c/east/frame_005.png"
+            ]
+          },
+          "Cross_Punch-c091367b": {
+            "east": [
+              "states/A_mysterious_moonlit_assassin_called_the_Ghost_of/animations/Cross_Punch-c091367b/east/frame_000.png",
+              "states/A_mysterious_moonlit_assassin_called_the_Ghost_of/animations/Cross_Punch-c091367b/east/frame_001.png",
+              "states/A_mysterious_moonlit_assassin_called_the_Ghost_of/animations/Cross_Punch-c091367b/east/frame_002.png",
+              "states/A_mysterious_moonlit_assassin_called_the_Ghost_of/animations/Cross_Punch-c091367b/east/frame_003.png",
+              "states/A_mysterious_moonlit_assassin_called_the_Ghost_of/animations/Cross_Punch-c091367b/east/frame_004.png",
+              "states/A_mysterious_moonlit_assassin_called_the_Ghost_of/animations/Cross_Punch-c091367b/east/frame_005.png"
+            ],
+            "south": [
+              "states/A_mysterious_moonlit_assassin_called_the_Ghost_of/animations/Cross_Punch-c091367b/south/frame_000.png",
+              "states/A_mysterious_moonlit_assassin_called_the_Ghost_of/animations/Cross_Punch-c091367b/south/frame_001.png",
+              "states/A_mysterious_moonlit_assassin_called_the_Ghost_of/animations/Cross_Punch-c091367b/south/frame_002.png",
+              "states/A_mysterious_moonlit_assassin_called_the_Ghost_of/animations/Cross_Punch-c091367b/south/frame_003.png",
+              "states/A_mysterious_moonlit_assassin_called_the_Ghost_of/animations/Cross_Punch-c091367b/south/frame_004.png",
+              "states/A_mysterious_moonlit_assassin_called_the_Ghost_of/animations/Cross_Punch-c091367b/south/frame_005.png"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "export_version": "3.0",
+  "export_date": "2026-05-13T18:43:21.330251"
+}

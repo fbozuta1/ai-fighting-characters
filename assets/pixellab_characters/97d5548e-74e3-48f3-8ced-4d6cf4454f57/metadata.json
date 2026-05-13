@@ -1,0 +1,85 @@
+{
+  "character": {
+    "id": "97d5548e-74e3-48f3-8ced-4d6cf4454f57",
+    "name": "A mysterious desert warrior known as the Dune Revenant. A fast and deadly fighter wrapped in layered sand-colored cloth and ancient bronze armor worn smooth by centuries of desert storms. The warrior\u2019s face is hidden behind a narrow jackal-shaped mask with glowing turquoise eyes. Long strips of fabric trail behind them like moving dunes whenever they dash. They wield a pair of curved crystal scimitars infused with storm magic. The blades crackle with golden lightning and leave arcs of glowing sand particles during attacks. Across their back hangs an old relic lantern containing a swirling miniature sandstorm. Parts of the armor appear partially buried in stone and ancient runes glow faintly beneath the surface, hinting the warrior may not be fully human anymore. One arm is skeletal and wrapped in enchanted bindings glowing with blue hieroglyphic symbols. Their shoulder pads resemble wings of a desert falcon, and tiny floating shards of sandstone orbit around them defensively. Idle animation ideas:   Cloth constantly fluttering like desert wind   Lightning briefly traveling across the blades   Sand particles circling around the feet   Lantern storm spinning slowly   Color palette:   Sand beige   Ancient bronze   Turquoise glow   Gold lightning   Dark brown leather   Pale blue magical effects   Style:   Ancient desert fantasy   Agile assassin-warrior silhouette   Mythological and mystical atmosphere suitable for a pixel art action game",
+    "prompt": "A mysterious desert warrior known as the Dune Revenant. A fast and deadly fighter wrapped in layered sand-colored cloth and ancient bronze armor worn smooth by centuries of desert storms. The warrior\u2019s face is hidden behind a narrow jackal-shaped mask with glowing turquoise eyes. Long strips of fabric trail behind them like moving dunes whenever they dash. They wield a pair of curved crystal scimitars infused with storm magic. The blades crackle with golden lightning and leave arcs of glowing sand particles during attacks. Across their back hangs an old relic lantern containing a swirling miniature sandstorm. Parts of the armor appear partially buried in stone and ancient runes glow faintly beneath the surface, hinting the warrior may not be fully human anymore. One arm is skeletal and wrapped in enchanted bindings glowing with blue hieroglyphic symbols. Their shoulder pads resemble wings of a desert falcon, and tiny floating shards of sandstone orbit around them defensively. Idle animation ideas:   Cloth constantly fluttering like desert wind   Lightning briefly traveling across the blades   Sand particles circling around the feet   Lantern storm spinning slowly   Color palette:   Sand beige   Ancient bronze   Turquoise glow   Gold lightning   Dark brown leather   Pale blue magical effects   Style:   Ancient desert fantasy   Agile assassin-warrior silhouette   Mythological and mystical atmosphere suitable for a pixel art action game",
+    "size": {
+      "width": 136,
+      "height": 136
+    },
+    "template_id": "mannequin",
+    "directions": 8,
+    "view": "low top-down",
+    "created_at": "2026-05-11T22:20:14.513697+00:00"
+  },
+  "frames": {
+    "rotations": {
+      "south": "rotations/south.png",
+      "south-east": "rotations/south-east.png",
+      "east": "rotations/east.png",
+      "north-east": "rotations/north-east.png",
+      "north": "rotations/north.png",
+      "north-west": "rotations/north-west.png",
+      "west": "rotations/west.png",
+      "south-west": "rotations/south-west.png"
+    },
+    "animations": {
+      "Fight_Stance_Idle-6cede62c": {
+        "east": [
+          "animations/Fight_Stance_Idle-6cede62c/east/frame_000.png",
+          "animations/Fight_Stance_Idle-6cede62c/east/frame_001.png",
+          "animations/Fight_Stance_Idle-6cede62c/east/frame_002.png",
+          "animations/Fight_Stance_Idle-6cede62c/east/frame_003.png",
+          "animations/Fight_Stance_Idle-6cede62c/east/frame_004.png",
+          "animations/Fight_Stance_Idle-6cede62c/east/frame_005.png",
+          "animations/Fight_Stance_Idle-6cede62c/east/frame_006.png",
+          "animations/Fight_Stance_Idle-6cede62c/east/frame_007.png"
+        ]
+      },
+      "Breathing_Idle-2d7e1f63": {
+        "south": [
+          "animations/Breathing_Idle-2d7e1f63/south/frame_000.png",
+          "animations/Breathing_Idle-2d7e1f63/south/frame_001.png",
+          "animations/Breathing_Idle-2d7e1f63/south/frame_002.png",
+          "animations/Breathing_Idle-2d7e1f63/south/frame_003.png"
+        ],
+        "east": [
+          "animations/Breathing_Idle-2d7e1f63/east/frame_000.png",
+          "animations/Breathing_Idle-2d7e1f63/east/frame_001.png",
+          "animations/Breathing_Idle-2d7e1f63/east/frame_002.png",
+          "animations/Breathing_Idle-2d7e1f63/east/frame_003.png"
+        ]
+      },
+      "Walking-0ce9fe17": {
+        "south": [
+          "animations/Walking-0ce9fe17/south/frame_000.png",
+          "animations/Walking-0ce9fe17/south/frame_001.png",
+          "animations/Walking-0ce9fe17/south/frame_002.png",
+          "animations/Walking-0ce9fe17/south/frame_003.png"
+        ]
+      },
+      "Cross_Punch-c50d198f": {
+        "east": [
+          "animations/Cross_Punch-c50d198f/east/frame_000.png",
+          "animations/Cross_Punch-c50d198f/east/frame_001.png",
+          "animations/Cross_Punch-c50d198f/east/frame_002.png",
+          "animations/Cross_Punch-c50d198f/east/frame_003.png",
+          "animations/Cross_Punch-c50d198f/east/frame_004.png",
+          "animations/Cross_Punch-c50d198f/east/frame_005.png"
+        ]
+      },
+      "animation-2c2db12d": {
+        "east": [
+          "animations/animation-2c2db12d/east/frame_000.png",
+          "animations/animation-2c2db12d/east/frame_001.png",
+          "animations/animation-2c2db12d/east/frame_002.png",
+          "animations/animation-2c2db12d/east/frame_003.png",
+          "animations/animation-2c2db12d/east/frame_004.png",
+          "animations/animation-2c2db12d/east/frame_005.png"
+        ]
+      }
+    }
+  },
+  "export_version": "2.0",
+  "export_date": "2026-05-11T23:05:40.135135"
+}

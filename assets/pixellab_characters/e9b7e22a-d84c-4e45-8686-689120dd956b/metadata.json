@@ -1,0 +1,73 @@
+{
+  "group_id": null,
+  "states": [
+    {
+      "character": {
+        "id": "e9b7e22a-d84c-4e45-8686-689120dd956b",
+        "name": "A strange cursed warrior known as the Clockwork Penitent. A tall humanoid figure wearing a long weathered coat stitched together from dark leather and faded priest robes. Its body is partially mechanical, with exposed brass gears and ticking clock parts visible beneath torn fabric. The character\u2019s chest contains a giant glowing clock face instead of a heart, its hands constantly spinning at irregular speeds. The head is covered by a narrow iron mask with a single glowing eye slit, while dozens of tiny dangling chains hang from the helmet and softly rattle while walking. Behind the back rises a broken mechanical halo made of floating clock fragments rotating independently in the air. The right arm is human but pale and scarred, while the left arm is an oversized mechanical gauntlet powered by steam vents that periodically release smoke. Attached to the forearm is a retractable blade shaped like a clock hand. The character carries a massive lantern containing trapped blue souls swirling like smoke. Every movement leaves behind tiny glowing particles resembling sparks and dust from an ancient cathedral. Additional details:   Pocket watches hanging from the belt   Torn parchment seals with unreadable symbols   Boots reinforced with iron braces   Occasional sparks from damaged machinery   Idle animation ideas:   Clock chest ticking visibly   Steam releasing from shoulder vents   Halo fragments rotating slowly   Lantern flickering with ghostly light   Color palette:   Tarnished brass   Dark iron gray   Deep navy cloth   Ghostly cyan glow   Faded parchment beige   Crimson warning lights   Style:   Gothic steampunk fantasy   Mysterious and tragic atmosphere   Designed for a dark pixel art metroidvania or action RPG",
+        "prompt": "A strange cursed warrior known as the Clockwork Penitent. A tall humanoid figure wearing a long weathered coat stitched together from dark leather and faded priest robes. Its body is partially mechanical, with exposed brass gears and ticking clock parts visible beneath torn fabric. The character\u2019s chest contains a giant glowing clock face instead of a heart, its hands constantly spinning at irregular speeds. The head is covered by a narrow iron mask with a single glowing eye slit, while dozens of tiny dangling chains hang from the helmet and softly rattle while walking. Behind the back rises a broken mechanical halo made of floating clock fragments rotating independently in the air. The right arm is human but pale and scarred, while the left arm is an oversized mechanical gauntlet powered by steam vents that periodically release smoke. Attached to the forearm is a retractable blade shaped like a clock hand. The character carries a massive lantern containing trapped blue souls swirling like smoke. Every movement leaves behind tiny glowing particles resembling sparks and dust from an ancient cathedral. Additional details:   Pocket watches hanging from the belt   Torn parchment seals with unreadable symbols   Boots reinforced with iron braces   Occasional sparks from damaged machinery   Idle animation ideas:   Clock chest ticking visibly   Steam releasing from shoulder vents   Halo fragments rotating slowly   Lantern flickering with ghostly light   Color palette:   Tarnished brass   Dark iron gray   Deep navy cloth   Ghostly cyan glow   Faded parchment beige   Crimson warning lights   Style:   Gothic steampunk fantasy   Mysterious and tragic atmosphere   Designed for a dark pixel art metroidvania or action RPG",
+        "size": {
+          "width": 136,
+          "height": 136
+        },
+        "template_id": "mannequin",
+        "directions": 8,
+        "view": "low top-down",
+        "created_at": "2026-05-13T08:31:49.299074+00:00"
+      },
+      "folder": "states/A_strange_cursed_warrior_known_as_the_Clockwork_Pe",
+      "frames": {
+        "rotations": {
+          "south": "states/A_strange_cursed_warrior_known_as_the_Clockwork_Pe/rotations/south.png",
+          "south-east": "states/A_strange_cursed_warrior_known_as_the_Clockwork_Pe/rotations/south-east.png",
+          "east": "states/A_strange_cursed_warrior_known_as_the_Clockwork_Pe/rotations/east.png",
+          "north-east": "states/A_strange_cursed_warrior_known_as_the_Clockwork_Pe/rotations/north-east.png",
+          "north": "states/A_strange_cursed_warrior_known_as_the_Clockwork_Pe/rotations/north.png",
+          "north-west": "states/A_strange_cursed_warrior_known_as_the_Clockwork_Pe/rotations/north-west.png",
+          "west": "states/A_strange_cursed_warrior_known_as_the_Clockwork_Pe/rotations/west.png",
+          "south-west": "states/A_strange_cursed_warrior_known_as_the_Clockwork_Pe/rotations/south-west.png"
+        },
+        "animations": {
+          "Breathing_Idle-754b9462": {
+            "east": [
+              "states/A_strange_cursed_warrior_known_as_the_Clockwork_Pe/animations/Breathing_Idle-754b9462/east/frame_000.png",
+              "states/A_strange_cursed_warrior_known_as_the_Clockwork_Pe/animations/Breathing_Idle-754b9462/east/frame_001.png",
+              "states/A_strange_cursed_warrior_known_as_the_Clockwork_Pe/animations/Breathing_Idle-754b9462/east/frame_002.png",
+              "states/A_strange_cursed_warrior_known_as_the_Clockwork_Pe/animations/Breathing_Idle-754b9462/east/frame_003.png"
+            ]
+          },
+          "Hurricane_Kick-07a22d00": {
+            "east": [
+              "states/A_strange_cursed_warrior_known_as_the_Clockwork_Pe/animations/Hurricane_Kick-07a22d00/east/frame_000.png",
+              "states/A_strange_cursed_warrior_known_as_the_Clockwork_Pe/animations/Hurricane_Kick-07a22d00/east/frame_001.png",
+              "states/A_strange_cursed_warrior_known_as_the_Clockwork_Pe/animations/Hurricane_Kick-07a22d00/east/frame_002.png",
+              "states/A_strange_cursed_warrior_known_as_the_Clockwork_Pe/animations/Hurricane_Kick-07a22d00/east/frame_003.png"
+            ]
+          },
+          "Walking-17a1e689": {
+            "east": [
+              "states/A_strange_cursed_warrior_known_as_the_Clockwork_Pe/animations/Walking-17a1e689/east/frame_000.png",
+              "states/A_strange_cursed_warrior_known_as_the_Clockwork_Pe/animations/Walking-17a1e689/east/frame_001.png",
+              "states/A_strange_cursed_warrior_known_as_the_Clockwork_Pe/animations/Walking-17a1e689/east/frame_002.png",
+              "states/A_strange_cursed_warrior_known_as_the_Clockwork_Pe/animations/Walking-17a1e689/east/frame_003.png",
+              "states/A_strange_cursed_warrior_known_as_the_Clockwork_Pe/animations/Walking-17a1e689/east/frame_004.png",
+              "states/A_strange_cursed_warrior_known_as_the_Clockwork_Pe/animations/Walking-17a1e689/east/frame_005.png"
+            ]
+          },
+          "Walking-f8a8adc7": {
+            "south": [
+              "states/A_strange_cursed_warrior_known_as_the_Clockwork_Pe/animations/Walking-f8a8adc7/south/frame_000.png",
+              "states/A_strange_cursed_warrior_known_as_the_Clockwork_Pe/animations/Walking-f8a8adc7/south/frame_001.png",
+              "states/A_strange_cursed_warrior_known_as_the_Clockwork_Pe/animations/Walking-f8a8adc7/south/frame_002.png",
+              "states/A_strange_cursed_warrior_known_as_the_Clockwork_Pe/animations/Walking-f8a8adc7/south/frame_003.png",
+              "states/A_strange_cursed_warrior_known_as_the_Clockwork_Pe/animations/Walking-f8a8adc7/south/frame_004.png",
+              "states/A_strange_cursed_warrior_known_as_the_Clockwork_Pe/animations/Walking-f8a8adc7/south/frame_005.png"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "export_version": "3.0",
+  "export_date": "2026-05-13T18:38:55.095066"
+}

@@ -1,0 +1,66 @@
+{
+  "group_id": null,
+  "states": [
+    {
+      "character": {
+        "id": "1091444c-e8fd-4759-a413-56b1411e4e18",
+        "name": "Ironhorn Warbringer",
+        "prompt": "a colossal muscular minotaur warrior with dark reddish-brown fur, massive armored bull head with glowing ember-orange eyes and enormous forward-curving horns reinforced with iron bands and carvings, wearing heavy dented blacksteel armor across chest shoulders and shins with hanging chains and broken enemy weapon trophies tied around the waist, wielding an enormous two-handed war hammer with glowing lava cracks through dark volcanic metal, a giant spiked bull skull pauldron on the left shoulder, right arm wrapped in leather and bronze chains, torn crimson battle banner hanging from the back, pixel art, side view",
+        "size": {
+          "width": 136,
+          "height": 136
+        },
+        "template_id": "mannequin",
+        "directions": 8,
+        "view": "side",
+        "created_at": "2026-05-13T18:39:56.308721+00:00"
+      },
+      "folder": "states/Ironhorn_Warbringer",
+      "frames": {
+        "rotations": {
+          "south": "states/Ironhorn_Warbringer/rotations/south.png",
+          "south-east": "states/Ironhorn_Warbringer/rotations/south-east.png",
+          "east": "states/Ironhorn_Warbringer/rotations/east.png",
+          "north-east": "states/Ironhorn_Warbringer/rotations/north-east.png",
+          "north": "states/Ironhorn_Warbringer/rotations/north.png",
+          "north-west": "states/Ironhorn_Warbringer/rotations/north-west.png",
+          "west": "states/Ironhorn_Warbringer/rotations/west.png",
+          "south-west": "states/Ironhorn_Warbringer/rotations/south-west.png"
+        },
+        "animations": {
+          "animating-8d38660a": {
+            "east": [
+              "states/Ironhorn_Warbringer/animations/animating-8d38660a/east/frame_000.png",
+              "states/Ironhorn_Warbringer/animations/animating-8d38660a/east/frame_001.png",
+              "states/Ironhorn_Warbringer/animations/animating-8d38660a/east/frame_002.png",
+              "states/Ironhorn_Warbringer/animations/animating-8d38660a/east/frame_003.png"
+            ]
+          },
+          "walking-d76b7022": {
+            "east": [
+              "states/Ironhorn_Warbringer/animations/walking-d76b7022/east/frame_000.png",
+              "states/Ironhorn_Warbringer/animations/walking-d76b7022/east/frame_001.png",
+              "states/Ironhorn_Warbringer/animations/walking-d76b7022/east/frame_002.png",
+              "states/Ironhorn_Warbringer/animations/walking-d76b7022/east/frame_003.png",
+              "states/Ironhorn_Warbringer/animations/walking-d76b7022/east/frame_004.png",
+              "states/Ironhorn_Warbringer/animations/walking-d76b7022/east/frame_005.png"
+            ]
+          },
+          "animating-02c6f842": {
+            "east": [
+              "states/Ironhorn_Warbringer/animations/animating-02c6f842/east/frame_000.png",
+              "states/Ironhorn_Warbringer/animations/animating-02c6f842/east/frame_001.png",
+              "states/Ironhorn_Warbringer/animations/animating-02c6f842/east/frame_002.png",
+              "states/Ironhorn_Warbringer/animations/animating-02c6f842/east/frame_003.png",
+              "states/Ironhorn_Warbringer/animations/animating-02c6f842/east/frame_004.png",
+              "states/Ironhorn_Warbringer/animations/animating-02c6f842/east/frame_005.png",
+              "states/Ironhorn_Warbringer/animations/animating-02c6f842/east/frame_006.png"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "export_version": "3.0",
+  "export_date": "2026-05-13T19:48:38.615924"
+}

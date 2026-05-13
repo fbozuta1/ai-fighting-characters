@@ -1,0 +1,69 @@
+{
+  "group_id": null,
+  "states": [
+    {
+      "character": {
+        "id": "9957b836-fed4-4df6-89b9-fc6d70894aae",
+        "name": "Thornmaw Ravager",
+        "prompt": "a massive four-legged predator beast fusing wolf, reptile, and forest monster, covered in dark bark-like armor plates mixed with patches of coarse black fur and glowing moss, long jagged thorns protruding along the entire spine from head to tail, oversized low jaw filled with uneven glowing fangs, multiple smaller amber eyes glowing along the sides of the skull, thick black sizzling saliva dripping from jaws, enormous muscular front legs with hooked claws, leaner explosive back legs, long thorny whip-like tail with glowing fungal veins, mushrooms and moss growing from wounds, pixel art, side view",
+        "size": {
+          "width": 136,
+          "height": 136
+        },
+        "template_id": "dog",
+        "directions": 8,
+        "view": "side",
+        "created_at": "2026-05-13T18:39:59.20977+00:00"
+      },
+      "folder": "states/Thornmaw_Ravager",
+      "frames": {
+        "rotations": {
+          "south": "states/Thornmaw_Ravager/rotations/south.png",
+          "south-east": "states/Thornmaw_Ravager/rotations/south-east.png",
+          "east": "states/Thornmaw_Ravager/rotations/east.png",
+          "north-east": "states/Thornmaw_Ravager/rotations/north-east.png",
+          "north": "states/Thornmaw_Ravager/rotations/north.png",
+          "north-west": "states/Thornmaw_Ravager/rotations/north-west.png",
+          "west": "states/Thornmaw_Ravager/rotations/west.png",
+          "south-west": "states/Thornmaw_Ravager/rotations/south-west.png"
+        },
+        "animations": {
+          "walking-55f13e8d": {
+            "east": [
+              "states/Thornmaw_Ravager/animations/walking-55f13e8d/east/frame_000.png",
+              "states/Thornmaw_Ravager/animations/walking-55f13e8d/east/frame_001.png",
+              "states/Thornmaw_Ravager/animations/walking-55f13e8d/east/frame_002.png",
+              "states/Thornmaw_Ravager/animations/walking-55f13e8d/east/frame_003.png",
+              "states/Thornmaw_Ravager/animations/walking-55f13e8d/east/frame_004.png",
+              "states/Thornmaw_Ravager/animations/walking-55f13e8d/east/frame_005.png"
+            ]
+          },
+          "animation-f6dfabe9": {
+            "east": [
+              "states/Thornmaw_Ravager/animations/animation-f6dfabe9/east/frame_000.png",
+              "states/Thornmaw_Ravager/animations/animation-f6dfabe9/east/frame_001.png",
+              "states/Thornmaw_Ravager/animations/animation-f6dfabe9/east/frame_002.png",
+              "states/Thornmaw_Ravager/animations/animation-f6dfabe9/east/frame_003.png",
+              "states/Thornmaw_Ravager/animations/animation-f6dfabe9/east/frame_004.png",
+              "states/Thornmaw_Ravager/animations/animation-f6dfabe9/east/frame_005.png",
+              "states/Thornmaw_Ravager/animations/animation-f6dfabe9/east/frame_006.png",
+              "states/Thornmaw_Ravager/animations/animation-f6dfabe9/east/frame_007.png"
+            ]
+          },
+          "barking-facea6c1": {
+            "east": [
+              "states/Thornmaw_Ravager/animations/barking-facea6c1/east/frame_000.png",
+              "states/Thornmaw_Ravager/animations/barking-facea6c1/east/frame_001.png",
+              "states/Thornmaw_Ravager/animations/barking-facea6c1/east/frame_002.png",
+              "states/Thornmaw_Ravager/animations/barking-facea6c1/east/frame_003.png",
+              "states/Thornmaw_Ravager/animations/barking-facea6c1/east/frame_004.png",
+              "states/Thornmaw_Ravager/animations/barking-facea6c1/east/frame_005.png"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "export_version": "3.0",
+  "export_date": "2026-05-13T19:50:40.144507"
+}
