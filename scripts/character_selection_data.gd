@@ -1,6 +1,6 @@
 extends Node
 
-const LEVEL_SCENE_PATH: String = "res://scenes/level.tscn"
+const LEVEL_SCENE_PATH: String = "res://scenes/grass_arena.tscn"
 const SELECTION_SCENE_PATH: String = "res://scenes/character_selection.tscn"
 
 var p1_action_folders: Dictionary = {}

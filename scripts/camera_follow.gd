@@ -9,6 +9,7 @@ extends Camera2D
 @export var zoom_distance_max: float = 360.0
 @export var zoom_lerp_speed: float = 4.0
 
+
 var _p1: Node2D
 var _p2: Node2D
 
