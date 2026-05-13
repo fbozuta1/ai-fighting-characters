@@ -2,6 +2,7 @@ extends Control
 
 const CLEAN_ANIMATIONS_ROOT: String = "res://assets/clean_animations"
 const ALL_ANIMATIONS_ROOT: String = "res://assets/animations"
+const HIGH_RES_ANIMATIONS_ROOT: String = "res://assets/higher_res_animations"
 const GENERATION_SCRIPT_PATH: String = "res://scripts/python_ai_generation/pixellab_generation_script.py"
 const GENERATION_PROGRESS_FILE: String = "user://animation_progress.json"
 const REQUEST_FILE_PATH: String = "user://animation_request.json"
@@ -23,6 +24,8 @@ const COLOR_BUTTON_HOVER: Color = Color(0.18, 0.28, 0.24, 1.0)
 
 var card_grid: GridContainer
 var roster_toggle_button: Button
+var high_res_roster_button: Button
+var roster_title_label: Label
 var title_field: LineEdit
 var description_field: TextEdit
 var reference_image_path_field: LineEdit
@@ -38,6 +41,7 @@ var generation_thread: Thread
 var progress_timer: Timer
 var generation_progress_file_path: String = ""
 var show_all_characters: bool = false
+var show_high_res_characters: bool = false
 
 var current_player: int = 1
 
@@ -111,17 +115,22 @@ func _build_ui() -> void:
 	roster_header.add_theme_constant_override("separation", 10)
 	existing_box.add_child(roster_header)
 
-	var existing_title := Label.new()
-	existing_title.text = "Fighter Roster"
-	existing_title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	existing_title.add_theme_font_size_override("font_size", 20)
-	existing_title.add_theme_color_override("font_color", COLOR_TEXT)
-	roster_header.add_child(existing_title)
+	roster_title_label = Label.new()
+	roster_title_label.text = "Fighter Roster"
+	roster_title_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	roster_title_label.add_theme_font_size_override("font_size", 20)
+	roster_title_label.add_theme_color_override("font_color", COLOR_TEXT)
+	roster_header.add_child(roster_title_label)
 
 	roster_toggle_button = Button.new()
 	_style_button(roster_toggle_button, false)
 	roster_toggle_button.pressed.connect(_on_roster_toggle_pressed)
 	roster_header.add_child(roster_toggle_button)
+
+	high_res_roster_button = Button.new()
+	_style_button(high_res_roster_button, false)
+	high_res_roster_button.pressed.connect(_on_high_res_roster_pressed)
+	roster_header.add_child(high_res_roster_button)
 	_refresh_roster_toggle()
 
 	var scroll := ScrollContainer.new()
@@ -235,6 +244,7 @@ func _load_character_cards() -> void:
 	preview_animations.clear()
 	for child in card_grid.get_children():
 		child.queue_free()
+	card_grid.columns = 2 if show_high_res_characters else 4
 
 	var characters := _discover_characters()
 	if characters.is_empty():
@@ -263,6 +273,9 @@ func _discover_characters() -> Array[Dictionary]:
 	return characters
 
 func _get_roster_roots() -> Array[String]:
+	if show_high_res_characters:
+		return [HIGH_RES_ANIMATIONS_ROOT]
+
 	var roots: Array[String] = [CLEAN_ANIMATIONS_ROOT]
 	if show_all_characters:
 		roots.append(ALL_ANIMATIONS_ROOT)
@@ -334,7 +347,8 @@ func _png_frames_in_folder(folder_path: String) -> Array[String]:
 
 func _create_character_card(character: Dictionary) -> Button:
 	var card := Button.new()
-	card.custom_minimum_size = Vector2(160, 190)
+	var high_res := str(character.get("root", "")).begins_with(HIGH_RES_ANIMATIONS_ROOT)
+	card.custom_minimum_size = Vector2(260, 300) if high_res else Vector2(160, 190)
 	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_style_character_card(card)
 	card.pressed.connect(_on_character_selected.bind(character))
@@ -355,7 +369,7 @@ func _create_character_card(character: Dictionary) -> Button:
 	box.add_child(top_strip)
 
 	var preview_panel := PanelContainer.new()
-	preview_panel.custom_minimum_size = Vector2(128, 118)
+	preview_panel.custom_minimum_size = Vector2(220, 218) if high_res else Vector2(128, 118)
 	preview_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	preview_panel.add_theme_stylebox_override("panel", _make_preview_style())
 	preview_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -370,7 +384,7 @@ func _create_character_card(character: Dictionary) -> Button:
 	preview_panel.add_child(preview_margin)
 
 	var preview := TextureRect.new()
-	preview.custom_minimum_size = Vector2(112, 98)
+	preview.custom_minimum_size = Vector2(204, 198) if high_res else Vector2(112, 98)
 	preview.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	preview.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -393,7 +407,7 @@ func _create_character_card(character: Dictionary) -> Button:
 	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	name_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	name_label.add_theme_color_override("font_color", COLOR_TEXT)
-	name_label.add_theme_font_size_override("font_size", 14)
+	name_label.add_theme_font_size_override("font_size", 18 if high_res else 14)
 	name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	box.add_child(name_label)
 
@@ -490,12 +504,23 @@ func _style_button(button: Button, primary: bool) -> void:
 	button.add_theme_font_size_override("font_size", 14)
 
 func _refresh_roster_toggle() -> void:
+	if roster_title_label != null:
+		roster_title_label.text = "High Res Characters" if show_high_res_characters else "Fighter Roster"
 	if roster_toggle_button == null:
 		return
 	roster_toggle_button.text = "Clean Roster" if show_all_characters else "All Characters"
+	roster_toggle_button.disabled = show_high_res_characters
+	if high_res_roster_button != null:
+		high_res_roster_button.text = "Standard Roster" if show_high_res_characters else "High Res Character"
 
 func _on_roster_toggle_pressed() -> void:
+	show_high_res_characters = false
 	show_all_characters = not show_all_characters
+	_refresh_roster_toggle()
+	_load_character_cards()
+
+func _on_high_res_roster_pressed() -> void:
+	show_high_res_characters = not show_high_res_characters
 	_refresh_roster_toggle()
 	_load_character_cards()
 
