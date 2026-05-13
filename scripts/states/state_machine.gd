@@ -9,6 +9,7 @@ var current_state: State
 @export var idle_state: PlayerState
 @export var walk_state: PlayerState
 @export var fight_state: PlayerState
+@export var spell_state: PlayerState
 
 func init() -> void: 
 	change_state(starting_state)
@@ -18,6 +19,7 @@ func init() -> void:
 	idle_state = get_node("Idle")
 	walk_state = get_node("Walk")
 	fight_state = get_node("Fight")
+	spell_state = get_node("Spell")
 
 
 func process_frame(delta: float) -> void:

@@ -16,6 +16,8 @@ var down_key: String:
 	get: return _key("down", "Down")
 var fight_key: String:
 	get: return _key("fight", "Fight")
+var spell_key: String:
+	get: return _key("spell", "Spell")
 var movement_key: String:
 	get: return _key("movement", "Movement")
 

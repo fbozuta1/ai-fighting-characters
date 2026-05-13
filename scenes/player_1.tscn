@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://cxd0ij0mqlgar"]
+[gd_scene load_steps=27 format=3 uid="uid://cxd0ij0mqlgar"]
 
 [ext_resource type="Script" uid="uid://jokh06wmac42" path="res://scripts/player_1.gd" id="1_a5yar"]
 [ext_resource type="Script" uid="uid://o2u01th6ik8" path="res://scripts/states/state_machine.gd" id="1_h7q5r"]
@@ -17,6 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://bptva5y4a6veg" path="res://assets/animations/romeon/walk/walk_3.png" id="13_q1mos"]
 [ext_resource type="Script" uid="uid://fg2c64nj2t8x" path="res://scripts/states/idle.gd" id="16_61r2x"]
 [ext_resource type="Script" uid="uid://o7oyieam7u50" path="res://scripts/states/walk.gd" id="17_8o4l0"]
+[ext_resource type="Script" path="res://scripts/states/spell.gd" id="18_spell"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_mviyr"]
 animations = [{
@@ -224,3 +225,6 @@ script = ExtResource("17_8o4l0")
 [node name="Fight" type="Node2D" parent="StateMachine"]
 script = ExtResource("13_3wjnj")
 metadata/_custom_type_script = "uid://usqhn2nxoa5q"
+
+[node name="Spell" type="Node2D" parent="StateMachine"]
+script = ExtResource("18_spell")

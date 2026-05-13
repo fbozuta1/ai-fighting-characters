@@ -1,0 +1,67 @@
+{
+  "group_id": null,
+  "states": [
+    {
+      "character": {
+        "id": "9a5b4072-3053-41ae-8f08-7de86c0b7f4e",
+        "name": "A brutal swamp ogre known as the Bogmaw Crusher.\nA massive green-skinned ogre with a thick muscular build, covered in scars, mud, and patches of moss growing directly on its skin. Its posture is hunched forward slightly, giving it a heavy intimidating silhouette. One tusk is broken while the other protrudes upward from its lower jaw.\nThe ogre wears crude armor assembled from scavenged materials:\n\n\nRusted iron shoulder plates\n\n\nLeather straps stitched together with rope\n\n\nFur pelts from swamp beasts\n\n\nBone charms hanging from the belt\n\n\nIts weapon is a gigantic wooden club reinforced with iron spikes and wrapped in old chains. The club looks absurdly heavy, with dried mud and blood stains caked into the wood.\nThe ogre\u2019s face is rough and expressive:\n\n\nSmall glowing yellow eyes\n\n\nFlattened nose\n\n\nHuge jaw with protruding tusks\n\n\nConstant angry scowl\n\n\nAdditional details:\n\n\nSwamp plants and fungi growing on parts of the armor\n\n\nOne arm wrapped in dirty bandages\n\n\nHeavy boots sinking slightly into the ground\n\n\nBreath visible as toxic green mist\n\n\nIdle animation ideas:\n\n\nSlow heavy breathing\n\n\nFlies buzzing around\n\n\nClub dragging slightly across the ground\n\n\nOccasional snort releasing swamp vapor\n\n\nColor palette:\n\n\nDark swamp green skin\n\n\nMud brown\n\n\nRusted iron orange\n\n\nDirty fur gray\n\n\nSickly yellow eyes\n\n\nStyle:\n\n\nClassic fantasy ogre\n\n\nHeavy readable silhouette for pixel art\n\n\nFits an action RPG or old-school hack-and-slash game\n\n",
+        "prompt": "A brutal swamp ogre known as the Bogmaw Crusher.\nA massive green-skinned ogre with a thick muscular build, covered in scars, mud, and patches of moss growing directly on its skin. Its posture is hunched forward slightly, giving it a heavy intimidating silhouette. One tusk is broken while the other protrudes upward from its lower jaw.\nThe ogre wears crude armor assembled from scavenged materials:\n\n\nRusted iron shoulder plates\n\n\nLeather straps stitched together with rope\n\n\nFur pelts from swamp beasts\n\n\nBone charms hanging from the belt\n\n\nIts weapon is a gigantic wooden club reinforced with iron spikes and wrapped in old chains. The club looks absurdly heavy, with dried mud and blood stains caked into the wood.\nThe ogre\u2019s face is rough and expressive:\n\n\nSmall glowing yellow eyes\n\n\nFlattened nose\n\n\nHuge jaw with protruding tusks\n\n\nConstant angry scowl\n\n\nAdditional details:\n\n\nSwamp plants and fungi growing on parts of the armor\n\n\nOne arm wrapped in dirty bandages\n\n\nHeavy boots sinking slightly into the ground\n\n\nBreath visible as toxic green mist\n\n\nIdle animation ideas:\n\n\nSlow heavy breathing\n\n\nFlies buzzing around\n\n\nClub dragging slightly across the ground\n\n\nOccasional snort releasing swamp vapor\n\n\nColor palette:\n\n\nDark swamp green skin\n\n\nMud brown\n\n\nRusted iron orange\n\n\nDirty fur gray\n\n\nSickly yellow eyes\n\n\nStyle:\n\n\nClassic fantasy ogre\n\n\nHeavy readable silhouette for pixel art\n\n\nFits an action RPG or old-school hack-and-slash game\n\n",
+        "size": {
+          "width": 136,
+          "height": 136
+        },
+        "template_id": "mannequin",
+        "directions": 8,
+        "view": "low top-down",
+        "created_at": "2026-05-11T23:05:26.938924+00:00"
+      },
+      "folder": "states/A_brutal_swamp_ogre_known_as_the_Bogmaw_Crusher._A",
+      "frames": {
+        "rotations": {
+          "south": "states/A_brutal_swamp_ogre_known_as_the_Bogmaw_Crusher._A/rotations/south.png",
+          "south-east": "states/A_brutal_swamp_ogre_known_as_the_Bogmaw_Crusher._A/rotations/south-east.png",
+          "east": "states/A_brutal_swamp_ogre_known_as_the_Bogmaw_Crusher._A/rotations/east.png",
+          "north-east": "states/A_brutal_swamp_ogre_known_as_the_Bogmaw_Crusher._A/rotations/north-east.png",
+          "north": "states/A_brutal_swamp_ogre_known_as_the_Bogmaw_Crusher._A/rotations/north.png",
+          "north-west": "states/A_brutal_swamp_ogre_known_as_the_Bogmaw_Crusher._A/rotations/north-west.png",
+          "west": "states/A_brutal_swamp_ogre_known_as_the_Bogmaw_Crusher._A/rotations/west.png",
+          "south-west": "states/A_brutal_swamp_ogre_known_as_the_Bogmaw_Crusher._A/rotations/south-west.png"
+        },
+        "animations": {
+          "animation-5d4d4d59": {
+            "east": [
+              "states/A_brutal_swamp_ogre_known_as_the_Bogmaw_Crusher._A/animations/animation-5d4d4d59/east/frame_000.png",
+              "states/A_brutal_swamp_ogre_known_as_the_Bogmaw_Crusher._A/animations/animation-5d4d4d59/east/frame_001.png",
+              "states/A_brutal_swamp_ogre_known_as_the_Bogmaw_Crusher._A/animations/animation-5d4d4d59/east/frame_002.png",
+              "states/A_brutal_swamp_ogre_known_as_the_Bogmaw_Crusher._A/animations/animation-5d4d4d59/east/frame_003.png",
+              "states/A_brutal_swamp_ogre_known_as_the_Bogmaw_Crusher._A/animations/animation-5d4d4d59/east/frame_004.png",
+              "states/A_brutal_swamp_ogre_known_as_the_Bogmaw_Crusher._A/animations/animation-5d4d4d59/east/frame_005.png"
+            ]
+          },
+          "Fight_Stance_Idle-bd1d5187": {
+            "east": [
+              "states/A_brutal_swamp_ogre_known_as_the_Bogmaw_Crusher._A/animations/Fight_Stance_Idle-bd1d5187/east/frame_000.png",
+              "states/A_brutal_swamp_ogre_known_as_the_Bogmaw_Crusher._A/animations/Fight_Stance_Idle-bd1d5187/east/frame_001.png",
+              "states/A_brutal_swamp_ogre_known_as_the_Bogmaw_Crusher._A/animations/Fight_Stance_Idle-bd1d5187/east/frame_002.png",
+              "states/A_brutal_swamp_ogre_known_as_the_Bogmaw_Crusher._A/animations/Fight_Stance_Idle-bd1d5187/east/frame_003.png",
+              "states/A_brutal_swamp_ogre_known_as_the_Bogmaw_Crusher._A/animations/Fight_Stance_Idle-bd1d5187/east/frame_004.png",
+              "states/A_brutal_swamp_ogre_known_as_the_Bogmaw_Crusher._A/animations/Fight_Stance_Idle-bd1d5187/east/frame_005.png",
+              "states/A_brutal_swamp_ogre_known_as_the_Bogmaw_Crusher._A/animations/Fight_Stance_Idle-bd1d5187/east/frame_006.png",
+              "states/A_brutal_swamp_ogre_known_as_the_Bogmaw_Crusher._A/animations/Fight_Stance_Idle-bd1d5187/east/frame_007.png"
+            ]
+          },
+          "Hurricane_Kick-06d2ffb4": {
+            "east": [
+              "states/A_brutal_swamp_ogre_known_as_the_Bogmaw_Crusher._A/animations/Hurricane_Kick-06d2ffb4/east/frame_000.png",
+              "states/A_brutal_swamp_ogre_known_as_the_Bogmaw_Crusher._A/animations/Hurricane_Kick-06d2ffb4/east/frame_001.png",
+              "states/A_brutal_swamp_ogre_known_as_the_Bogmaw_Crusher._A/animations/Hurricane_Kick-06d2ffb4/east/frame_002.png",
+              "states/A_brutal_swamp_ogre_known_as_the_Bogmaw_Crusher._A/animations/Hurricane_Kick-06d2ffb4/east/frame_003.png"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "export_version": "3.0",
+  "export_date": "2026-05-13T20:08:44.053727"
+}

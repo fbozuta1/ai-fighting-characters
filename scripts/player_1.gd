@@ -15,6 +15,7 @@ signal defeated(player_id: int)
 
 const GENERATION_SCRIPT_PATH: String = "res://scripts/python_ai_generation/pixellab_generation_script.py"
 const DEFAULT_RESULT_PATH: String = "res://animation_result.json"
+const SPELL_PROJECTILE_SCRIPT: Script = preload("res://scripts/spell_projectile.gd")
 const ANIMATION_NAMES: Dictionary = {
 	"idle": "Idle",
 	"walk": "Walk",
@@ -31,13 +32,25 @@ const HITBOX_SIZE: Vector2 = Vector2(44.0, 38.0)
 const ATTACK_RANGE_X: float = 54.0
 const ATTACK_RANGE_Y: float = 34.0
 const FIGHT_DAMAGE: float = 7.0
+const HEAVY_FIGHT_DAMAGE: float = 15.0
 const ATTACK_HIT_COOLDOWN: float = 0.22
 const KNOCKBACK_FORCE: float = 95.0
+const HEAVY_KNOCKBACK_FORCE: float = 145.0
 const MAX_KNOCKBACK_SPEED: float = 130.0
 const KNOCKBACK_DECELERATION: float = 560.0
 const HIT_STUN_DURATION: float = 0.12
 const HURTBOX_LAYER_BY_ID: Dictionary = {1: 2, 2: 4}
 const HITBOX_MASK_BY_ID: Dictionary = {1: 4, 2: 2}
+const SPELL_DAMAGE: float = 12.0
+const SPELL_ANIMATION_SPEED: float = 12.0
+const SPELL_SPEED: float = 150.0
+const SPELL_DISTANCE: float = 140.0
+const SPELL_PATH: String = "arc"
+const SPELL_ARC_HEIGHT: float = 10.0
+const SPELL_WAVE_AMPLITUDE: float = 8.0
+const SPELL_WAVE_FREQUENCY: float = 1.0
+const SPELL_KNOCKBACK_FORCE: float = 80.0
+const SPELL_OFFSET: Vector2 = Vector2(24.0, -18.0)
 
 var input_config: Dictionary = {}
 var hp: float = 0.0
@@ -46,6 +59,16 @@ var hit_cooldowns: Dictionary = {}
 var hit_stun_time: float = 0.0
 var play_area_bounds: Rect2 = Rect2()
 var has_play_area_bounds: bool = false
+var spell_textures: Array[Texture2D] = []
+var spell_damage: float = SPELL_DAMAGE
+var spell_animation_speed: float = SPELL_ANIMATION_SPEED
+var spell_speed: float = SPELL_SPEED
+var spell_distance: float = SPELL_DISTANCE
+var spell_path: String = SPELL_PATH
+var spell_arc_height: float = SPELL_ARC_HEIGHT
+var spell_wave_amplitude: float = SPELL_WAVE_AMPLITUDE
+var spell_wave_frequency: float = SPELL_WAVE_FREQUENCY
+var spell_knockback_force: float = SPELL_KNOCKBACK_FORCE
 
 var prompt: Control = null
 var ResultField: Label = null
@@ -101,6 +124,7 @@ func _init_input_config() -> void:
 			"up": "P2_Up",
 			"down": "P2_Down",
 			"fight": "P2_Fight",
+			"spell": "P2_Spell",
 			"movement": "P2_Movement",
 		}
 	else:
@@ -110,6 +134,7 @@ func _init_input_config() -> void:
 			"up": "Up",
 			"down": "Down",
 			"fight": "Fight",
+			"spell": "Spell",
 			"movement": "Movement",
 		}
 
@@ -140,6 +165,37 @@ func set_hitbox_active(active: bool) -> void:
 	if active and not is_attacking:
 		hit_cooldowns.clear()
 	is_attacking = active
+
+func has_spell() -> bool:
+	return not spell_textures.is_empty()
+
+func cast_spell() -> void:
+	if spell_textures.is_empty():
+		return
+	var projectile := SPELL_PROJECTILE_SCRIPT.new() as SpellProjectile
+	var facing := -1.0 if sprite.flip_h else 1.0
+	projectile.caster = self
+	projectile.textures = spell_textures
+	projectile.animation_speed = spell_animation_speed
+	projectile.flip_h = facing < 0.0
+	projectile.direction = Vector2(facing, 0.0)
+	projectile.damage = spell_damage
+	projectile.speed = spell_speed
+	projectile.max_distance = spell_distance
+	projectile.path_mode = spell_path
+	projectile.arc_height = spell_arc_height
+	projectile.wave_amplitude = spell_wave_amplitude
+	projectile.wave_frequency = spell_wave_frequency
+	projectile.knockback_force = spell_knockback_force
+	projectile.target_collision_mask = HITBOX_MASK_BY_ID.get(player_id, 4)
+	projectile.global_position = global_position + Vector2(SPELL_OFFSET.x * facing, SPELL_OFFSET.y)
+	get_parent().add_child(projectile)
+
+func perform_tap_attack() -> void:
+	_apply_attack_hit(FIGHT_DAMAGE, KNOCKBACK_FORCE)
+
+func perform_heavy_attack() -> void:
+	_apply_attack_hit(HEAVY_FIGHT_DAMAGE, HEAVY_KNOCKBACK_FORCE)
 
 func take_damage(amount: float, knockback: Vector2) -> void:
 	if hp <= 0.0:
@@ -202,6 +258,15 @@ func _process_active_hits() -> void:
 		dir = dir.normalized()
 		other.take_damage(FIGHT_DAMAGE, dir * KNOCKBACK_FORCE)
 		hit_cooldowns[other_id] = ATTACK_HIT_COOLDOWN
+
+func _apply_attack_hit(damage: float, knockback_force: float) -> void:
+	for other in _get_attack_targets():
+		var dir: Vector2 = (other.global_position - global_position).normalized()
+		if dir == Vector2.ZERO:
+			dir = Vector2(-1.0 if sprite.flip_h else 1.0, 0.0)
+		dir.y *= 0.35
+		dir = dir.normalized()
+		other.take_damage(damage, dir * knockback_force)
 
 func _get_attack_targets() -> Array[Player]:
 	var targets: Array[Player] = []
@@ -375,7 +440,9 @@ func load_animations_from_result_file(animation_result_file: String) -> bool:
 		_set_status("Animation result action_folders is not an object")
 		return false
 
-	var load_errors: Array[String] = _load_sprite_frames(result_data["action_folders"], resolved_result_file)
+	var action_folders: Dictionary = result_data["action_folders"]
+	_load_spell_asset(action_folders, resolved_result_file)
+	var load_errors: Array[String] = _load_sprite_frames(action_folders, resolved_result_file)
 	if not load_errors.is_empty():
 		_set_status(",".join(load_errors))
 		return false
@@ -384,6 +451,7 @@ func load_animations_from_result_file(animation_result_file: String) -> bool:
 	return true
 
 func load_animations_from_action_folders(action_folders: Dictionary) -> bool:
+	_load_spell_asset(action_folders, "")
 	var load_errors: Array[String] = _load_sprite_frames(action_folders, "")
 	if not load_errors.is_empty():
 		_set_status(",".join(load_errors))
@@ -455,6 +523,58 @@ func _load_sprite_frames(action_folders: Dictionary, result_file_path: String) -
 	sprite.animation = "Idle"
 	sprite.play("Idle")
 	return []
+
+func _load_spell_asset(action_folders: Dictionary, result_file_path: String) -> void:
+	spell_textures = []
+	spell_damage = SPELL_DAMAGE
+	spell_animation_speed = SPELL_ANIMATION_SPEED
+	spell_speed = SPELL_SPEED
+	spell_distance = SPELL_DISTANCE
+	spell_path = SPELL_PATH
+	spell_arc_height = SPELL_ARC_HEIGHT
+	spell_wave_amplitude = SPELL_WAVE_AMPLITUDE
+	spell_wave_frequency = SPELL_WAVE_FREQUENCY
+	spell_knockback_force = SPELL_KNOCKBACK_FORCE
+
+	if not action_folders.has("spell"):
+		return
+	var folder_path: String = _resolve_folder_path(str(action_folders["spell"]), result_file_path)
+	if folder_path.is_empty():
+		return
+	var frame_paths := _get_png_frames(folder_path)
+	if frame_paths.is_empty():
+		return
+	for frame_path in frame_paths:
+		var frame_texture := _load_png_texture(frame_path)
+		if frame_texture != null:
+			spell_textures.append(frame_texture)
+	if spell_textures.is_empty():
+		return
+	_load_spell_config(folder_path)
+
+func _load_spell_config(folder_path: String) -> void:
+	var config_path := folder_path.path_join("spell.json")
+	if not FileAccess.file_exists(config_path):
+		return
+	var file := FileAccess.open(config_path, FileAccess.READ)
+	if file == null:
+		return
+	var config_text := file.get_as_text()
+	file.close()
+
+	var config_json := JSON.new()
+	if config_json.parse(config_text) != OK or typeof(config_json.data) != TYPE_DICTIONARY:
+		return
+	var config: Dictionary = config_json.data
+	spell_damage = float(config.get("damage", spell_damage))
+	spell_animation_speed = float(config.get("animation_speed", spell_animation_speed))
+	spell_speed = float(config.get("speed", spell_speed))
+	spell_distance = float(config.get("distance", spell_distance))
+	spell_path = str(config.get("path", spell_path)).to_lower()
+	spell_arc_height = float(config.get("arc_height", spell_arc_height))
+	spell_wave_amplitude = float(config.get("wave_amplitude", spell_wave_amplitude))
+	spell_wave_frequency = float(config.get("wave_frequency", spell_wave_frequency))
+	spell_knockback_force = float(config.get("knockback", spell_knockback_force))
 
 func has_animation(animation_name: String) -> bool:
 	return sprite.sprite_frames != null and sprite.sprite_frames.has_animation(animation_name)

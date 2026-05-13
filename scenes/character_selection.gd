@@ -11,6 +11,7 @@ const ACTION_LABELS: Dictionary = {
 	"idle": "I",
 	"walk": "W",
 	"fight": "F",
+	"spell": "S",
 }
 const COLOR_BG: Color = Color(0.035, 0.045, 0.075, 1.0)
 const COLOR_PANEL: Color = Color(0.075, 0.085, 0.13, 0.98)
@@ -418,7 +419,7 @@ func _create_character_card(character: Dictionary) -> Button:
 	box.add_child(badges)
 
 	var actions: Dictionary = character["actions"]
-	for action in ["idle", "walk", "fight"]:
+	for action in ["idle", "walk", "fight", "spell"]:
 		var badge := Label.new()
 		badge.text = ACTION_LABELS[action]
 		badge.add_theme_color_override("font_color", COLOR_AMBER if actions.has(action) else Color(0.28, 0.32, 0.34, 1.0))

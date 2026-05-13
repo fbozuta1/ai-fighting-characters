@@ -4,7 +4,7 @@
     {
       "character": {
         "id": "b1b07d40-ee2e-4478-9d42-18081c8cb34d",
-        "name": "A terrifying ancient predator known as the Thornmaw Ravager.\nA massive beast that prowls on four powerful legs, resembling a twisted fusion of a wolf, reptile, and forest monster. Its body is covered in dark bark-like armor plates mixed with patches of coarse black fur and glowing moss. Long jagged thorns protrude from its spine all the way to the tail, giving it a brutal silhouette.\nThe creature\u2019s head is large and low to the ground with an oversized jaw filled with uneven glowing fangs. Multiple smaller eyes glow dim amber along the sides of the skull, allowing it to see in every direction. Thick black saliva constantly drips from its mouth, sizzling slightly when it touches the ground.\nIts front legs are enormous and muscular with hooked claws designed for crushing prey, while the back legs are leaner and built for sudden explosive speed. The tail is long and whip-like with thorny growths and glowing fungal veins pulsing beneath the skin.\nThe beast appears partially corrupted by ancient forest magic:\n\n\nSmall roots move beneath the skin\n\n\nMushrooms and moss grow from wounds\n\n\nGreen particles leak from its breathing\n\n\nParts of the body faintly glow in darkness\n\n\nIdle animation ideas:\n\n\nSlow aggressive breathing\n\n\nTail twitching unpredictably\n\n\nSaliva dripping from jaws\n\n\nEyes blinking independently\n\n\nThorn spikes slightly expanding and retracting\n\n\nAttack animation ideas:\n\n\nBrutal lunging bite\n\n\nGround-pouncing slam\n\n\nTail whip attack\n\n\nRoar releasing glowing spores\n\n\nColor palette:\n\n\nDark forest green\n\n\nBlack fur\n\n\nRotten brown bark\n\n\nToxic glowing green\n\n\nAmber eyes\n\n\nBone-white teeth and claws\n\n\nStyle:\n\n\nDark fantasy monster\n\n\nHeavy intimidating silhouette\n\n\nDesigned for a pixel art boss enemy or dangerous wilderness predator in an action RPG or survival game\n\n",
+        "name": "Thornmar Ravager",
         "prompt": "A terrifying ancient predator known as the Thornmaw Ravager.\nA massive beast that prowls on four powerful legs, resembling a twisted fusion of a wolf, reptile, and forest monster. Its body is covered in dark bark-like armor plates mixed with patches of coarse black fur and glowing moss. Long jagged thorns protrude from its spine all the way to the tail, giving it a brutal silhouette.\nThe creature\u2019s head is large and low to the ground with an oversized jaw filled with uneven glowing fangs. Multiple smaller eyes glow dim amber along the sides of the skull, allowing it to see in every direction. Thick black saliva constantly drips from its mouth, sizzling slightly when it touches the ground.\nIts front legs are enormous and muscular with hooked claws designed for crushing prey, while the back legs are leaner and built for sudden explosive speed. The tail is long and whip-like with thorny growths and glowing fungal veins pulsing beneath the skin.\nThe beast appears partially corrupted by ancient forest magic:\n\n\nSmall roots move beneath the skin\n\n\nMushrooms and moss grow from wounds\n\n\nGreen particles leak from its breathing\n\n\nParts of the body faintly glow in darkness\n\n\nIdle animation ideas:\n\n\nSlow aggressive breathing\n\n\nTail twitching unpredictably\n\n\nSaliva dripping from jaws\n\n\nEyes blinking independently\n\n\nThorn spikes slightly expanding and retracting\n\n\nAttack animation ideas:\n\n\nBrutal lunging bite\n\n\nGround-pouncing slam\n\n\nTail whip attack\n\n\nRoar releasing glowing spores\n\n\nColor palette:\n\n\nDark forest green\n\n\nBlack fur\n\n\nRotten brown bark\n\n\nToxic glowing green\n\n\nAmber eyes\n\n\nBone-white teeth and claws\n\n\nStyle:\n\n\nDark fantasy monster\n\n\nHeavy intimidating silhouette\n\n\nDesigned for a pixel art boss enemy or dangerous wilderness predator in an action RPG or survival game",
         "size": {
           "width": 136,
@@ -15,53 +15,63 @@
         "view": "low top-down",
         "created_at": "2026-05-13T10:09:41.433245+00:00"
       },
-      "folder": "states/A_terrifying_ancient_predator_known_as_the_Thornma",
+      "folder": "states/Thornmar_Ravager",
       "frames": {
         "rotations": {
-          "south": "states/A_terrifying_ancient_predator_known_as_the_Thornma/rotations/south.png",
-          "south-east": "states/A_terrifying_ancient_predator_known_as_the_Thornma/rotations/south-east.png",
-          "east": "states/A_terrifying_ancient_predator_known_as_the_Thornma/rotations/east.png",
-          "north-east": "states/A_terrifying_ancient_predator_known_as_the_Thornma/rotations/north-east.png",
-          "north": "states/A_terrifying_ancient_predator_known_as_the_Thornma/rotations/north.png",
-          "north-west": "states/A_terrifying_ancient_predator_known_as_the_Thornma/rotations/north-west.png",
-          "west": "states/A_terrifying_ancient_predator_known_as_the_Thornma/rotations/west.png",
-          "south-west": "states/A_terrifying_ancient_predator_known_as_the_Thornma/rotations/south-west.png"
+          "south": "states/Thornmar_Ravager/rotations/south.png",
+          "south-east": "states/Thornmar_Ravager/rotations/south-east.png",
+          "east": "states/Thornmar_Ravager/rotations/east.png",
+          "north-east": "states/Thornmar_Ravager/rotations/north-east.png",
+          "north": "states/Thornmar_Ravager/rotations/north.png",
+          "north-west": "states/Thornmar_Ravager/rotations/north-west.png",
+          "west": "states/Thornmar_Ravager/rotations/west.png",
+          "south-west": "states/Thornmar_Ravager/rotations/south-west.png"
         },
         "animations": {
           "Idle_Sitting-cd89271b": {
             "east": [
-              "states/A_terrifying_ancient_predator_known_as_the_Thornma/animations/Idle_Sitting-cd89271b/east/frame_000.png",
-              "states/A_terrifying_ancient_predator_known_as_the_Thornma/animations/Idle_Sitting-cd89271b/east/frame_001.png",
-              "states/A_terrifying_ancient_predator_known_as_the_Thornma/animations/Idle_Sitting-cd89271b/east/frame_002.png",
-              "states/A_terrifying_ancient_predator_known_as_the_Thornma/animations/Idle_Sitting-cd89271b/east/frame_003.png",
-              "states/A_terrifying_ancient_predator_known_as_the_Thornma/animations/Idle_Sitting-cd89271b/east/frame_004.png",
-              "states/A_terrifying_ancient_predator_known_as_the_Thornma/animations/Idle_Sitting-cd89271b/east/frame_005.png",
-              "states/A_terrifying_ancient_predator_known_as_the_Thornma/animations/Idle_Sitting-cd89271b/east/frame_006.png",
-              "states/A_terrifying_ancient_predator_known_as_the_Thornma/animations/Idle_Sitting-cd89271b/east/frame_007.png",
-              "states/A_terrifying_ancient_predator_known_as_the_Thornma/animations/Idle_Sitting-cd89271b/east/frame_008.png",
-              "states/A_terrifying_ancient_predator_known_as_the_Thornma/animations/Idle_Sitting-cd89271b/east/frame_009.png"
+              "states/Thornmar_Ravager/animations/Idle_Sitting-cd89271b/east/frame_000.png",
+              "states/Thornmar_Ravager/animations/Idle_Sitting-cd89271b/east/frame_001.png",
+              "states/Thornmar_Ravager/animations/Idle_Sitting-cd89271b/east/frame_002.png",
+              "states/Thornmar_Ravager/animations/Idle_Sitting-cd89271b/east/frame_003.png",
+              "states/Thornmar_Ravager/animations/Idle_Sitting-cd89271b/east/frame_004.png",
+              "states/Thornmar_Ravager/animations/Idle_Sitting-cd89271b/east/frame_005.png",
+              "states/Thornmar_Ravager/animations/Idle_Sitting-cd89271b/east/frame_006.png",
+              "states/Thornmar_Ravager/animations/Idle_Sitting-cd89271b/east/frame_007.png",
+              "states/Thornmar_Ravager/animations/Idle_Sitting-cd89271b/east/frame_008.png",
+              "states/Thornmar_Ravager/animations/Idle_Sitting-cd89271b/east/frame_009.png"
             ]
           },
           "Attack_Right-37e64944": {
             "east": [
-              "states/A_terrifying_ancient_predator_known_as_the_Thornma/animations/Attack_Right-37e64944/east/frame_000.png",
-              "states/A_terrifying_ancient_predator_known_as_the_Thornma/animations/Attack_Right-37e64944/east/frame_001.png",
-              "states/A_terrifying_ancient_predator_known_as_the_Thornma/animations/Attack_Right-37e64944/east/frame_002.png",
-              "states/A_terrifying_ancient_predator_known_as_the_Thornma/animations/Attack_Right-37e64944/east/frame_003.png",
-              "states/A_terrifying_ancient_predator_known_as_the_Thornma/animations/Attack_Right-37e64944/east/frame_004.png",
-              "states/A_terrifying_ancient_predator_known_as_the_Thornma/animations/Attack_Right-37e64944/east/frame_005.png",
-              "states/A_terrifying_ancient_predator_known_as_the_Thornma/animations/Attack_Right-37e64944/east/frame_006.png"
+              "states/Thornmar_Ravager/animations/Attack_Right-37e64944/east/frame_000.png",
+              "states/Thornmar_Ravager/animations/Attack_Right-37e64944/east/frame_001.png",
+              "states/Thornmar_Ravager/animations/Attack_Right-37e64944/east/frame_002.png",
+              "states/Thornmar_Ravager/animations/Attack_Right-37e64944/east/frame_003.png",
+              "states/Thornmar_Ravager/animations/Attack_Right-37e64944/east/frame_004.png",
+              "states/Thornmar_Ravager/animations/Attack_Right-37e64944/east/frame_005.png",
+              "states/Thornmar_Ravager/animations/Attack_Right-37e64944/east/frame_006.png"
             ]
           },
           "Attack_Right-3e83b3e9": {
             "south": [
-              "states/A_terrifying_ancient_predator_known_as_the_Thornma/animations/Attack_Right-3e83b3e9/south/frame_000.png",
-              "states/A_terrifying_ancient_predator_known_as_the_Thornma/animations/Attack_Right-3e83b3e9/south/frame_001.png",
-              "states/A_terrifying_ancient_predator_known_as_the_Thornma/animations/Attack_Right-3e83b3e9/south/frame_002.png",
-              "states/A_terrifying_ancient_predator_known_as_the_Thornma/animations/Attack_Right-3e83b3e9/south/frame_003.png",
-              "states/A_terrifying_ancient_predator_known_as_the_Thornma/animations/Attack_Right-3e83b3e9/south/frame_004.png",
-              "states/A_terrifying_ancient_predator_known_as_the_Thornma/animations/Attack_Right-3e83b3e9/south/frame_005.png",
-              "states/A_terrifying_ancient_predator_known_as_the_Thornma/animations/Attack_Right-3e83b3e9/south/frame_006.png"
+              "states/Thornmar_Ravager/animations/Attack_Right-3e83b3e9/south/frame_000.png",
+              "states/Thornmar_Ravager/animations/Attack_Right-3e83b3e9/south/frame_001.png",
+              "states/Thornmar_Ravager/animations/Attack_Right-3e83b3e9/south/frame_002.png",
+              "states/Thornmar_Ravager/animations/Attack_Right-3e83b3e9/south/frame_003.png",
+              "states/Thornmar_Ravager/animations/Attack_Right-3e83b3e9/south/frame_004.png",
+              "states/Thornmar_Ravager/animations/Attack_Right-3e83b3e9/south/frame_005.png",
+              "states/Thornmar_Ravager/animations/Attack_Right-3e83b3e9/south/frame_006.png"
+            ]
+          },
+          "animation-79901fed": {
+            "south": [
+              "states/Thornmar_Ravager/animations/animation-79901fed/south/frame_000.png",
+              "states/Thornmar_Ravager/animations/animation-79901fed/south/frame_001.png",
+              "states/Thornmar_Ravager/animations/animation-79901fed/south/frame_002.png",
+              "states/Thornmar_Ravager/animations/animation-79901fed/south/frame_003.png",
+              "states/Thornmar_Ravager/animations/animation-79901fed/south/frame_004.png",
+              "states/Thornmar_Ravager/animations/animation-79901fed/south/frame_005.png"
             ]
           }
         }
@@ -69,5 +79,5 @@
     }
   ],
   "export_version": "3.0",
-  "export_date": "2026-05-13T17:55:38.804581"
+  "export_date": "2026-05-13T20:08:15.796068"
 }

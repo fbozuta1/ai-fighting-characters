@@ -12,6 +12,8 @@ func process_input(event: InputEvent) -> State:
 		return player.state_machine.walk_state
 	if event.is_action_pressed(fight_key) and player.has_animation("Fight"):
 		return player.state_machine.fight_state
+	if event.is_action_pressed(spell_key) and player.has_spell():
+		return player.state_machine.spell_state
 	return null
 
 
